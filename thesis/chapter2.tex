@@ -1,0 +1,18 @@
+\section{Các kiến thức nền tảng và nghiên cứu liên quan}
+\subsection{Cấu trúc của Boomerang}
+Ở giai đoạn thực tập tốt nghiệp, sau quá trình nghiên cứu một số trình dịch ngược hiện nay, người viết đã quyết định sử dụng trình dịch ngược Boomerang vì sử dụng nhiều kỹ thuật phân tích giúp chất lượng mã đầu ra cao và có cấu tạo kiểu module dễ thay đổi, thêm mới. Phần này sẽ giới thiệu về cấu trúc code của Boomerang, giúp ích cho việc trình bày các giải pháp của bài toán ở chương kế.
+
+Về mặt tổng thể, Boomerang gồm có các phần sau:
+%sơ đồ khối cấu trúc của Boomerang
+
+Khi đọc vào một chương trình assembly, Boomerang sẽ lưu trữ chúng dưới cấu trúc sau:
+
+%cấu trúc của AssemblyProgram
+
+Khi giải mã lên ngôn ngữ trung gian, cấu trúc Boomerang dùng để thể hiện là:
+
+%cấu trúc của Prog, Proc, BasicBlock...
+
+Prog là tương ứng với toàn bộ chương trình. Một Proc là một hàm, BasicBlock đại diện cho một khối cơ bản mà ở đó không có một câu lệnh rẽ nhánh nào (ví dụ như if, hoặc vòng lặp...). Statement là một câu lệnh và Expr là các biểu thức trong chương trình. Ngoài ra còn có các class đại diện cho kiểu dữ liệu.
+
+Việc thực hiện các phân tích chủ yếu diễn ra tại Proc, vì vậy, các thay đổi trong luận văn này cũng chủ yếu được thực hiện bằng các hàm của Proc.

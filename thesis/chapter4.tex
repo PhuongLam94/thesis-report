@@ -1,0 +1,60 @@
+\section{Suy luận kiểu - Type inference}
+Sau khi đã hiện thực giải pháp Kiểm tra kiểu, nhận thấy rằng giải pháp này còn nhiều hạn chế và có thể cải tiến thêm, luận văn đã phát triển thêm một giải pháp mới tốt hơn, không bắt buộc người dùng phải thay đổi code của mình theo mẫu khai báo, đó là Suy luận kiểu. Với giải pháp này, bằng các phép phân tích dữ liệu, trình dịch ngược sẽ tự động tìm ra được các bộ biến được sử dụng trong chương trình. Các bước của giải pháp Suy luận kiểu gồm có:
+\begin{enumerate}
+	\item Dùng một phương pháp phân tích luồng dữ liệu để biết được giá trị của thanh ghi ACC tại mỗi điểm của chương trình.
+	\item Đi qua các câu lệnh sử dụng biến bit, ghi nhận giá trị hiện tại của thanh ghi ACc tại câu lệnh đó và đưa biến bit đó vào bộ biến phù hợp.
+\end{enumerate}
+Như vậy, giải pháp này đã bỏ qua được bước đầu tiên, quy định mẫu khai báo, của giải pháp Suy luận kiểu. Ngoài ra, kỹ thuật phân tích Reaching definitions như đã trình bày ở chương trước có một số khuyết điểm, vì vậy, ở giải pháp này, chúng ta sẽ phân tích và tìm ra một kỹ thuật khác toàn diện hơn. Điều này sẽ được trình bày ở phần đầu tiên của chương, phần tiếp theo sẽ nói về cách quét các câu lệnh sử dụng biến bit và đưa thông tin vào một cấu trúc dữ liệu phù hợp.
+
+\subsection{Phân tích Constant propagation}
+Ở chương trước, phương phán phân tích Reaching definitions đã được đề cập đến, tuy nhiên, phương pháp này chỉ áp dụng được cho trường hợp gán một biến byte trực tiếp cho thanh ghi ACC, vì vậy ta cần tìm một phương pháp khác phù hợp hơn. Phương pháp này cần phải tính toán được chính xác giá trị hiện có của thanh ghi ACC cho dù biểu thức bên phải của phép gán là gì. Ngoài ra, như một số trình bày ở trên, nếu thanh ghi ACC có thể có mang những giá trị khác nhau ở một câu lệnh sử dụng bit, thì mặc nhiên nguyên tắc bị vi phạm. Như vậy, ta chỉ xét tới các trường hợp giá trị ở thanh ghi ACC là một giá trị cố định, có thể tính toán được trước khi thực thi chương trình. Từ các yêu cầu trên, ta kết luận được phương pháp phân tích phù hợp nhất trong trường hợp này là Lan truyền hằng số - Constant propagation. Phương pháp này cho phép tính toán giá trị của các biến, cho biết được gía trị đó có phải là một hằng số tại một thời điểm của chương trình hay không.
+%hình minh hoạ constant propagation
+
+Với phương pháp này, một biến có thể có ba giá trị sau:
+\begin{itemize}
+	\item Top: Nghĩa là chưa biết được biến có giá trị gì.
+	\item Hằng số: Nghĩa là đã xác định được giá trị của biến là một hằng số.
+	\item Bottom: Nghĩa là biến có thể mang những giá trị khác nhau, tuỳ thuộc vào luồng chạy của chương trình.
+\end{itemize}
+Cái giá trị trên được minh hoạ ở hình \ref{fig:topconstbot}
+
+Giải thuật của Constant propagation gồm có các bước:
+%giải thuật
+
+Từ giải thuật trên, ta thấy giá trị của các biến ở output chỉ có thể là hằng số hoặc bottom. Đây là một hàm %tìm hiểu lại tên của loại hàm đó
+, vì vậy nó sẽ luôn có điểm dừng chứ không bao giờ lặp mãi mãi.
+
+Với phương pháp phân tích này, ta có thể giải quyết được vấn đề vế phải của phép gán thanh ghi ACC không chỉ đơn giản là một biến byte. Ngoài ra, nó còn nhận biết được các biểu thức có gía trị giống nhau mặc dù hình thức bên ngoài khác nhau. (xem hình \ref{fig:viduACC})
+
+%hình ví dụ 2 phép gán cho ACc nhìn có vẻ khác nhau nhưng cùng một giá trị
+
+Một lưu ý là trong trường hợp này, ta không xét đến giá trị của thanh ghi ACC, mà ta chỉ xét đến giá trị của địa chỉ vùng nhớ thanh ghi ACC đang lưu giữ. Như vậy, chỉ có các câu lệnh dạng MOV ACC, [biểu thức] sẽ được xét đến. Khi gặp câu lệnh gán có dạng MOV ACC, \#[biểu thức] thì đoạn mã phân tích sẽ xem như giá trị của ACC không phải là hằng số (bottom).
+\subsection{Quét các câu lệnh sử dụng biến bit}
+
+Sau khi đã biết được giá trị địa chỉ vùng nhớ mà thanh ghi ACC đang nắm giữ, ta sẽ chuyển sang bước quét các câu lệnh sử dụng biến bit. Ở bước này, ta vẫn sẽ sử dụng lại cấu trúc dữ liệu UnionDefine đã giới thiệu ở chương trước. Tuy nhiên, sau quá trình phân tích, ta chỉ biết được giá trị, chứ không biết được biến byte nào đang lưu trữ giá trị đó. Và để tăng tốc độ chương trình, ta sẽ lưu giá trị đó vào UnionDefine chứ không lưu biến byte, chỉ khi kết thúc quá trình quét dữ liệu, ta mới truy cập vào bảng lưu trữ các câu lệnh \#DEFINE, so sánh và tìm ra được biến byte nào tương ứng với các giá trị đó. Như vậy, cần có thêm một trường để lưu giá trị trực tiếp trong UnionDefine.
+
+%đoạn mã mới của unionDefine
+
+Quá trình quét câu lệnh và thu thập dữ liệu của giải pháp Suy luận kiểu cũng tương tự như giải pháp Kiểm tra kiểu, nhưng thay vì ghi nhận biến bit và biến byte rồi kiểm tra chúng có cùng một bộ như khai báo hay không, ta sẽ kiểm tra trước hai biến đó có vi phạm nguyên tắc sử dụng hay không (ví dụ như biến bit đó đã thuộc một bộ khác trước đó, hoặc ở bit vị trí đó của bộ biến của biến byte đã ghi nhận một biến bite khác), nếu không thì ta sẽ ghi nhận mối quan hệ này vào danh sách UnionDefine đang lưu trữ.
+
+%sơ đồ các bước quét dữ liệu
+
+Sau khi đã quét hết các câu lệnh ở các procedure, trước khi chuyển đổi các UnionDefine thành các khai báo ở ngôn ngữ C và thêm vào danh sách các biến toàn cục của program như giải pháp trước, ta phải thêm vào một bước chuyển đổi từ giá trị thành biến byte đại diện cho giá trị đó. Điều này có thể được thực hiện bằng cách chạy vòng lặp qua bảng lưu trữ các câu lệnh \#DEFINE đã được thiết lập từ quá trình parse mã đầu vào.
+
+%ví dụ tìm biến byte ứng với giá trị
+
+Nếu như có một giá trị nào đó chưa được khai báo ở câu lệnh \#DEFINE, ta sẽ đặt tên mới cho biến byte đó là LOCATION\_[giá trị].
+
+%ví dụ đặt tên mới cho biến byte
+
+Bước cuối cùng cũng tương tự giải pháp trước, đó là thay thế. Ngoài việc bỏ các câu lệnh gán thanh ghi ACC, thay thế biến ACC bằng các biến byte tương ứng, ta còn có thêm một bước là thay thế các biến bit bằng các truy xuất tới union. Ở giải pháp trước, vì ta đã biết ngay từ đầu biến bit nào thuộc chung bộ với biến byte nào, nên ở giai đoạn giải mã, khi gặp một biến bit ta đã thay thế nó bằng truy xuất tới union. Còn ở giải pháp này, ta không biết được các bộ biến, nên ở giai đoạn giải mã ta sẽ xem các biến bit như một biến độc lập. Sau khi đã tìm ra được các bộ biến, ta mới thực hiện thay thế chúng.
+
+%ví dụ thay thế biến bit
+
+Ngoài thay thế các biến bit, đoạn mã này còn quét các vị trí người dùng gọi trực tiếp một bit của thanh ghi ACC, ví dụ như ACC.1. Với trường hợp này, đoạn mã sẽ tìm biến bit ở vị trí số một của biến byte tương ứng với giá trị thanh ghi ACC, và thay thế đoạn mã truy xuất trực tiếp đó bằng tên biến bit. 
+
+%ví dụ đoạn mã sử dụng truy xuất trực tiếp biến bit
+
+Như vậy, giải pháp này đã giải quyết phần lớn các vấn đề đặt ra của bài toán. 
+
+%một đoạn mã đầu vào và đoạn mã đầu ra của trình dịch ngược
