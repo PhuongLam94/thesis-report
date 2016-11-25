@@ -1,0 +1,46 @@
+\documentclass{article}
+\usepackage{vntex}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\title{Kỹ thuật dịch ngược}
+\begin{comment}
+-	Lời cam đoan
+-	Lời cảm ơn/ Lời ngỏ
+-	Tóm tắt LV (bằng tiếng Việt và tiếng Anh)
+-	Mục lục
+-	Danh mục, bảng biểu, hình ảnh, ... (nếu có)
+-	Nội dung LV (xem thêm phần Nội dung chi tiết ở Phần III)
+-	Danh mục TL tham khảo
+-	Phụ lục (nếu có)
+\end{comment}
+\begin{document}
+	\pagenumbering{gobble}
+	\maketitle
+	
+	\newpage
+	\pagenumbering{roman}
+	\section*{Lời cam đoan}
+	
+	\section*{Lời cảm ơn}
+	
+	\section*{Tóm tắt luận văn}
+	
+	\newpage
+	\tableofcontents
+	
+	\newpage
+	\listoffigures
+	
+	\newpage
+	\pagenumbering{arabic}
+	\include{chapter1}
+	\include{chapter2}
+	\include{chapter3}
+	
+	
+	\newpage
+	
+	\nocite{*}
+	\bibliography{thesis} 
+	\bibliographystyle{ieeetr}
+\end{document}

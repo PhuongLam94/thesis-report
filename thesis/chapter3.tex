@@ -1,0 +1,61 @@
+\section{Kiểm tra kiểu - Type checking}
+
+Như đã giới thiệu ở phần trước, giải pháp Kiểm tra kiểu gồm có các bước sau:
+\begin{itemize}
+\item Đưa ra mẫu khai báo biến byte và biến bit. Chỉnh sửa chỉnh dịch ngược để đọc vào mẫu khai báo này và biết được những biến byte và biến bit nào cùng một bộ.
+\item Thực hiện phân tích dữ liệu để biết được giá trị của thanh ghi ACC tại một thời điểm nào đó có phải là giá trị của một vùng nhớ cố định hay không. Tại giai đoạn này của luận văn, kỹ thuật phân tích dữ liệu được sử dụng là reaching definition.
+\item Tại các câu lệnh sử dụng bit, nếu giá trị của thanh ghi ACC là của một vùng nhớ cố định, thì kiểm tra xem giá trị địa chỉ của vùng nhớ đó đang được lưu bởi biến nào. Nếu biến đó được khai báo cùng bộ với biến bit thì xem như tuân thủ đúng nguyên tắc sử dụng, nếu không thì báo lỗi.
+\item Nếu toàn bộ chương trình đều tuân thủ đúng nguyên tắc sử dụng biến byte - biến bit thì đưa các bộ biến byte - biến bit về dạng union ở ngôn ngữ cấp cao.
+\end{itemize}
+%sơ đồ trình bày các bước
+Chương này sẽ lần lượt trình bày các bước trên.
+
+\subsection{Mẫu khai báo biến byte và biến bit}
+Mẫu khai báo biến byte và biến bit được quy định như sau:
+%khai báo
+Đây là mẫu khai báo khi muốn gom các biến vào cùng một bộ, ngoài ra, chương trình vẫn chấp nhận việc khai báo riêng lẻ từng biến. Như vậy, cần chỉnh lại phần parser của trình dịch ngược để chấp nhận cấu trúc mới này.
+%hiện đoạn code parser
+Trong trình dịch ngược, cần có một cấu trúc mới để lưu trữ thông tin của các bộ biến byte và biến bit này.
+%hiện đoạn code class UnionDefine
+Như vậy, sau giai đoạn parser, ta đã thu được bộ biến theo khai báo của người dùng. Tuy nhiên, nguyên tắc sử dụng bộ biến này là không bắt buộc trong quá trình lập trình 8051, và các assembler cũng không hề kiểm tra việc người dùng có tuân thủ nguyên tắc này không. Vì vậy, trước khi chuyển hoá các bộ biến này sang cấu trúc union ở mã đầu ra, ta cần phải kiểm tra đoạn mã của người dùng sử dụng các bộ biến như thế nào.
+
+\subsection{Phân tích Reaching definitions}
+
+Mục đích của phân tích Reaching definitions là biết được ở một thời điểm của chương trình, các câu lệnh khai báo nào đang còn hiệu lực, hay nói cách khác là gía trị của các biến đang là gì.
+%ví dụ
+Như vậy, khi áp dụng vào trình dịch ngược, ta sẽ biết được tại thời điểm sử dụng biến bit, giá trị của thanh ghi ACC đang được định nghĩa như thế nào. Nếu đó là một câu lệnh load một vùng nhớ có địa chỉ quy định bởi biến byte, thì ta kiểm tra tiếp biến byte đó có cùng bộ với biến bit đang sử dụng hay không. Lưu ý là ta chỉ xét trường hợp thanh ghi ACC được load một giá trị vùng nhớ (biểu diễn ở ngôn ngữ cấp cao là pointer).
+%sơ đồ khối
+Các bước phân tích reaching definitions áp dụng vào cấu trúc dữ liệu hiện tại của trình dịch ngược như sau:
+% giải thuật
+
+Tuy nhiên, phân tích Reaching definitions chỉ cho biết được câu lệnh khai báo có hiệu lực của một biến tại một thời điểm chương trình, chứ không cho biết được giá trị thực sự của biến đó. Nếu vế phải của câu lệnh khai báo này chỉ đơn giản là pointer của một biến byte, thì ta sẽ dễ dàng kiểm tra được. Nhưng ngoài ra, biểu thức nằm trong dấu pointer khi dịch ngược từ mã assembly 8051 lên có thể là các trường hợp sau đây:
+\begin{itemize}
+	\item Một biểu thức có hai vế, các vế của biểu thức có thể là một biến, một thanh ghi hoặc một hằng số.
+	\item Một thanh ghi, giá trị của thanh ghi có thể được khai báo ở các câu lệnh trước đó.
+\end{itemize}
+%hình ví dụ
+Với phương pháp Reaching definitions, ta sẽ không thể xử lý được với các trường hợp phức tạp hơn như trên.  Một phân tích khác sẽ được áp dụng trong giai đoạn tiến hành giải pháp Suy luận kiểu. Còn với giai đoạn sơ khai này của luận văn, ta sẽ giả thuyết rằng ở đoạn mã đầu vào chỉ có các câu lệnh gán vùng nhớ đơn giản cho ACC với một biến byte duy nhất.
+%hình ví dụ
+\subsection{Kiểm tra cách sử dụng bộ biến trong toàn bộ chương trình và sinh mã}
+
+Sau khi đã có thông tin về reaching definitions ở tất các các điểm của chương trình, ta sẽ chuyển sang kiểm tra các ở các câu lệnh sử dụng bit.
+
+Quá trình kiểm tra gồm các bước sau:
+%sơ đồ khối quá trình kiểm tra
+
+Nếu ở bất cứ câu lệnh sử dụng biến bit nào, nguyên tắc đưa ra bị vi phạm, thì trình dịch ngược sẽ hiện thông báo lỗi trên console cho người dùng. Sau đó, đoạn mã kiểm tra lỗi vẫn tiếp tục chạy để kiểm tra các câu lệnh khác nhằm tạo thuận lợi cho người dùng trong quá trình sửa lỗi chương trình đầu vào. Tuy nhiên, nếu có lỗi thì trình dịch ngược sẽ không sinh mã đầu ra vì sẽ không thể xử lý được sinh các union như thế nào.
+
+%đoạn mã và output của trình dịch ngược
+
+Sau quá trình kiểm tra lỗi, trình dịch ngược sẽ tiến hành sinh ra các union ở mã đầu ra và thay thế các biến bit trong chương trình bằng các biểu thức truy xuất union, cũng như bỏ các câu lệnh gán cho ACC và thay thế biến ACC bằng biến byte. Nếu chương trình đầu vào tuân thủ đúng nguyên tắc sử dụng biến byte - biến bit, ta sẽ chuyển đổi các biến này thành một cấu trúc dữ liệu khác phù hợp hơn ở dạng ngôn ngữ cấp cao. Như đã phân tích từ trước ở chương \ref{sec:gioithieu}, cấu trúc dữ liệu đó là union.
+%hình minh hoạ chuyển từ bộ union define sang union
+Khi lập trình ở dạng mã assembly, lập trình viên không được phép xử lý các vùng nhớ trực tiếp mà phải thông qua thanh ghi, tuy nhiên, khi đã chuyển đổi về dạng ngôn ngữ cấp cao, ta có thể sử dụng trực tiếp tên biến trong các câu lệnh mà không cần trung gian qua thanh ghi nữa. Điều này giúp mã đầu ra dễ hiểu và trong sáng hơn.
+
+%hình minh hoạ mã trước và sau khi rút gọn
+
+Đặc điểm của giải pháp này là ta đã biết trước các bộ biến, nên ngay ở giai đoạn mã trung gian, ta sẽ thể hiện các biến bit dưới dạng truy xuất của union. Như vậy, ta không cần phải xử lý lại các biến bit này ở giai đoạn sinh mã đầu ra nữa.
+
+Như vậy, với giải pháp Kiểm tra kiểu này, ta đã có sẵn thông tin về bộ biến ngay từ đầu và chỉ cần kiểm tra xem người lập trình có tuân thủ đúng quy tắc không trước khi sinh ra mã ở ngôn ngữ cấp cao. Tuy nhiên, giải pháp còn nhiều hạn chế như phương pháp phân tích dữ liệu chưa đạt độ chính xác cao, cần người dùng phải chỉnh sửa lại khai báo theo mẫu quy định... Chính vì vậy, giai đoạn sau của luận văn đã phát triển một giải pháp mới có độ chính xác cao hơn và không cần chỉnh sửa mã đầu vào của người dùng, đó là giải pháp Suy luận kiểu. Giải pháp này sẽ được trình bày ở chương tiếp theo.
+
+
+
