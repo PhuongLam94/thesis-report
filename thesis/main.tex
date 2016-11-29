@@ -1,8 +1,11 @@
-\documentclass{article}
+\documentclass[12pt]{report}
 \usepackage{vntex}
 \usepackage{graphicx}
 \usepackage{verbatim}
+\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm]{geometry}
+\usepackage{listings}
 \title{Kỹ thuật dịch ngược}
+\graphicspath{ {image/} }
 \begin{comment}
 -	Lời cam đoan
 -	Lời cảm ơn/ Lời ngỏ
@@ -32,12 +35,16 @@
 	\listoffigures
 	
 	\newpage
+	\lstlistoflistings
+	
+	\newpage
 	\pagenumbering{arabic}
 	\include{chapter1}
 	\include{chapter2}
 	\include{chapter3}
 	\include{chapter4}
-	
+	\include{chapter5}
+	\include{chapter6}
 	\newpage
 	
 	\nocite{*}

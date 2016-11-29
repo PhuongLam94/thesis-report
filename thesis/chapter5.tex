@@ -1,0 +1,52 @@
+\chapter{Kiểm thử}
+
+Bất kỳ một sản phẩm nào đều cần phải được kiểm tra trước khi công bố, luận văn này cũng không phải là một ngoại lệ. Để đảm bảo chất lượng được đánh giá một các khách quan nhất, một hệ thống testcase với các loại tình huống được phân bổ một cách khoa học nhất sẽ được đưa ra, sau đó cho chạy thử qua cả 2 giải pháp của luận văn. Phần một của chương này sẽ trình bày về các testcase đó, phần hai sẽ trình bày cách kiểm tra chúng trên 2 giải pháp, và phần cuối sẽ là kết quả kiểm tra.
+
+\section{Hệ thống testcase}
+Có các tiêu chí phân loại testcase như sau:
+\begin{itemize}
+	\item Loại biểu thức được gán vào thanh ghi ACC (tiêu chí I)
+	\item Cách truy xuất bit của thanh ghi (tiêu chí II)
+	\item Có vi phạm nguyên tắc sử dụng bộ biến hay không (tiêu chí III)
+\end{itemize}
+Với mỗi tiêu chí, ta sẽ có các trường hợp sau đây:
+
+Tiêu chí I:
+\begin{enumerate}
+	\item Một giá trị trực tiếp
+	\item Giá trị ở một vùng nhớ có địa chỉ là một biến byte
+	\item Giá trị ở một vùng nhớ có địa chỉ là một giá trị trực tiếp
+	\item Giá trị ở một vùng nhớ có địa chỉ là một thanh ghi
+	\item Giá trị ở một vùng nhớ có địa chỉ là một biểu thức 2 vế. Mỗi vế có thể là một biến byte, một thanh ghi, hoặc một giá trị trực tiếp
+\end{enumerate}
+
+Tiêu chí II:
+\begin{enumerate}
+	\item Truy xuất dựa vào một biến bit.
+	\item Truy xuất bằng cấu trúc truy xuất trực tiếp một bit của thanh ghi. Ví dụ: ACC.5
+\end{enumerate}
+
+Tiêu chí III:
+\begin{enumerate}
+	\item Không vi phạm nguyên tắc sử dụng. Nghĩa là: mỗi một biến bit chỉ được sử dụng khi thanh ghi ACC đang mang giá trị vùng nhớ có địa chỉ quy định bởi một biến byte duy nhất. Và không có hai biến bit nào cùng vị trí được sử dụng khi thanh ghi ACC đang mang giá trị của một biến byte nào đó.
+	\item Vi phạm nguyên tắc sử dụng. Một biến bit được sử dụng ở nhiều chỗ, trong các chỗ đó thanh ghi ACC mang giá trị của những biết byte khác nhau.
+	\item Vi phạm nguyên tắc sử dụng. Một biến bit được sử dụng ở một vị trí, tại vị trí đó thanh ghi ACC có thể mang giá trị của nhiều vùng nhớ khác nhau, không thể xác định trước khi thực thi chương trình.
+	\item Vi phạm nguyên tắc sử dụng. Một biến byte được sử dụng ở nhiều vị trí, sau câu lệnh gán biến byte, có 2 biến bit cùng một vị trí được sử dụng.
+\end{enumerate}
+
+Dựa vào các tiêu chí và trường hợp trên, ta sẽ có tổng cộng 5x2x4 = 40 loại testcase. Ngoài ra, sẽ có một testcase phức tạp được lấy từ một đoạn chương trình thực của doanh nghiệp được đưa vào kiểm thử, nhằm đảm bảo tính thực tế của luận văn này.
+
+%bảng phân bổ số lượng testcase
+
+\section{Phương thức kiểm thử}
+Vì số lượng testcase không quá lớn, và output ra của trình dịch ngược có khá nhiều thông tin khác ngoài phạm vi luận văn, nên ta sẽ dùng cách kiểm tra bằng tay. Hai bộ source code sẽ được đưa vào vòng lặp, chạy từ testcase 1 đến testcase 50. Output ở console sẽ được lưu vào file có định dạng [số thứ tự testcase]console.txt và đoạn mã đầu ra (nếu có) sẽ được lưu vào file có định dạng [số thứ tự testcase]code.txt. Sau đó người viết sẽ trực tiếp kiểm tra hai file này để xác định kết quả có đúng như mong muốn hay không. 
+
+%ví dụ đoạn mã đầu vào và 2 file output
+
+\section{Kết quả chạy thử}
+
+Kết quả chạy thử của 2 phương pháp được thể hiện ở bảng dưới.
+
+%bảng kết quả chạy thử
+
+Như vậy, có thể thấy giải pháp đầu tiên ra kết quả không chính xác rất nhiều, còn giải pháp Suy luận kiểu thì ra được kết quả chấp nhận được. Điều này đã được dự báo trước vì giải pháp Kiểm tra kiểu còn nhiều hạn chế.
