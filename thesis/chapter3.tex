@@ -1,5 +1,5 @@
 \chapter{Kiểm tra kiểu - Type checking}
-
+\label{chap:typechecking}
 Như đã giới thiệu ở phần trước, trước khi thực hiện các giải pháp để tìm ra bộ biến phù hợp với chương trình, ta cần phải chỉnh sửa Boomerang để nó chấp nhận đọc vào đoạn mã có các tên biến không thuộc tập tên thanh ghi, và giữ nguyên tên sau khi giải ra đoạn mã phù hợp. Việc chỉnh sửa này sẽ được trình bày trong phần đầu tiên của chương.
 
 Riêng về giải pháp Kiểm tra kiểu gồm có các bước sau đây:
@@ -213,6 +213,7 @@ MOV A, OPTIONS
 \end{lstlisting}
 \section{Kiểm tra cách sử dụng bộ biến trong toàn bộ chương trình và sinh mã}
 
+\label{sec:laststep}
 Sau khi đã có thông tin về tập hợp các câu lệnh khai báo có hiệu lực ở tất cả các câu lệnh của chương trình, ta sẽ chuyển sang kiểm tra các ở các câu lệnh sử dụng bit.
 
 Quá trình kiểm tra cho 1 câu lệnh sử dụng bit gồm các bước sau:

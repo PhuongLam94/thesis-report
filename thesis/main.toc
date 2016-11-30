@@ -19,11 +19,11 @@
 \contentsline {section}{\numberline {3.4}Ki\IeC {\h \ecircumflex }m tra c\IeC {\'a}ch s\IeC {\h \uhorn } d\IeC {\d u}ng b\IeC {\d \ocircumflex } bi\IeC {\'\ecircumflex }n trong to\IeC {\`a}n b\IeC {\d \ocircumflex } ch\IeC {\uhorn }\IeC {\ohorn }ng tr\IeC {\`\i }nh v\IeC {\`a} sinh m\IeC {\~a}}{23}
 \contentsline {section}{\numberline {3.5}Suy lu\IeC {\d \acircumflex }n ki\IeC {\h \ecircumflex }u - Type inference}{27}
 \contentsline {subsection}{\numberline {3.5.1}Ph\IeC {\^a}n t\IeC {\'\i }ch Constant propagation}{27}
-\contentsline {subsection}{\numberline {3.5.2}Qu\IeC {\'e}t c\IeC {\'a}c c\IeC {\^a}u l\IeC {\d \ecircumflex }nh s\IeC {\h \uhorn } d\IeC {\d u}ng bi\IeC {\'\ecircumflex }n bit}{30}
-\contentsline {chapter}{\numberline {4}Ki\IeC {\h \ecircumflex }m th\IeC {\h \uhorn }}{32}
-\contentsline {section}{\numberline {4.1}H\IeC {\d \ecircumflex } th\IeC {\'\ocircumflex }ng testcase}{32}
-\contentsline {section}{\numberline {4.2}Ph\IeC {\uhorn }\IeC {\ohorn }ng th\IeC {\'\uhorn }c ki\IeC {\h \ecircumflex }m th\IeC {\h \uhorn }}{33}
-\contentsline {section}{\numberline {4.3}K\IeC {\'\ecircumflex }t qu\IeC {\h a} ch\IeC {\d a}y th\IeC {\h \uhorn }}{33}
-\contentsline {section}{\numberline {4.4}K\IeC {\'\ecircumflex }t lu\IeC {\d \acircumflex }n}{34}
-\contentsline {subsection}{\numberline {4.4.1}K\IeC {\'\ecircumflex }t qu\IeC {\h a} \IeC {\dj }\IeC {\d a}t \IeC {\dj }\IeC {\uhorn }\IeC {\d \ohorn }c, kh\IeC {\'o} kh\IeC {\u a}n, \IeC {\dj }i\IeC {\h \ecircumflex }m h\IeC {\d a}n ch\IeC {\'\ecircumflex }}{34}
-\contentsline {subsection}{\numberline {4.4.2}H\IeC {\uhorn }\IeC {\'\ohorn }ng ph\IeC {\'a}t tri\IeC {\h \ecircumflex }n trong t\IeC {\uhorn }\IeC {\ohorn }ng lai}{34}
+\contentsline {subsection}{\numberline {3.5.2}Qu\IeC {\'e}t c\IeC {\'a}c c\IeC {\^a}u l\IeC {\d \ecircumflex }nh s\IeC {\h \uhorn } d\IeC {\d u}ng bi\IeC {\'\ecircumflex }n bit}{31}
+\contentsline {chapter}{\numberline {4}Ki\IeC {\h \ecircumflex }m th\IeC {\h \uhorn }}{33}
+\contentsline {section}{\numberline {4.1}H\IeC {\d \ecircumflex } th\IeC {\'\ocircumflex }ng testcase}{33}
+\contentsline {section}{\numberline {4.2}Ph\IeC {\uhorn }\IeC {\ohorn }ng th\IeC {\'\uhorn }c ki\IeC {\h \ecircumflex }m th\IeC {\h \uhorn }}{34}
+\contentsline {section}{\numberline {4.3}K\IeC {\'\ecircumflex }t qu\IeC {\h a} ch\IeC {\d a}y th\IeC {\h \uhorn }}{34}
+\contentsline {section}{\numberline {4.4}K\IeC {\'\ecircumflex }t lu\IeC {\d \acircumflex }n}{35}
+\contentsline {subsection}{\numberline {4.4.1}K\IeC {\'\ecircumflex }t qu\IeC {\h a} \IeC {\dj }\IeC {\d a}t \IeC {\dj }\IeC {\uhorn }\IeC {\d \ohorn }c, kh\IeC {\'o} kh\IeC {\u a}n, \IeC {\dj }i\IeC {\h \ecircumflex }m h\IeC {\d a}n ch\IeC {\'\ecircumflex }}{35}
+\contentsline {subsection}{\numberline {4.4.2}H\IeC {\uhorn }\IeC {\'\ohorn }ng ph\IeC {\'a}t tri\IeC {\h \ecircumflex }n trong t\IeC {\uhorn }\IeC {\ohorn }ng lai}{35}
