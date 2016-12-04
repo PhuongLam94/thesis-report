@@ -1,4 +1,4 @@
-\section{Suy luận kiểu - Type inference}
+\chapter{Suy luận kiểu - Type inference}
 Sau khi đã hiện thực giải pháp Kiểm tra kiểu, nhận thấy rằng giải pháp này còn nhiều hạn chế và có thể cải tiến thêm, luận văn đã phát triển thêm một giải pháp mới tốt hơn, không bắt buộc người dùng phải thay đổi code của mình theo mẫu khai báo, đó là Suy luận kiểu. Với giải pháp này, bằng các phép phân tích dữ liệu, trình dịch ngược sẽ tự động tìm ra được các bộ biến được sử dụng trong chương trình. Ngoài bước chung của hai giải pháp là chỉnh sử trình dịch ngược để giữ nguyên tên biến đã được trình bày ở giải pháp trước, các bước của giải pháp Suy luận kiểu gồm có:
 \begin{enumerate}
 	\item Dùng một phương pháp phân tích luồng dữ liệu để biết được giá trị của thanh ghi ACC tại mỗi điểm của chương trình.
@@ -7,8 +7,8 @@ Sau khi đã hiện thực giải pháp Kiểm tra kiểu, nhận thấy rằng 
 \end{enumerate}
 Như vậy, giải pháp này đã bỏ qua được bước đầu tiên, quy định mẫu khai báo, của giải pháp Suy luận kiểu. Ngoài ra, kỹ thuật phân tích Reaching definitions như đã trình bày ở chương trước có một số khuyết điểm, vì vậy, ở giải pháp này, chúng ta sẽ phân tích và tìm ra một kỹ thuật khác toàn diện hơn. Điều này sẽ được trình bày ở phần đầu tiên của chương, phần tiếp theo sẽ nói về cách quét các câu lệnh sử dụng biến bit và đưa thông tin vào một cấu trúc dữ liệu phù hợp.
 
-\subsection{Phân tích Constant propagation}
-Ở chương trước, phương phán phân tích Reaching definitions đã được đề cập đến, tuy nhiên, phương pháp này chỉ áp dụng được cho trường hợp gán một biến byte trực tiếp cho thanh ghi ACC, vì vậy ta cần tìm một phương pháp khác phù hợp hơn. Phương pháp này cần phải tính toán được chính xác giá trị hiện có của thanh ghi ACC cho dù biểu thức bên phải của phép gán là gì. Ngoài ra, nếu thanh ghi ACC có thể có mang những giá trị khác nhau ở một câu lệnh sử dụng bit, thì mặc nhiên nguyên tắc bị vi phạm. Như vậy, ta chỉ xét tới các trường hợp giá trị ở thanh ghi ACC là một giá trị cố định, có thể tính toán được trước khi thực thi chương trình. Từ các yêu cầu trên, ta kết luận được phương pháp phân tích phù hợp nhất trong trường hợp này là Lan truyền hằng số - Constant propagation. Phương pháp này cho phép tính toán giá trị của các biến, cho biết được gía trị đó có phải là một hằng số tại một thời điểm của chương trình hay không. Ví dụ như đoạn mã ban đầu \ref{list:listconstexam1}, có thể rõ ràng thấy giá trị của biến x là 14, nhưng ta không biết được giá trị thực sự của biến y, cũng như biểu thức trả về là bao nhiêu. Nhờ vào việc lan truyền hằng số, các giá trị này sẽ được tính toán, như trong đoạn mã \ref{list:listconstexam2} và \ref{list:listconstexam3}.
+\section{Phân tích Constant propagation}
+Ở chương trước, phương phán phân tích Reaching definitions đã được đề cập đến, tuy nhiên, phương pháp này chỉ áp dụng được cho trường hợp gán một biến byte trực tiếp cho thanh ghi ACC, vì vậy ta cần tìm một phương pháp khác phù hợp hơn. Phương pháp đạt yêu cầu cần phải tính toán được chính xác giá trị hiện có của thanh ghi ACC cho dù biểu thức bên phải của phép gán là gì. Ngoài ra, nếu thanh ghi ACC có thể có mang những giá trị khác nhau ở một câu lệnh sử dụng bit, thì mặc nhiên nguyên tắc bị vi phạm. Như vậy, ta chỉ xét tới các trường hợp giá trị ở thanh ghi ACC là một giá trị cố định, có thể tính toán được trước khi thực thi chương trình. Từ các yêu cầu trên, ta kết luận được phương pháp phân tích phù hợp nhất trong trường hợp này là Lan truyền hằng số - Constant propagation. Phương pháp này cho phép tính toán giá trị của các biến, cho biết được gía trị đó có phải là một hằng số tại một thời điểm của chương trình hay không. Ví dụ như đoạn mã ban đầu \ref{list:listconstexam1}, có thể rõ ràng thấy giá trị của biến x là 14, nhưng ta không biết được giá trị thực sự của biến y, cũng như biểu thức trả về là bao nhiêu. Nhờ vào việc lan truyền hằng số, các giá trị này sẽ được tính toán, như trong đoạn mã \ref{list:listconstexam2} và \ref{list:listconstexam3}.
 \begin{lstlisting}[caption={Đoạn mã trước khi thực hiện lan truyền hằng số},label={list:listconstexam1}, language=c++]
  int x = 14;
 int y = 7 - x / 2;
@@ -51,7 +51,7 @@ return a;
 
 Như vậy, khi áp dụng vào trình dịch ngược Boomerang, mục tiêu của giải thuật này là để tìm ra được ở mỗi điểm của chương trình, giá trị thật sự của địa chỉ vùng nhớ mà thanh ghi ACC đang mang là gì.
 
-Có nhiều cách thực hiện Constant propagation, vì trong Boomerang, có một giai đoạn code trung gian được giữ ở dạng SSA, nên ta sẽ chọn cách phân tích Sparse constant propagation để giảm thiểu thời gian xử lý. Và việc phân tích Constant propagation này sẽ được thực hiện ở cuối giai đoạn SSA, khi các phân tích khác đã hoàn tất. Giải thuật của phân tích Sparse constant propagation gồm có các bước được trình bày ở hình \ref{fig:constantpropagationalgo}
+Có nhiều cách thực hiện Constant propagation, vì trong Boomerang, có một giai đoạn code trung gian được giữ ở dạng SSA, nên ta sẽ chọn cách phân tích Sparse constant propagation để giảm thiểu thời gian xử lý. Và việc phân tích này sẽ được thực hiện ở cuối giai đoạn SSA, khi các phân tích khác đã hoàn tất. Giải thuật của phân tích Sparse constant propagation gồm có các bước được trình bày ở hình \ref{fig:constantpropagationalgo}
 
 \begin{figure}
 	\centering
@@ -93,7 +93,7 @@ MOV ACC, 38H
 \end{lstlisting}
 
 Một lưu ý là trong trường hợp này, ta không xét đến giá trị của thanh ghi ACC, mà ta chỉ xét đến giá trị của địa chỉ vùng nhớ thanh ghi ACC đang lưu giữ. Như vậy, chỉ có các câu lệnh dạng MOV ACC, [biểu thức] sẽ được xét đến. Khi gặp câu lệnh gán có dạng MOV ACC, \#[biểu thức] thì đoạn mã phân tích sẽ xem như giá trị của ACC không phải là hằng số (bottom). Như vậy, với các biến khác, giá trị lưu trong thực thể ConstantExpression tương ứng với biến đó là giá trị thực sự của biến, còn riêng với thanh ghi ACC, giá trị đó được hiểu là giá trị địa chỉ vùng nhớ mà thanh ghi ACC được load vào.
-\subsection{Quét các câu lệnh sử dụng biến bit}
+\section{Quét các câu lệnh sử dụng biến bit}
 
 Sau khi đã biết được giá trị địa chỉ vùng nhớ mà thanh ghi ACC đang nắm giữ, ta sẽ chuyển sang bước quét các câu lệnh sử dụng biến bit. Quá trình thực hiện bước này là khá giống nhau giữa hai giải pháp. Tuy nhiên, điểm khác biệt là nếu ở giải pháp Kiểm tra kiểu, do thực hiện phân tích Reaching definitions, nên ta sẽ biết chính xác được là tại câu lệnh sử dụng biến bit, thanh ghi ACC giữ giá trị của vùng nhớ có địa chỉ quy định bởi biến byte nào, còn với giải pháp Suy luận kiểu, do sử dụng phân tích Constant propagation, ta chỉ biết chính xác giá trị địa chỉ vùng nhớ thanh ghi ACC đang được load vào, mà không biết biến byte nào đại diện cho giá trị đó. Để biết được cụ thể biến byte nào tương ứng, ta sẽ phải dò trên bảng lưu trữ dữ liệu từ các câu lệnh \#DEFINE, và nếu mỗi lần gặp một câu lệnh sử dụng bit đều làm vậy thì tốc độ sẽ không cao.\\
 
