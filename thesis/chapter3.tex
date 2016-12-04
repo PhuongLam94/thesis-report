@@ -1,13 +1,10 @@
 \chapter{Kiểm tra kiểu - Type checking}
 \label{chap:typechecking}
-Như đã giới thiệu ở phần trước, trước khi thực hiện các giải pháp để tìm ra bộ biến phù hợp với chương trình, ta cần phải chỉnh sửa Boomerang để nó chấp nhận đọc vào đoạn mã có các tên biến không thuộc tập tên thanh ghi, và giữ nguyên tên sau khi giải ra đoạn mã phù hợp. Việc chỉnh sửa này sẽ được trình bày trong phần đầu tiên của chương.
-
-Riêng về giải pháp Kiểm tra kiểu gồm có các bước sau đây:
+Giải pháp Kiểm tra kiểm gồm có các bước sau đây:
 \begin{itemize}
-\item Đưa ra mẫu khai báo biến byte và biến bit. Chỉnh sửa chỉnh dịch ngược để đọc vào mẫu khai báo này và biết được những biến byte và biến bit nào cùng một bộ.
-\item Thực hiện phân tích dữ liệu để biết được giá trị của thanh ghi ACC tại một thời điểm nào đó có phải là giá trị của một vùng nhớ cố định hay không. Tại giai đoạn này của luận văn, kỹ thuật phân tích dữ liệu được sử dụng là Reaching definitions.
-\item Tại các câu lệnh sử dụng bit, nếu giá trị của thanh ghi ACC là của một vùng nhớ cố định, thì kiểm tra xem giá trị địa chỉ của vùng nhớ đó đang được lưu bởi biến nào. Nếu biến đó được khai báo cùng bộ với biến bit thì xem như tuân thủ đúng nguyên tắc sử dụng, nếu không thì báo lỗi.
-\item Nếu toàn bộ chương trình đều tuân thủ đúng nguyên tắc sử dụng biến byte - biến bit thì đưa các bộ biến byte - biến bit về dạng union ở ngôn ngữ cấp cao.
+\item Rút trích thông tin từ phần chú thích trong đoạn mã chương trình đầu vào để biết được các biến byte - biến bit nào thuộc cùng một bộ.
+\item Thực hiện phân tích dữ liệu để biết được giá trị của thanh ghi ACC tại một thời điểm của chương trình.
+\item Tại các câu lệnh sử dụng biến bit, tiến hành các bước kiểm tra nguyên tắc sử dụng bộ biến.
 \end{itemize}
 \begin{figure}
 	\centering
@@ -18,6 +15,7 @@ Riêng về giải pháp Kiểm tra kiểu gồm có các bước sau đây:
 
 Các phần tiếp theo của chương sẽ trình bày lần lượt các bước này.
 
+\begin{comment}
 \section{Chỉnh sửa để Boomerang chấp nhận việc sử dụng biến không phải thanh ghi}
 \subsection{Cơ chế lưu trữ tên thanh ghi hiện nay của Boomerang}
 Khi chuyển đổi từ mã assembly sang mã trung gian, Boomerang sẽ dùng một class con của Expr để biểu diễn thanh ghi. Cụ thể là class Location, và gọi phương thức static của class Location là Location::regOf(int num). Ta sẽ truyền vào phương thức này một con số đại diện cho thanh ghi đó. Cặp số - tên thanh ghi này được lưu vào một từ điển, để sau này khi thực hiện phân tích xong thì sẽ chuyển lại từ thanh ghi thành biến cục bộ.
@@ -100,8 +98,10 @@ for (symIt = decoder->getSymbolTable().begin(); symIt != decoder->getSymbolTable
 \end{lstlisting}
 Như vậy, vấn đề giữ nguyên tên biến được giải quyết mà không ảnh hưởng nhiều tới trình dịch ngược.
 %đoạn mã đầu vào assembly và mã đầu ra giữ nguyên được tên biến
-\section{Mẫu khai báo biến byte và biến bit}
-Sau khi đã thực hiện phần giữ nguyên tên biến, bước bắt buộc cho cả hai giải pháp, ta sẽ đi vào tìm hiểu bước đầu tiên của giải pháp Kiểm tra kiểu là đưa ra mẫu khai báo. Mẫu khai báo biến byte và biến bit được quy định như sau:
+\end{comment}
+\section{Rút trích thông tin từ phần chú thích}
+Khi lập trình bằng ngôn ngữ assembly và có sử dụng tên biến, các lập trình viên thường có phần chú thích bên cạnh để biết được các biến này dùng cho mục đích gì. Đối với các tên biến bit, người lập trình còn phải chỉ rõ ra họ sẽ dùng biến bit này với biến byte nào. Như vậy, nếu đọc các phần chú thích này, những người lập trình khác sẽ biết được các biến byte - biến bit nào là cùng một bộ với nhau và sử dụng đúng theo nguyên tắc. Tuy nhiên, để làm cho trình dịch ngược cũng đọc được thông tin này, cần phải có một quy định chung về việc chú thích cho các tên biến. Mẫu khai báo này được trình bày ở đoạn mã \ref{list:listdeclarevar}. Vì các thay đổi nằm ở phần chú thích, nên sẽ không ảnh hưởng tới nội dung chính của chương trình đầu vào.
+
 \begin{lstlisting}[caption={Mẫu khai báo bộ biến},label={list:listdeclarevar}]
 ;BEGIN DEFINE
 ;BYTE VAR
@@ -110,24 +110,17 @@ Sau khi đã thực hiện phần giữ nguyên tên biến, bước bắt buộ
 [eight bit var declares]
 ;END DEFINE
 \end{lstlisting}
-Đây là mẫu khai báo khi muốn gom các biến vào cùng một bộ, ngoài ra, chương trình vẫn chấp nhận việc khai báo riêng lẻ từng biến. Như vậy, cần chỉnh lại phần parser của trình dịch ngược để chấp nhận cấu trúc mới này. Ngoài ra, trong trình dịch ngược, cần có một cấu trúc mới để lưu trữ thông tin của các bộ biến byte và biến bit này. Trong đoạn mã \ref{list:listuniondefine}, có một trường byteVar để lưu tên biến byte, và một map lưu thứ tự của biến bit và tên biến bit tương ứng. Hiện tại, cấu trúc này đã đủ cho giải pháp Kiểm tra kiểu. Tuy nhiên, nó sẽ được mở rộng ở giải pháp sau. 
+
+Như vậy, cần chỉnh lại phần parser của trình dịch ngược để chấp nhận cấu trúc mới này. Ngoài ra, trong trình dịch ngược, cần có một cấu trúc mới để lưu trữ thông tin của các bộ biến byte và biến bit này. Trong đoạn mã \ref{list:listuniondefine}, có một trường byteVar để lưu tên biến byte, và một sơ đồ lưu thứ tự của biến bit và tên biến bit tương ứng. Hiện tại, cấu trúc này đã đủ cho giải pháp Kiểm tra kiểu. Tuy nhiên, nó sẽ được mở rộng ở giải pháp sau. 
 \begin{lstlisting}[caption={Cấu trúc dữ liệu để lưu trữ một bộ biến},label={list:listuniondefine},language=c++]
 class UnionDefine{
 	public:
 	char* byteVar;
 	map<int, char*>* bitVar;
-	void prints(){
-		cout << "Byte var: " << byteVar <<endl;
-		cout << "Bit vars: "<<endl;
-		map<int, char*>::iterator mi;
-		for (mi = bitVar->begin(); mi != bitVar -> end(); mi++){
-			cout << (*mi).second << ": " 
-				<< (*mi).first << endl;
-		}
 	}
 };
 \end{lstlisting}
-Như vậy, ta cần phải điều chỉnh lại phần parser của trình dịch ngược, sao cho nó vừa chấp nhận mẫu khai báo biến trên, vừa đưa từng bộ biến được khai báo vào trong một thực thể của class UnionDefine. Kết quả là, sau khi kết thúc phần parser, ta sẽ thu được một danh sách các class UnionDefine tương ứng với các khai báo ở trên. Đoạn mã \ref{list:listparser} là phần parser viết dựa trên thư viện Bison++ để thực hiện chức năng trên.\\
+Như vậy, ta cần phải điều chỉnh lại phần parser của trình dịch ngược, sao cho nó vừa chấp nhận mẫu khai báo biến trên, vừa đưa từng bộ biến được khai báo vào trong một thực thể của class \textit{UnionDefine}. Kết quả là, sau khi kết thúc phần parser, ta sẽ thu được một danh sách các \textit{UnionDefine} tương ứng với các khai báo các bộ biến. Đoạn mã \ref{list:listparser} là phần parser viết dựa trên thư viện Bison++ để thực hiện chức năng trên.\\
 \begin{lstlisting}[caption={Đoạn mã parser cho phần khai báo bộ biến},label={list:listparser}]
 definebit: BEGINDEFINE END_LINE DEFINEBYTE END_LINE define DEFINEBITS END_LINE defineeachbit defineeachbit
 defineeachbit defineeachbit defineeachbit defineeachbit defineeachbit defineeachbit ENDDEFINE END_LINE
@@ -150,32 +143,34 @@ defineeachbit: DEFINE ID bit END_LINE {
 \end{lstlisting}
 Như vậy, sau giai đoạn parser, ta đã thu được bộ biến theo khai báo của người dùng. Tuy nhiên, nguyên tắc sử dụng bộ biến này là không bắt buộc trong quá trình lập trình 8051, và các assembler cũng không hề kiểm tra việc người dùng có tuân thủ nguyên tắc này không. Vì vậy, trước khi chuyển hoá các bộ biến này sang cấu trúc union ở mã đầu ra, ta cần phải kiểm tra đoạn mã của người dùng sử dụng các bộ biến như thế nào.
 
-\section{Phân tích Reaching definitions}
-
-Mục đích của phân tích Reaching definitions là biết được ở một thời điểm của chương trình, các câu lệnh khai báo nào đang còn hiệu lực, hay nói cách khác là gía trị của các biến đang được khai báo bởi những câu lệnh nào.
+\section{Kiểm tra nguyên tắc sử dụng bộ biến}
+\subsection{Xác định giá trị của thanh ghi \textit{ACC} tại mỗi điểm của chương trình}
+Để kiểm tra được nguyên tắc sử dụng bộ biến, trước hết, ta phải biết được tại mỗi thời điểm của chương trình, thanh ghi \textit{ACC} đang mang giá trị gì. Có hai phương pháp phân tích được áp dụng trong giải pháp này, đó là Reaching definitions kết hợp phần mở rộng và Type propagation.
+\subsubsection{Phân tích Reaching definitions kết hợp phần mở rộng}
+Mục đích của phân tích Reaching definitions là biết được ở một thời điểm của chương trình, các câu lệnh khai báo nào đang còn hiệu lực, hay nói cách khác là gía trị của các biến đang được khai báo bởi những câu lệnh nào. Phần mở rộng của Reaching definition sẽ giúp xử lý thêm một số trường hợp, khi thanh ghi được truyền giá trị thông qua một thanh ghi trung gian khác.
 \begin{figure}
 	\centering
 	\includegraphics[scale=0.75]{image/reachingDefExam}
 	\caption{Một đoạn chương trình mẫu}
 	\label{fig:reachingdefexam}
 \end{figure}
-Ví dụ như ở đoạn chương trình \ref{fig:reachingdefexam}, ta cần biết được giá trị của biến a ở câu lệnh số 2 được khai báo ở câu lệnh này. Đối với con người thì rất dễ dàng biết được là biến a được sử dụng có thể khai báo ở câu lệnh số 1 hoặc câu lệnh số 5. Tuy nhiên, cần có một phương pháp phân tích để cho máy tính cũng biết được điều đó, và đó chính là phương pháp Reaching definitions. Như vậy, khi áp dụng vào trình dịch ngược, ta sẽ biết được tại thời điểm sử dụng biến bit, giá trị của thanh ghi ACC đang được định nghĩa ở câu lệnh nào. Từ đó tiến hành các bước kiểm tra tiếp theo. \\
+Ví dụ như ở đoạn chương trình \ref{fig:reachingdefexam}, ta cần biết được giá trị của biến \textit{a} ở câu lệnh số 2 được khai báo ở câu lệnh nào. Đối với con người thì rất dễ dàng biết được là biến \textit{a} được sử dụng có thể khai báo ở câu lệnh số 1 hoặc câu lệnh số 5. Tuy nhiên, cần có một phương pháp phân tích để cho máy tính cũng biết được điều đó, và đó chính là phương pháp Reaching definitions. Như vậy, khi áp dụng vào trình dịch ngược, ta sẽ biết được tại thời điểm sử dụng biến bit, giá trị của thanh ghi \textit{ACC} đang được định nghĩa ở câu lệnh nào. Từ đó tiến hành các bước kiểm tra tiếp theo. \\
 
 Để thực hiện Reaching definitions, ta phải làm quen với các định nghĩa sau:
 \begin{itemize}
-	\item Nếu một biến được khai báo ở câu lệnh def1, sau đó được khai báo lại ở câu lệnh def2 sau đó, thì ta nói là câu lệnh def1 đã bị giết (killed) bởi câu lệnh def2.
-	\item Nếu có một đường thực thi chương trình đi từ câu lệnh khai báo def1 đến một điểm p của chương trình, mà trên đó def1 không bị giết bởi bất kỳ câu lệnh nào, thì ta nói là def1 đã đến được điểm p. Khái niệm một câu lệnh đến được một khối cơ bản cũng tương tự như vậy.
+	\item Nếu một biến được khai báo ở câu lệnh \textit{def1}, sau đó được khai báo lại ở câu lệnh \textit{def2} sau đó, thì ta nói là câu lệnh \textit{def1} đã \textbf{bị giết (killed)} bởi câu lệnh \textit{def2}.
+	\item Nếu có một đường thực thi chương trình đi từ câu lệnh khai báo \textit{def1} đến một điểm \textit{p} của chương trình, mà trên đó \textit{def1} không bị giết bởi bất kỳ câu lệnh nào, thì ta nói là \textit{def1} đã đến được điểm \textit{p}. Khái niệm một câu lệnh đến được một khối cơ bản cũng tương tự như vậy.
 \end{itemize}
 
 Ngoài ra, ta phải quy định một số khái niệm mới cho một khối cơ bản B:
 \begin{itemize}
-	\item REACHin(B): Tập hợp các câu lệnh khai báo đến được đầu vào (entry) của B.
-	\item REACHout(B): Tập hợp các câu lệnh khai báo đến được ngõ ra (exit) của B.
-	\item GEN(B): Tập hợp các câu lệnh khai báo xuất hiện trong B và có thể đến được ngõ ra (exit) của B, nghĩa là biến được khai báo trong câu lệnh đó không được khai báo lại ở các câu lệnh đằng sau nó.
-	\item KILL(B): Tập hợp các câu lệnh khai báo mà biến được khai báo đã được khai báo lại trong B.
+	\item \textit{REACHin(B)}: Tập hợp các câu lệnh khai báo đến được đầu vào (entry) của B.
+	\item \textit{REACHout(B)}: Tập hợp các câu lệnh khai báo đến được ngõ ra (exit) của B.
+	\item \textit{GEN(B)}: Tập hợp các câu lệnh khai báo xuất hiện trong B và có thể đến được ngõ ra (exit) của B, nghĩa là biến được khai báo trong câu lệnh đó không được khai báo lại ở các câu lệnh đằng sau nó.
+	\item \textit{KILL(B)}: Tập hợp các câu lệnh khai báo mà biến được khai báo đã được khai báo lại trong B.
 \end{itemize}
 
-Như vậy, mục tiêu của phân tích Reaching definitions ở cấp độ khối cơ bản là tìm ra được tập hợp REACHin và REACHout của từng khối. Công thức được áp dụng là;
+Như vậy, mục tiêu của phân tích Reaching definitions ở cấp độ khối cơ bản là tìm ra được tập hợp \textit{REACHin} và \textit{REACHout} của từng khối. Công thức được áp dụng là;
 \begin{equation} \label{eq:reachout}
 	REACHout(B) = GEN(B) \cup (REACHin(B)-KILL(B))
 \end{equation}	
@@ -183,7 +178,7 @@ Như vậy, mục tiêu của phân tích Reaching definitions ở cấp độ k
 REACHin(B) = \cup_{j \in Pred(B)} REACHout(j)
 \end{equation}	
 
-Từ hai công thức \ref{eq:reachout} và \ref{eq:reachin}, ta thấy ở phân tích này, tập hợp các giá trị ra (REACHin) được quyết định bởi các giá trị vào (REACHout), ngược lại với phân tích liveness (tìm tập hợp biến đang sống tại một thời điểm của chương trình). Như vậy, luồng đi của phân tích là cùng chiều với luồng đi của chương trình. Theo mẫu thường thấy của một phân tích dữ liệu, ta sẽ lần lượt tính toán các tập hợp vào và tập hợp ra của từng khối cơ bản cho đến khi không còn thay đổi nào được ghi nhận. Xem sơ đồ khối bên dưới.
+Từ hai công thức \ref{eq:reachout} và \ref{eq:reachin}, ta thấy ở phân tích này, tập hợp các giá trị ra (\textit{REACHin}) được quyết định bởi các giá trị vào (\textit{REACHout}), ngược lại với phân tích liveness (tìm tập hợp biến đang sống tại một thời điểm của chương trình). Như vậy, luồng đi của phân tích là cùng chiều với luồng đi của chương trình. Tương tự một số phương pháp phân tích dữ liệu khác, ta sẽ lần lượt tính toán các tập hợp vào và tập hợp ra của từng khối cơ bản cho đến khi không còn thay đổi nào được ghi nhận. Xem sơ đồ khối hình \ref{fig:reachingdefalgo}.
 
 \begin{figure}
 	\centering
@@ -192,9 +187,9 @@ Từ hai công thức \ref{eq:reachout} và \ref{eq:reachin}, ta thấy ở phâ
 	\label{fig:reachingdefalgo}
 \end{figure}
 
-Tuy nhiên, trong trường hợp của bài toán cần giải quyết, ta cần phải biết tập hợp ra vào của từng câu lệnh một, chứ không chỉ của toàn bộ khối cơ bản, vì vậy, khi ứng dụng vào Boomerang, giải thuật sẽ được điều chỉnh lại để tìm tập REACHin và REACHout của từng câu lệnh. Việc điều chỉnh này là khá nhỏ, và các bước vẫn sẽ giữ nguyên, không thay đổi nhiều.\\
+Tuy nhiên, trong trường hợp của bài toán cần giải quyết, ta cần phải biết tập hợp ra vào của từng câu lệnh một, chứ không chỉ của toàn bộ khối cơ bản, vì vậy, khi ứng dụng vào Boomerang, giải thuật sẽ được điều chỉnh lại để tìm tập \textit{REACHin} và \textit{REACHout} của từng câu lệnh. Việc điều chỉnh này là khá nhỏ, và các bước vẫn sẽ giữ nguyên, không thay đổi nhiều.\\
 
-Tuy nhiên, phân tích Reaching definitions chỉ cho biết được câu lệnh khai báo có hiệu lực của một biến tại một thời điểm chương trình, chứ không cho biết được giá trị thực sự của biến đó. Nếu vế phải của câu lệnh khai báo này chỉ đơn giản là trỏ đến một vùng nhớ có địa chỉ được quy định bởi một biến byte, thì ta sẽ dễ dàng kiểm tra được. Nhưng ngoài ra, biểu thức quy định địa chỉ vùng nhớ được gán cho ACC có thể là các trường hợp sau đây:
+Khuyết điểm lớn nhất của phân tích Reaching definitions chỉ cho biết được câu lệnh khai báo có hiệu lực của một biến tại một thời điểm chương trình, chứ không cho biết được giá trị thực sự của biến đó. Cụ thể, với thanh ghi \textit{ACC}, nếu vế phải của câu lệnh khai báo này chỉ đơn giản là trỏ đến một vùng nhớ có địa chỉ được quy định bởi một biến byte thì biến byte đó sẽ được ghi nhận là đại diện cho vùng nhớ hiện thời \textit{ACC} đang lưu trữ. Nhưng ngoài ra, biểu thức quy định địa chỉ vùng nhớ được gán cho \textit{ACC} có thể là các trường hợp sau đây:
 \begin{itemize}
 	\item Một hằng số.
 		\item Một thanh ghi, giá trị của thanh ghi có thể được khai báo ở các câu lệnh trước đó.
@@ -203,11 +198,13 @@ Tuy nhiên, phân tích Reaching definitions chỉ cho biết được câu lệ
 \end{itemize}
 
 \begin{lstlisting}[caption={Một số câu lệnh gán mà phương pháp Suy luận kiểu sử dụng Reaching definitions không xử lý được},label={list:listhardcase}]
-MOV A, 38H
-MOV A, @DPTR
-MOV A, OPTION+1
+MOV A, 38H #1
+MOV A, @DPTR #2
+MOV A, OPTION+1 #2
 \end{lstlisting}
-Với phương pháp Reaching definitions, ta sẽ không thể xử lý được với các trường hợp phức tạp hơn như các câu lệnh trong đoạn mã \ref{list:listhardcase}. Ta sẽ không biết được biến byte nào đã được khai báo giá trị 38H, hoặc thanh ghi DPTR đã được gán giá trị gì trước đó, hoặc OPTION+1 có bằng giá trị của một biến byte nào khác không... Ngoài ra, với trường hợp trong tập hợp REACHin của câu lệnh có nhiều câu lệnh khai báo cho thanh ghi ACC, ta sẽ không thể kiểm tra được vế phải của tất cả các câu lệnh khai báo đó có cùng một giá trị hay không mà chỉ đơn giản xử lý là câu lệnh đã vi phạm nguyên tắc sử dụng bộ biến. Ví dụ như đoạn mã \ref{list:ifcond}, tại thời điểm câu lệnh sử dụng biến bit TESTSUPS, có hai câu lệnh khai báo biến a (là biến đại diện cho thanh ghi ACC tại ngôn ngữ trung gian). Đối với phương pháp Reaching definitions, nó sẽ xem như có hai giá trị mà biến a có thể mang, và sẽ báo lỗi vì vi phạm nguyên tắc sử dụng bộ biến. Tuy nhiên, nếu xét kỹ hơn, thì sẽ thấy là cả hai giá trị đó đều là biến OPTIONS, và thực chất tại thời điểm này a chỉ mang một giá trị, cho dù luồng đi của chương trình có như thế nào. Như vậy, phương pháp Reaching definitions sẽ bỏ qua những trường hợp như thế này và báo lỗi, dẫn đến việc độ chính xác sẽ không được cao.
+Các trường hợp phức tạp nêu trên được trình bày trong đoạn mã \ref{list:listhardcase}. 
+Phương pháp Reaching definitions sẽ không thể xử lý được khi gặp các câu lệnh gán này. Ở câu lệnh số 1, phân tích có thể lấy được giá trị \textbf{38H}, nhưng không thể xác định được biến byte nào đã được khai báo giá trị \textbf{38H}. Ở câu lệnh số 2, Reaching definitions không thể biết được giá trị của thanh ghi \textit{DPTR} là bao nhiêu. Ở câu lệnh số 3, việc xử lý lại càng phức tạp hơn, vì nếu chỉ đơn giản lấy vế phải của khai báo ra, không thể nào biết được giá trị thực sự của nó là bao nhiêu.
+Ngoài ra, với trường hợp trong tập hợp \textit{REACHin} của câu lệnh có nhiều câu lệnh khai báo cho thanh ghi \textit{ACC}, phương pháp này sẽ không thể kiểm tra được vế phải của tất cả các câu lệnh khai báo đó có cùng một giá trị hay không mà chỉ đơn giản xử lý là câu lệnh đã vi phạm nguyên tắc sử dụng bộ biến. Ví dụ như đoạn mã \ref{list:ifcond}, tại thời điểm câu lệnh sử dụng biến bit \textit{TESTSUPS}, có hai câu lệnh khai báo biến \textit{a} (là biến đại diện cho thanh ghi \textit{ACC} tại ngôn ngữ trung gian). Đối với phương pháp Reaching definitions, nó sẽ xem như có hai giá trị mà biến a có thể mang, và sẽ báo lỗi vì vi phạm nguyên tắc sử dụng bộ biến. Tuy nhiên, nếu xét kỹ hơn, thì sẽ thấy là cả hai giá trị đó đều là biến \textit{OPTIONS}, và thực chất tại thời điểm này a chỉ mang một giá trị, cho dù luồng đi của chương trình có như thế nào. Như vậy, phương pháp Reaching definitions sẽ bỏ qua những trường hợp như thế này và báo lỗi, dẫn đến việc độ chính xác sẽ không được cao.
 \begin{lstlisting}[caption={Đoạn mã có nhiều câu lệnh khai báo cho ACC đến được một điểm của chương trình nhưng tất cả đều cùng giá trị},label={list:ifcond}]
 if (...){
 	a = *(OPTIONS);
@@ -218,11 +215,22 @@ if (...){
 }
 TESTSUPS = 1;
 \end{lstlisting}
-Một phân tích khác sẽ được áp dụng trong giai đoạn tiến hành giải pháp Suy luận kiểu. Còn với giai đoạn sơ khai này của luận văn, ta sẽ giả thuyết rằng ở đoạn mã đầu vào chỉ có các câu lệnh gán vùng nhớ đơn giản cho ACC với một biến byte duy nhất như đoạn mã \ref{list:listeasycase}.
-\begin{lstlisting}[caption={Mẫu câu lệnh gán cho thanh ghi ACC được chấp nhận hiện giờ},label={list:listeasycase}]
-MOV A, OPTIONS
-\end{lstlisting}
-\section{Kiểm tra cách sử dụng bộ biến trong toàn bộ chương trình và sinh mã}
+
+Để khắc phục phần nào khuyết điểm của Reaching definitions, một phần mở rộng được thêm vào để giải quyết một trong những trường hợp mà phương pháp này không thể giải quyết được. Đó là trường hợp sử dụng một biến trung gian và sử dụng hằng (câu lệnh số 1 và số 2 ở đoạn mã \ref{list:listhardcase}). Các trường hợp này được giải quyết nhờ vào việc lưu trữ các khai báo \textit{\#DEFINE} ở đoạn mã đầu vào, cũng như trong quá trình phân tích, tất cả các câu lệnh khai báo của tất cả các biến đến được một điểm trong chương trình đều được lưu giữ chứ không chỉ riêng của thanh ghi \textit{ACC}. Cụ thể các bước của phần mở rộng được trình bày ở hình \ref{fig:reachdefextendalgo}.
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{image/reachdefextendalgo}
+	\caption{Giải thuật cho hàm findRegValue - phần mở rộng của phân tích Reaching definitions}
+	\label{fig:reachdefextendalgo}
+\end{figure}
+
+Theo giải thuật nêu trên, để tìm được giá trị của thanh ghi \textit{ACC} tại một thời điểm của chương trình, cần truyền vào hàm \textit{findRegValue} tên thanh ghi ("ACC"), giá trị true để hàm biết đang tìm kiếm giá trị cho thanh ghi \textit{ACC}, tập REACHin tại thời điểm đó của chương trình và danh sách các cặp tên biến - giá trị biến được khai báo ở phần đầu của mã đầu vào. Qua các bước của giải thuật, hàm sẽ trả về giá trị là biến byte quy định vùng nhớ được load dữ liệu vào \textit{ACC} nếu tìm được biến này, còn nếu trả về giá trị \textbf{NULL}, nghĩa là giải thuật đã gặp phải trường hợp không xử lý được, đó là trường hợp biểu thức vế phải gồm hai toán hạng (câu lệnh số 3 của đoạn mã \ref{list:listhardcase}).
+
+Tuy đã xử lý được hầu hết các trường hợp của phép gán cho \textit{ACC}, nhưng việc có thêm một phần mở rộng này sẽ làm cho tốc độ xử lý trình dịch ngược giảm đi. Cộng thêm việc bản thân giải thuật Reaching definitions đã có độ phức tạp cao, tổng thời gian xử lý cho bước này của trình dịch ngược là khá lớn. Vì vậy, một phương pháp phân tích khác đã được thực hiện để tìm ra giá trị của thanh ghi \textit{ACC} với độ phức tạp thấp hơn.
+
+\subsubsection{Phân tích Type propagation}
+Ta có thể xem mỗi một tên biến byte như là một kiểu type vì ứng với mỗi bộ biến tìm được, ở giai đoạn sau trình dịch ngược sẽ chuyển đổi bộ biến thành một kiểu union với tên chính là tên của biến byte.
+\subsection{Kiểm tra cách sử dụng bộ biến trong toàn bộ chương trình và sinh mã}
 
 \label{sec:laststep}
 Sau khi đã có thông tin về tập hợp các câu lệnh khai báo có hiệu lực ở tất cả các câu lệnh của chương trình, ta sẽ chuyển sang kiểm tra các ở các câu lệnh sử dụng bit.

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  4 DEC 2016 19:10
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  4 DEC 2016 22:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -608,11 +608,7 @@ File: listings.cfg 2015/06/04 1.6 listings configuration
 ))
 Package: listings 2015/06/04 1.6 (Carsten Heinz)
 
-(./main.aux (./chapter1.aux
-
-LaTeX Warning: Label `list:uniondecl' multiply defined.
-
-) (./chapter2.aux) (./chapter3.aux) (./chapter4.aux
+(./main.aux (./chapter1.aux) (./chapter2.aux) (./chapter3.aux) (./chapter4.aux
 
 LaTeX Warning: Label `list:listconstexam5' multiply defined.
 
@@ -801,9 +797,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 36--37
  []
 
 
-LaTeX Warning: Reference `list:8051exam' on page 3 undefined on input line 38.
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 38--39
 
  []
@@ -837,68 +830,79 @@ Package pdftex.def Info: image/main.png used on input line 67.
  (./chapter2.tex
 Ch\uhorn \ohorn ng 2.
 
-Underfull \hbox (badness 10000) in paragraph at lines 6--7
+Underfull \hbox (badness 10000) in paragraph at lines 2--3
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 7--8
 
  []
 
 <image/fig21.png, id=50, 264.99pt x 134.904pt>
 File: image/fig21.png Graphic file (type png)
  <use image/fig21.png>
-Package pdftex.def Info: image/fig21.png used on input line 12.
+Package pdftex.def Info: image/fig21.png used on input line 13.
 (pdftex.def)             Requested size: 264.98935pt x 134.90367pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 <image/fig22.png, id=51, 317.988pt x 247.52475pt>
 File: image/fig22.png Graphic file (type png)
  <use image/fig22.png>
-Package pdftex.def Info: image/fig22.png used on input line 23.
+Package pdftex.def Info: image/fig22.png used on input line 24.
 (pdftex.def)             Requested size: 317.98721pt x 247.52414pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<image/fig23.png, id=52, 211.38976pt x 47.57774pt>
+File: image/fig23.png Graphic file (type png)
+ <use image/fig23.png>
+Package pdftex.def Info: image/fig23.png used on input line 33.
+(pdftex.def)             Requested size: 211.38922pt x 47.5776pt.
 
 [6
 
 
 
- <./image/fig21.png>] <image/fig23.png, id=56, 211.38976pt x 47.57774pt>
-File: image/fig23.png Graphic file (type png)
-
-<use image/fig23.png>
-Package pdftex.def Info: image/fig23.png used on input line 32.
-(pdftex.def)             Requested size: 211.38922pt x 47.5776pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 39--40
+]
+Underfull \hbox (badness 10000) in paragraph at lines 40--41
 
  []
 
-[7 <./image/fig22.png> <./image/fig23.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 49--50
+[7 <./image/fig21.png> <./image/fig22.png> <./image/fig23.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 50--51
 
  []
 
 <image/fig24.png, id=61, 420.3705pt x 93.34875pt>
 File: image/fig24.png Graphic file (type png)
  <use image/fig24.png>
-Package pdftex.def Info: image/fig24.png used on input line 53.
+Package pdftex.def Info: image/fig24.png used on input line 54.
 (pdftex.def)             Requested size: 420.36948pt x 93.34851pt.
 
 [8 <./image/fig24.png>] <image/fig27.png, id=65, 265.59225pt x 107.2005pt>
 File: image/fig27.png Graphic file (type png)
 
 <use image/fig27.png>
-Package pdftex.def Info: image/fig27.png used on input line 66.
+Package pdftex.def Info: image/fig27.png used on input line 67.
 (pdftex.def)             Requested size: 265.59158pt x 107.20023pt.
  <image/fig33.png, id=66, 254.75175pt x 155.98276pt>
 File: image/fig33.png Graphic file (type png)
 
 <use image/fig33.png>
-Package pdftex.def Info: image/fig33.png used on input line 74.
+Package pdftex.def Info: image/fig33.png used on input line 75.
 (pdftex.def)             Requested size: 254.75111pt x 155.98238pt.
  <image/fig34.png, id=67, 151.767pt x 152.36925pt>
 File: image/fig34.png Graphic file (type png)
 
 <use image/fig34.png>
-Package pdftex.def Info: image/fig34.png used on input line 80.
+Package pdftex.def Info: image/fig34.png used on input line 81.
 (pdftex.def)             Requested size: 151.76662pt x 152.36887pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 71--85
+Underfull \hbox (badness 10000) in paragraph at lines 72--86
 
  []
 
@@ -909,10 +913,10 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <image/fig35.png, id=73, 145.14224pt x 55.407pt>
 File: image/fig35.png Graphic file (type png)
  <use image/fig35.png>
-Package pdftex.def Info: image/fig35.png used on input line 94.
+Package pdftex.def Info: image/fig35.png used on input line 95.
 (pdftex.def)             Requested size: 145.14188pt x 55.40685pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 98--99
+Underfull \hbox (badness 10000) in paragraph at lines 99--100
 
  []
 
@@ -920,199 +924,178 @@ Underfull \hbox (badness 10000) in paragraph at lines 98--99
 <image/fig36.png, id=79, 151.16475pt x 61.4295pt>
 File: image/fig36.png Graphic file (type png)
  <use image/fig36.png>
-Package pdftex.def Info: image/fig36.png used on input line 108.
+Package pdftex.def Info: image/fig36.png used on input line 109.
 (pdftex.def)             Requested size: 151.16437pt x 61.42934pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 116--117
+Underfull \hbox (badness 10000) in paragraph at lines 117--118
 
  []
 
 <image/fig37.png, id=80, 116.23425pt x 71.0655pt>
 File: image/fig37.png Graphic file (type png)
  <use image/fig37.png>
-Package pdftex.def Info: image/fig37.png used on input line 122.
+Package pdftex.def Info: image/fig37.png used on input line 123.
 (pdftex.def)             Requested size: 116.23395pt x 71.0653pt.
 
 <image/fig38.png, id=81, 132.495pt x 66.84975pt>
 File: image/fig38.png Graphic file (type png)
  <use image/fig38.png>
-Package pdftex.def Info: image/fig38.png used on input line 129.
+Package pdftex.def Info: image/fig38.png used on input line 130.
 (pdftex.def)             Requested size: 132.49466pt x 66.84956pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 134--135
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 135--136
 
  []
 
-[11 <./image/fig36.png> <./image/fig37.png> <./image/fig38.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 136--137
+
+Underfull \hbox (badness 10000) in paragraph at lines 137--138
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 138--139
+[11 <./image/fig36.png> <./image/fig37.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 139--140
 
  []
 
-<image/fig25.png, id=88, 297.5115pt x 178.266pt>
+<image/fig25.png, id=87, 297.5115pt x 178.266pt>
 File: image/fig25.png Graphic file (type png)
  <use image/fig25.png>
-Package pdftex.def Info: image/fig25.png used on input line 146.
+Package pdftex.def Info: image/fig25.png used on input line 147.
 (pdftex.def)             Requested size: 297.51077pt x 178.26555pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<image/fig26.png, id=89, 464.937pt x 158.994pt>
+<image/fig26.png, id=88, 464.937pt x 158.994pt>
 File: image/fig26.png Graphic file (type png)
  <use image/fig26.png>
-Package pdftex.def Info: image/fig26.png used on input line 152.
+Package pdftex.def Info: image/fig26.png used on input line 153.
 (pdftex.def)             Requested size: 464.93585pt x 158.9936pt.
 
-Overfull \hbox (38.14452pt too wide) in paragraph at lines 152--153
+Overfull \hbox (38.14452pt too wide) in paragraph at lines 153--154
  [][] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[12] <image/fig32.png, id=94, 346.896pt x 158.39175pt>
+[12 <./image/fig38.png>] [13 <./image/fig25.png> <./image/fig26.png>]
+<image/fig32.png, id=98, 346.896pt x 158.39175pt>
 File: image/fig32.png Graphic file (type png)
  <use image/fig32.png>
-Package pdftex.def Info: image/fig32.png used on input line 171.
+Package pdftex.def Info: image/fig32.png used on input line 174.
 (pdftex.def)             Requested size: 346.89514pt x 158.39136pt.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<image/assemblyInfo.png, id=95, 744.7825pt x 473.77pt>
+<image/assemblyInfo.png, id=99, 744.7825pt x 473.77pt>
 File: image/assemblyInfo.png Graphic file (type png)
 
 <use image/assemblyInfo.png>
-Package pdftex.def Info: image/assemblyInfo.png used on input line 180.
+Package pdftex.def Info: image/assemblyInfo.png used on input line 183.
 (pdftex.def)             Requested size: 298.75262pt x 190.04683pt.
- [13 <./image/fig25.png> <./image/fig26.png>]
+
 <image/progBoomerang.png, id=100, 774.895pt x 473.77pt>
 File: image/progBoomerang.png Graphic file (type png)
 
 <use image/progBoomerang.png>
-Package pdftex.def Info: image/progBoomerang.png used on input line 203.
+Package pdftex.def Info: image/progBoomerang.png used on input line 206.
 (pdftex.def)             Requested size: 298.75262pt x 182.65865pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 209--210
+Underfull \hbox (badness 10000) in paragraph at lines 212--213
 
  []
 
-[14 <./image/fig32.png> <./image/assemblyInfo.png>]) [15 <./image/progBoomerang
-.png>]
+[14 <./image/fig32.png>] [15 <./image/assemblyInfo.png> <./image/progBoomerang.
+png>]
+
+LaTeX Warning: Reference `sec:boomchange' on page 16 undefined on input line 22
+1.
+
+) [16]
 \openout2 = `chapter3.aux'.
 
  (./chapter3.tex
 Ch\uhorn \ohorn ng 3.
-<image/soDoTypeChecking.png, id=110, 634.37pt x 62.2325pt>
+<image/soDoTypeChecking.png, id=113, 766.865pt x 92.345pt>
 File: image/soDoTypeChecking.png Graphic file (type png)
 
 <use image/soDoTypeChecking.png>
-Package pdftex.def Info: image/soDoTypeChecking.png used on input line 14.
-(pdftex.def)             Requested size: 298.75262pt x 29.3091pt.
- [16
+Package pdftex.def Info: image/soDoTypeChecking.png used on input line 11.
+(pdftex.def)             Requested size: 298.75262pt x 35.97493pt.
+ [17
 
 
 
  <./image/soDoTypeChecking.png>]
-Overfull \hbox (31.35075pt too wide) in paragraph at lines 37--38
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Overfull \hbox (249.84929pt too wide) in paragraph at lines 38--39
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 45--46
+Underfull \hbox (badness 10000) in paragraph at lines 123--124
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 49--50
-
- []
-
-[17]
-Overfull \hbox (10.20573pt too wide) in paragraph at lines 66--67
-[][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Overfull \hbox (10.20573pt too wide) in paragraph at lines 88--89
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Overfull \hbox (270.99431pt too wide) in paragraph at lines 95--96
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-[18]
-Overfull \hbox (80.68913pt too wide) in paragraph at lines 123--124
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 130--131
-
- []
-
-[19]
-Overfull \hbox (320.33269pt too wide) in paragraph at lines 132--133
+Overfull \hbox (320.33269pt too wide) in paragraph at lines 125--126
 [][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (292.13933pt too wide) in paragraph at lines 133--134
+Overfull \hbox (292.13933pt too wide) in paragraph at lines 126--127
 [][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (87.73747pt too wide) in paragraph at lines 137--138
+Overfull \hbox (87.73747pt too wide) in paragraph at lines 130--131
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-<image/reachingDefExam.png, id=125, 144.03813pt x 289.08pt>
+[18] <image/reachingDefExam.png, id=122, 144.03813pt x 289.08pt>
 File: image/reachingDefExam.png Graphic file (type png)
 
 <use image/reachingDefExam.png>
-Package pdftex.def Info: image/reachingDefExam.png used on input line 158.
+Package pdftex.def Info: image/reachingDefExam.png used on input line 153.
 (pdftex.def)             Requested size: 108.02832pt x 216.80946pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 155--163
+Underfull \hbox (badness 10000) in paragraph at lines 150--158
 
  []
 
-[20] <image/reachingDefAlgo.png, id=129, 222.8325pt x 762.85pt>
+[19 <./image/reachingDefExam.png>]
+<image/reachingDefAlgo.png, id=128, 222.8325pt x 762.85pt>
 File: image/reachingDefAlgo.png Graphic file (type png)
 
 <use image/reachingDefAlgo.png>
-Package pdftex.def Info: image/reachingDefAlgo.png used on input line 190.
+Package pdftex.def Info: image/reachingDefAlgo.png used on input line 185.
 (pdftex.def)             Requested size: 167.12396pt x 572.13611pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 195--196
+Underfull \hbox (badness 10000) in paragraph at lines 190--191
 
  []
 
-[21 <./image/reachingDefExam.png>] [22 <./image/reachingDefAlgo.png>] [23]
-<image/checkUnionSteps.png, id=146, 544.0325pt x 192.72pt>
+[20] [21 <./image/reachingDefAlgo.png>]
+
+LaTeX Warning: Reference `fig:reachdefextendalgo' on page 22 undefined on input
+ line 219.
+
+<image/reachdefextendalgo.png, id=141, 835.12pt x 815.045pt>
+File: image/reachdefextendalgo.png Graphic file (type png)
+
+<use image/reachdefextendalgo.png>
+Package pdftex.def Info: image/reachdefextendalgo.png used on input line 222.
+(pdftex.def)             Requested size: 298.75262pt x 291.57536pt.
+ [22] [23 <./image/reachdefextendalgo.png>]
+<image/checkUnionSteps.png, id=149, 544.0325pt x 192.72pt>
 File: image/checkUnionSteps.png Graphic file (type png)
 
 <use image/checkUnionSteps.png>
-Package pdftex.def Info: image/checkUnionSteps.png used on input line 234.
+Package pdftex.def Info: image/checkUnionSteps.png used on input line 242.
 (pdftex.def)             Requested size: 298.75262pt x 105.83458pt.
 
-<image/unionDefineMapping.png, id=147, 664.4825pt x 562.1pt>
+<image/unionDefineMapping.png, id=150, 664.4825pt x 562.1pt>
 File: image/unionDefineMapping.png Graphic file (type png)
 
 <use image/unionDefineMapping.png>
-Package pdftex.def Info: image/unionDefineMapping.png used on input line 247.
+Package pdftex.def Info: image/unionDefineMapping.png used on input line 255.
 (pdftex.def)             Requested size: 298.75262pt x 252.71967pt.
  [24 <./image/checkUnionSteps.png>] [25 <./image/unionDefineMapping.png>]) [26]
 \openout2 = `chapter4.aux'.
@@ -1123,7 +1106,7 @@ Ch\uhorn \ohorn ng 4.
 
 
 
-] [28] <image/constantPropagationAlgo.png, id=166, 582.175pt x 855.195pt>
+] [28] <image/constantPropagationAlgo.png, id=169, 582.175pt x 855.195pt>
 File: image/constantPropagationAlgo.png Graphic file (type png)
 
 <use image/constantPropagationAlgo.png>
@@ -1155,7 +1138,7 @@ Overfull \hbox (24.30241pt too wide) in paragraph at lines 112--113
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-<image/stepUnionMaking.png, id=178, 1166.3575pt x 383.4325pt>
+<image/stepUnionMaking.png, id=181, 1166.3575pt x 383.4325pt>
 File: image/stepUnionMaking.png Graphic file (type png)
 
 <use image/stepUnionMaking.png>
@@ -1217,13 +1200,13 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 5257 strings out of 493014
- 69129 string characters out of 6133351
- 176572 words of memory out of 5000000
- 8657 multiletter control sequences out of 15000+600000
- 16903 words of font info for 36 fonts, out of 8000000 for 9000
+ 5201 strings out of 493014
+ 68605 string characters out of 6133351
+ 166511 words of memory out of 5000000
+ 8599 multiletter control sequences out of 15000+600000
+ 17737 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,7n,62p,1697b,1594s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,7n,62p,1697b,1611s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb
 ></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><
 /usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></u
@@ -1231,13 +1214,14 @@ sr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/
 local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/l
 ocal/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/loc
 al/texlive/2016/texmf-dist/fonts/type1/vntex/vnr/vnbx12.pfb></usr/local/texlive
-/2016/texmf-dist/fonts/type1/vntex/vnr/vnr12.pfb></usr/local/texlive/2016/texmf
--dist/fonts/type1/vntex/vnr/vnr17.pfb></usr/local/texlive/2016/texmf-dist/fonts
-/type1/vntex/vnr/vnti12.pfb>
-Output written on main.pdf (43 pages, 552683 bytes).
+/2016/texmf-dist/fonts/type1/vntex/vnr/vnbxti10.pfb></usr/local/texlive/2016/te
+xmf-dist/fonts/type1/vntex/vnr/vnr12.pfb></usr/local/texlive/2016/texmf-dist/fo
+nts/type1/vntex/vnr/vnr17.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/v
+ntex/vnr/vnti12.pfb>
+Output written on main.pdf (43 pages, 600799 bytes).
 PDF statistics:
- 232 PDF objects out of 1000 (max. 8388607)
- 129 compressed objects within 2 object streams
+ 238 PDF objects out of 1000 (max. 8388607)
+ 132 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 126 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 131 words of extra memory for PDF output out of 10000 (max. 10000000)
 
