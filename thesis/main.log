@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  4 DEC 2016 22:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  5 DEC 2016 22:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -796,8 +796,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 36--37
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 38--39
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 66--67
 
  []
 
@@ -810,21 +810,22 @@ File: lstlang1.sty 2015/06/04 1.6 listings language file
 (/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 )
-Underfull \hbox (badness 10000) in paragraph at lines 50--51
+Underfull \hbox (badness 10000) in paragraph at lines 68--69
 
  []
 
-[3]
-Underfull \hbox (badness 10000) in paragraph at lines 58--59
+
+Underfull \hbox (badness 10000) in paragraph at lines 76--77
 
  []
 
-<image/main.png, id=42, 564.1075pt x 283.0575pt>
+[4] <image/main.png, id=45, 564.1075pt x 283.0575pt>
 File: image/main.png Graphic file (type png)
  <use image/main.png>
-Package pdftex.def Info: image/main.png used on input line 67.
+Package pdftex.def Info: image/main.png used on input line 85.
 (pdftex.def)             Requested size: 298.75262pt x 149.90746pt.
- [4 <./image/main.png>]) [5]
+)
+[5 <./image/main.png>]
 \openout2 = `chapter2.aux'.
 
  (./chapter2.tex
@@ -1035,17 +1036,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 123--124
  []
 
 
-Overfull \hbox (320.33269pt too wide) in paragraph at lines 125--126
-[][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Overfull \hbox (292.13933pt too wide) in paragraph at lines 126--127
-[][][][][][][][][][][][][][][][][] 
- []
-
-
-Overfull \hbox (87.73747pt too wide) in paragraph at lines 130--131
+Overfull \hbox (87.73747pt too wide) in paragraph at lines 132--133
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
@@ -1053,10 +1044,10 @@ Overfull \hbox (87.73747pt too wide) in paragraph at lines 130--131
 File: image/reachingDefExam.png Graphic file (type png)
 
 <use image/reachingDefExam.png>
-Package pdftex.def Info: image/reachingDefExam.png used on input line 153.
+Package pdftex.def Info: image/reachingDefExam.png used on input line 155.
 (pdftex.def)             Requested size: 108.02832pt x 216.80946pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 150--158
+Underfull \hbox (badness 10000) in paragraph at lines 152--160
 
  []
 
@@ -1065,90 +1056,97 @@ Underfull \hbox (badness 10000) in paragraph at lines 150--158
 File: image/reachingDefAlgo.png Graphic file (type png)
 
 <use image/reachingDefAlgo.png>
-Package pdftex.def Info: image/reachingDefAlgo.png used on input line 185.
+Package pdftex.def Info: image/reachingDefAlgo.png used on input line 187.
 (pdftex.def)             Requested size: 167.12396pt x 572.13611pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 190--191
+Underfull \hbox (badness 10000) in paragraph at lines 192--193
 
  []
 
 [20] [21 <./image/reachingDefAlgo.png>]
-
-LaTeX Warning: Reference `fig:reachdefextendalgo' on page 22 undefined on input
- line 219.
-
 <image/reachdefextendalgo.png, id=141, 835.12pt x 815.045pt>
 File: image/reachdefextendalgo.png Graphic file (type png)
 
 <use image/reachdefextendalgo.png>
-Package pdftex.def Info: image/reachdefextendalgo.png used on input line 222.
+Package pdftex.def Info: image/reachdefextendalgo.png used on input line 224.
 (pdftex.def)             Requested size: 298.75262pt x 291.57536pt.
  [22] [23 <./image/reachdefextendalgo.png>]
-<image/checkUnionSteps.png, id=149, 544.0325pt x 192.72pt>
+<image/typePropagationAlgo.png, id=149, 762.85pt x 1065.9825pt>
+File: image/typePropagationAlgo.png Graphic file (type png)
+
+<use image/typePropagationAlgo.png>
+Package pdftex.def Info: image/typePropagationAlgo.png used on input line 238.
+(pdftex.def)             Requested size: 298.75262pt x 417.45566pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 243--244
+
+ []
+
+[24 <./image/typePropagationAlgo.png>]
+<image/checkUnionSteps.png, id=155, 614.295pt x 192.72pt>
 File: image/checkUnionSteps.png Graphic file (type png)
 
 <use image/checkUnionSteps.png>
-Package pdftex.def Info: image/checkUnionSteps.png used on input line 242.
-(pdftex.def)             Requested size: 298.75262pt x 105.83458pt.
-
-<image/unionDefineMapping.png, id=150, 664.4825pt x 562.1pt>
-File: image/unionDefineMapping.png Graphic file (type png)
-
-<use image/unionDefineMapping.png>
-Package pdftex.def Info: image/unionDefineMapping.png used on input line 255.
-(pdftex.def)             Requested size: 298.75262pt x 252.71967pt.
- [24 <./image/checkUnionSteps.png>] [25 <./image/unionDefineMapping.png>]) [26]
+Package pdftex.def Info: image/checkUnionSteps.png used on input line 259.
+(pdftex.def)             Requested size: 298.75262pt x 93.72786pt.
+) [25 <./image/checkUnionSteps.png>]
 \openout2 = `chapter4.aux'.
 
- (./chapter4.tex
+
+(./chapter4.tex
 Ch\uhorn \ohorn ng 4.
-[27
+[26
 
 
 
-] [28] <image/constantPropagationAlgo.png, id=169, 582.175pt x 855.195pt>
+] [27] <image/constantPropagationAlgo.png, id=166, 582.175pt x 855.195pt>
 File: image/constantPropagationAlgo.png Graphic file (type png)
 
 <use image/constantPropagationAlgo.png>
-Package pdftex.def Info: image/constantPropagationAlgo.png used on input line 5
-8.
+Package pdftex.def Info: image/constantPropagationAlgo.png used on input line 6
+0.
 (pdftex.def)             Requested size: 436.63019pt x 641.3947pt.
 
-Overfull \hbox (9.83885pt too wide) in paragraph at lines 58--59
+Overfull \hbox (9.83885pt too wide) in paragraph at lines 60--61
  [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 74--75
-
- []
-
-[29] [30 <./image/constantPropagationAlgo.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 98--99
+Underfull \hbox (badness 10000) in paragraph at lines 76--77
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 100--101
+Underfull \hbox (badness 10000) in paragraph at lines 78--79
 
  []
 
-[31]
-Overfull \hbox (24.30241pt too wide) in paragraph at lines 112--113
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
+[28] [29 <./image/constantPropagationAlgo.png>] [30]
+<image/wayToTransfer1.png, id=178, 729.72626pt x 262.9825pt>
+File: image/wayToTransfer1.png Graphic file (type png)
 
-<image/stepUnionMaking.png, id=181, 1166.3575pt x 383.4325pt>
+<use image/wayToTransfer1.png>
+Package pdftex.def Info: image/wayToTransfer1.png used on input line 113.
+(pdftex.def)             Requested size: 298.75262pt x 107.663pt.
+
+<image/wayToTransfer2.png, id=179, 569.12625pt x 262.9825pt>
+File: image/wayToTransfer2.png Graphic file (type png)
+
+<use image/wayToTransfer2.png>
+Package pdftex.def Info: image/wayToTransfer2.png used on input line 114.
+(pdftex.def)             Requested size: 298.75262pt x 138.05182pt.
+
+<image/stepUnionMaking.png, id=180, 1166.3575pt x 383.4325pt>
 File: image/stepUnionMaking.png Graphic file (type png)
 
 <use image/stepUnionMaking.png>
-Package pdftex.def Info: image/stepUnionMaking.png used on input line 121.
+Package pdftex.def Info: image/stepUnionMaking.png used on input line 123.
 (pdftex.def)             Requested size: 298.75262pt x 98.20987pt.
-) [32 <./image/stepUnionMaking.png>]
+ [31 <./image/wayToTransfer1.png> <./image/wayToTransfer2.png>]) [32 <./image/s
+tepUnionMaking.png>]
 \openout2 = `chapter5.aux'.
 
-
-(./chapter5.tex
+ (./chapter5.tex
 Ch\uhorn \ohorn ng 5.
 [33
 
@@ -1200,13 +1198,13 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 5201 strings out of 493014
- 68605 string characters out of 6133351
- 166511 words of memory out of 5000000
- 8599 multiletter control sequences out of 15000+600000
+ 5187 strings out of 493014
+ 68582 string characters out of 6133351
+ 165589 words of memory out of 5000000
+ 8583 multiletter control sequences out of 15000+600000
  17737 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,7n,62p,1697b,1611s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,7n,62p,1619b,1596s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb
 ></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><
 /usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></u
@@ -1218,10 +1216,10 @@ al/texlive/2016/texmf-dist/fonts/type1/vntex/vnr/vnbx12.pfb></usr/local/texlive
 xmf-dist/fonts/type1/vntex/vnr/vnr12.pfb></usr/local/texlive/2016/texmf-dist/fo
 nts/type1/vntex/vnr/vnr17.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/v
 ntex/vnr/vnti12.pfb>
-Output written on main.pdf (43 pages, 600799 bytes).
+Output written on main.pdf (43 pages, 656514 bytes).
 PDF statistics:
- 238 PDF objects out of 1000 (max. 8388607)
+ 242 PDF objects out of 1000 (max. 8388607)
  132 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 131 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 141 words of extra memory for PDF output out of 10000 (max. 10000000)
 

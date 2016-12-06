@@ -122,8 +122,10 @@ class UnionDefine{
 \end{lstlisting}
 Như vậy, ta cần phải điều chỉnh lại phần parser của trình dịch ngược, sao cho nó vừa chấp nhận mẫu khai báo biến trên, vừa đưa từng bộ biến được khai báo vào trong một thực thể của class \textit{UnionDefine}. Kết quả là, sau khi kết thúc phần parser, ta sẽ thu được một danh sách các \textit{UnionDefine} tương ứng với các khai báo các bộ biến. Đoạn mã \ref{list:listparser} là phần parser viết dựa trên thư viện Bison++ để thực hiện chức năng trên.\\
 \begin{lstlisting}[caption={Đoạn mã parser cho phần khai báo bộ biến},label={list:listparser}]
-definebit: BEGINDEFINE END_LINE DEFINEBYTE END_LINE define DEFINEBITS END_LINE defineeachbit defineeachbit
-defineeachbit defineeachbit defineeachbit defineeachbit defineeachbit defineeachbit ENDDEFINE END_LINE
+definebit: BEGINDEFINE END_LINE DEFINEBYTE END_LINE 
+define DEFINEBITS END_LINE defineeachbit defineeachbit
+defineeachbit defineeachbit defineeachbit defineeachbit 
+defineeachbit defineeachbit ENDDEFINE END_LINE
 {
 	UnionDefine* ut = new UnionDefine();
 	$5 -> expList -> pop_back();
@@ -144,7 +146,7 @@ defineeachbit: DEFINE ID bit END_LINE {
 Như vậy, sau giai đoạn parser, ta đã thu được bộ biến theo khai báo của người dùng. Tuy nhiên, nguyên tắc sử dụng bộ biến này là không bắt buộc trong quá trình lập trình 8051, và các assembler cũng không hề kiểm tra việc người dùng có tuân thủ nguyên tắc này không. Vì vậy, trước khi chuyển hoá các bộ biến này sang cấu trúc union ở mã đầu ra, ta cần phải kiểm tra đoạn mã của người dùng sử dụng các bộ biến như thế nào.
 
 \section{Kiểm tra nguyên tắc sử dụng bộ biến}
-\subsection{Xác định giá trị của thanh ghi \textit{ACC} tại mỗi điểm của chương trình}
+\subsection{Xác định giá trị kiểu của thanh ghi \textit{ACC} tại mỗi điểm của chương trình}
 Để kiểm tra được nguyên tắc sử dụng bộ biến, trước hết, ta phải biết được tại mỗi thời điểm của chương trình, thanh ghi \textit{ACC} đang mang giá trị gì. Có hai phương pháp phân tích được áp dụng trong giải pháp này, đó là Reaching definitions kết hợp phần mở rộng và Type propagation.
 \subsubsection{Phân tích Reaching definitions kết hợp phần mở rộng}
 Mục đích của phân tích Reaching definitions là biết được ở một thời điểm của chương trình, các câu lệnh khai báo nào đang còn hiệu lực, hay nói cách khác là gía trị của các biến đang được khai báo bởi những câu lệnh nào. Phần mở rộng của Reaching definition sẽ giúp xử lý thêm một số trường hợp, khi thanh ghi được truyền giá trị thông qua một thanh ghi trung gian khác.
@@ -159,7 +161,7 @@ Ví dụ như ở đoạn chương trình \ref{fig:reachingdefexam}, ta cần bi
 Để thực hiện Reaching definitions, ta phải làm quen với các định nghĩa sau:
 \begin{itemize}
 	\item Nếu một biến được khai báo ở câu lệnh \textit{def1}, sau đó được khai báo lại ở câu lệnh \textit{def2} sau đó, thì ta nói là câu lệnh \textit{def1} đã \textbf{bị giết (killed)} bởi câu lệnh \textit{def2}.
-	\item Nếu có một đường thực thi chương trình đi từ câu lệnh khai báo \textit{def1} đến một điểm \textit{p} của chương trình, mà trên đó \textit{def1} không bị giết bởi bất kỳ câu lệnh nào, thì ta nói là \textit{def1} đã đến được điểm \textit{p}. Khái niệm một câu lệnh đến được một khối cơ bản cũng tương tự như vậy.
+	\item Nếu có một đường thực thi chương trình đi từ câu lệnh khai báo \textit{def1} đến một điểm \textit{p} của chương trình, mà trên đó \textit{def1} không bị giết bởi bất kỳ câu lệnh nào, thì ta nói là \textit{def1} đã \textbf{đến được (reach))} điểm \textit{p}. Khái niệm một câu lệnh đến được một khối cơ bản cũng tương tự như vậy.
 \end{itemize}
 
 Ngoài ra, ta phải quy định một số khái niệm mới cho một khối cơ bản B:
@@ -204,7 +206,7 @@ MOV A, OPTION+1 #2
 \end{lstlisting}
 Các trường hợp phức tạp nêu trên được trình bày trong đoạn mã \ref{list:listhardcase}. 
 Phương pháp Reaching definitions sẽ không thể xử lý được khi gặp các câu lệnh gán này. Ở câu lệnh số 1, phân tích có thể lấy được giá trị \textbf{38H}, nhưng không thể xác định được biến byte nào đã được khai báo giá trị \textbf{38H}. Ở câu lệnh số 2, Reaching definitions không thể biết được giá trị của thanh ghi \textit{DPTR} là bao nhiêu. Ở câu lệnh số 3, việc xử lý lại càng phức tạp hơn, vì nếu chỉ đơn giản lấy vế phải của khai báo ra, không thể nào biết được giá trị thực sự của nó là bao nhiêu.
-Ngoài ra, với trường hợp trong tập hợp \textit{REACHin} của câu lệnh có nhiều câu lệnh khai báo cho thanh ghi \textit{ACC}, phương pháp này sẽ không thể kiểm tra được vế phải của tất cả các câu lệnh khai báo đó có cùng một giá trị hay không mà chỉ đơn giản xử lý là câu lệnh đã vi phạm nguyên tắc sử dụng bộ biến. Ví dụ như đoạn mã \ref{list:ifcond}, tại thời điểm câu lệnh sử dụng biến bit \textit{TESTSUPS}, có hai câu lệnh khai báo biến \textit{a} (là biến đại diện cho thanh ghi \textit{ACC} tại ngôn ngữ trung gian). Đối với phương pháp Reaching definitions, nó sẽ xem như có hai giá trị mà biến a có thể mang, và sẽ báo lỗi vì vi phạm nguyên tắc sử dụng bộ biến. Tuy nhiên, nếu xét kỹ hơn, thì sẽ thấy là cả hai giá trị đó đều là biến \textit{OPTIONS}, và thực chất tại thời điểm này a chỉ mang một giá trị, cho dù luồng đi của chương trình có như thế nào. Như vậy, phương pháp Reaching definitions sẽ bỏ qua những trường hợp như thế này và báo lỗi, dẫn đến việc độ chính xác sẽ không được cao.
+Ngoài ra, với trường hợp trong tập hợp \textit{REACHin} của câu lệnh có nhiều câu lệnh khai báo cho thanh ghi \textit{ACC}, phương pháp này sẽ không thể kiểm tra được vế phải của tất cả các câu lệnh khai báo đó có cùng một giá trị hay không mà chỉ đơn giản xử lý là câu lệnh đã vi phạm nguyên tắc sử dụng bộ biến. Ví dụ như đoạn mã \ref{list:ifcond}, tại thời điểm câu lệnh sử dụng biến bit \textit{TESTSUPS}, có hai câu lệnh khai báo biến \textit{a} (là biến đại diện cho thanh ghi \textit{ACC} tại ngôn ngữ trung gian). Đối với phương pháp Reaching definitions, nó sẽ xem như có hai giá trị mà biến \textit{a} có thể mang, và sẽ báo lỗi vì vi phạm nguyên tắc sử dụng bộ biến. Tuy nhiên, nếu xét kỹ hơn, thì sẽ thấy là cả hai giá trị đó đều là biến \textit{OPTIONS}, và thực chất tại thời điểm này \textit{a} chỉ mang một giá trị, cho dù luồng đi của chương trình có như thế nào. Như vậy, phương pháp Reaching definitions sẽ bỏ qua những trường hợp như thế này và báo lỗi, dẫn đến việc độ chính xác sẽ không được cao.
 \begin{lstlisting}[caption={Đoạn mã có nhiều câu lệnh khai báo cho ACC đến được một điểm của chương trình nhưng tất cả đều cùng giá trị},label={list:ifcond}]
 if (...){
 	a = *(OPTIONS);
@@ -229,25 +231,39 @@ Theo giải thuật nêu trên, để tìm được giá trị của thanh ghi \
 Tuy đã xử lý được hầu hết các trường hợp của phép gán cho \textit{ACC}, nhưng việc có thêm một phần mở rộng này sẽ làm cho tốc độ xử lý trình dịch ngược giảm đi. Cộng thêm việc bản thân giải thuật Reaching definitions đã có độ phức tạp cao, tổng thời gian xử lý cho bước này của trình dịch ngược là khá lớn. Vì vậy, một phương pháp phân tích khác đã được thực hiện để tìm ra giá trị của thanh ghi \textit{ACC} với độ phức tạp thấp hơn.
 
 \subsubsection{Phân tích Type propagation}
-Ta có thể xem mỗi một tên biến byte như là một kiểu type vì ứng với mỗi bộ biến tìm được, ở giai đoạn sau trình dịch ngược sẽ chuyển đổi bộ biến thành một kiểu union với tên chính là tên của biến byte.
-\subsection{Kiểm tra cách sử dụng bộ biến trong toàn bộ chương trình và sinh mã}
+Phân tích Type propagation có mục đích sẽ tìm ra được kiểu của một thanh ghi bằng cách lan truyền kiểu của những thanh ghi khác. Áp dụng vào trường hợp cụ thể của luận văn, các tên biến byte có thể được xem là một kiểu, vì khi chuyển đổi bộ biến thành một kiểu union ở ngôn ngữ cấp cao, tên biến byte này sẽ được dùng để đặt tên cho kiểu union đó. Như vậy, tác dụng của phân tích Type propagation này là tìm ra được thanh ghi ACC đang mang kiểu union nào tại một thời điểm của chương trình. Các bước của giải thuật phân tích Type propagation được trình bày ở hình \ref{fig:typepropagationalgo}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{image/typePropagationAlgo}
+	\caption{Giải thuật của phân tích Type propagation}
+	\label{fig:typepropagationalgo}
+\end{figure}
+
+Trong giải thuật đã trình bày ở trên, không xét đến trường hợp một biến được khai báo lại nhiều lần và tại mỗi thời điểm sẽ có giá trị khác nhau là do tận dụng được mã trung gian SSA. Hầu hết các trình dịch ngược đều sử dụng mã SSA tại một giai đoạn nào đó trong quá trình phân tích dữ liệu vì các lợi ích của loại mã này (chi tiết về mã SSA được trình bày trong phần \ref{ssa}). Với mã SSA, mỗi biến chỉ được khai báo một lần duy nhất trong chương trình, nên không bị ảnh hưởng bởi trường hợp khai báo lại biến.\\
+
+Như vậy, phương pháp Type propagation này sẽ làm giảm đáng kể thời gian xử lý của chương trình so với phương pháp Reaching definitions. Khi có một thay đổi nào đó, chương trình phân tích chỉ cần tính toán lại các câu lệnh khai báo chịu ảnh hưởng của sự thay đổi đó, chứ không cần phải tính toán lại hết tất cả các câu lệnh như giải thuật của Reaching definitions. Phương pháp này cũng không cần một phần mở rộng mà ngay trong quá trình lan truyền, nó đã tính toán được các trường hợp biểu thức vế phải của khai báo là một thanh ghi hoặc một hằng số. Khuyết điểm của Type propagation là vẫn chưa xử lý được trường hợp biểu thức vế phải có hai toán hạng. Để giải quyết được vấn đề này, cần có một phân tích khác mạnh hơn và phân tích đó sẽ được giới thiệu ở chương tiếp theo.
+\subsection{Kiểm tra tính hợp lệ về kiểu của tác vụ với bit}
 
 \label{sec:laststep}
-Sau khi đã có thông tin về tập hợp các câu lệnh khai báo có hiệu lực ở tất cả các câu lệnh của chương trình, ta sẽ chuyển sang kiểm tra các ở các câu lệnh sử dụng bit.
 
-Quá trình kiểm tra cho 1 câu lệnh sử dụng bit gồm các bước sau:
-
+Sau khi đã tìm được thông tin về kiểu của thanh ghi ACC tại mỗi điểm của chương trình, bước tiếp theo của giải pháp Kiểm tra kiểu là kiểm tra tính hợp lệ khi sử dụng các biến bit. Như đã trình bày ở phần \ref{sec:problem}, việc sử dụng các biến byte - biến bit trong mã chương trình 8051 cần tuân thủ các quy định sau:
+\begin{itemize}
+	\item Chỉ khi thanh ghi \textit{ACC} đang mang giá trị của vùng nhớ có địa chỉ quy định bởi biến byte, thì các biến bit cùng bộ mới được sử dụng.
+	\item Mỗi biến bit chỉ thuộc một bộ duy nhất. 
+	\item Tại mỗi vị trí bit của một bộ biến chỉ có một biến bit duy nhất tồn tại. 
+\end{itemize}
+Như vậy, ở phần này, chương trình sẽ chạy vòng lặp kiểm tra lần lượt từng câu lệnh sử dụng bit để xem xét việc sử dụng này có vi phạm quy định nào trong những quy định trên hay không. Các bước kiểm tra này được trình bày ở hình \ref{fig:checkunionsteps}.
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{image/checkUnionSteps}
 	\caption{Quá trình kiểm tra một câu lệnh sử dụng bit}
 	\label{fig:checkunionsteps}
 \end{figure}
-
-Nếu ở bất cứ câu lệnh sử dụng biến bit nào, nguyên tắc đưa ra bị vi phạm, thì trình dịch ngược sẽ hiện thông báo lỗi trên console cho người dùng. Sau đó, đoạn mã kiểm tra lỗi vẫn tiếp tục chạy để kiểm tra các câu lệnh khác nhằm tạo thuận lợi cho người dùng trong quá trình sửa lỗi chương trình đầu vào. Tuy nhiên, nếu có lỗi thì trình dịch ngược sẽ không sinh mã đầu ra vì sẽ không thể xử lý được sinh các union như thế nào.
+Nếu có một câu lệnh sử dụng bit nào đó vi phạm nguyên tắc trên, chương trình kiểm tra vẫn tiếp tục chạy để kiểm tra những câu lệnh sau đó. Điều này giúp người lập trình biết được tất cả các lỗi trong chương trình đầu vào của mình để có sự chỉnh sửa phù hợp. Tuy nhiên, khi có vi phạm xảy ra, trình dịch ngược sẽ không sinh được mã đầu ra, vì không có cách thể hiện union phù hợp.
 
 %đoạn mã và output của trình dịch ngược khi vi phạm nguyên tắc sử dụng
-
+\begin{comment}
 Kết thúc quá trình kiểm tra lỗi, nếu không có vi phạm nào xảy ra, trình dịch ngược sẽ tiến hành sinh ra thêm một số khai báo cho bộ biến, cũng như thực hiện các thay thế cần thiết. Các bộ biến được khai báo được lưu bằng cấu trúc UnionDefine, và ta cần thể hiện các bộ biến đó bằng một cấu trúc dữ liệu ở ngôn ngữ cấp cao của mã đầu ra. Như đã phân tích từ trước ở chương \ref{sec:gioithieu}, cấu trúc dữ liệu đó là union. Hình \ref{fig:uniondefinemapping} thể hiện việc chuyển đổi của class UnionDefine sang cấu trúc union.
 
 \begin{figure}
@@ -288,8 +304,8 @@ return OPTIONS.byte;
 \end{lstlisting}
 \end{itemize}
 
-
-Như vậy, với giải pháp Kiểm tra kiểu, ta đã có sẵn thông tin về bộ biến ngay từ đầu và chỉ cần kiểm tra xem người lập trình có tuân thủ đúng quy tắc không trước khi sinh ra mã ở ngôn ngữ cấp cao. Giải pháp này yêu cầu can thiệp vào trình dịch ngược ít và hiện thực dễ dàng. Tuy nhiên, giải pháp còn nhiều hạn chế như phương pháp phân tích dữ liệu chưa đạt độ chính xác cao, cần người dùng phải chỉnh sửa lại khai báo theo mẫu quy định... Chính vì vậy, giai đoạn sau của luận văn đã phát triển một giải pháp mới có độ chính xác cao hơn và không cần chỉnh sửa mã đầu vào của người dùng, đó là giải pháp Suy luận kiểu. Giải pháp này sẽ được trình bày ở chương tiếp theo.
+\end{comment}
+Như vậy, với giải pháp Kiểm tra kiểu, ta đã có sẵn thông tin về bộ biến ngay từ đầu và chỉ cần kiểm tra xem người lập trình có tuân thủ đúng quy tắc không trước khi sinh ra mã ở ngôn ngữ cấp cao. Giải pháp này yêu cầu can thiệp vào trình dịch ngược ít và hiện thực dễ dàng. Tuy nhiên, giải pháp còn nhiều hạn chế như phương pháp phân tích dữ liệu chưa đạt độ chính xác cao, cần người dùng phải chỉnh sửa lại chú thích theo mẫu quy định... Chính vì vậy, giai đoạn sau của luận văn đã phát triển một hướng tiếp cận mới có độ chính xác cao hơn và không cần chỉnh sửa mã đầu vào của người dùng, đó là giải pháp Suy luận kiểu. Giải pháp này sẽ được trình bày ở chương tiếp theo.
 
 
 

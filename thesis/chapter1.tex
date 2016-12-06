@@ -32,10 +32,10 @@ Một trong những thách thức khó nhất của kỹ thuật dịch ngược
 Từ khái niệm của kỹ thuật dịch ngược, ta thấy có nhiều mức độ dịch ngược, tương ứng với những bài toán khác nhau cần giải quyết. Nếu lấy đầu ra của quá trình dịch ngược là một chương trình viết bằng ngôn ngữ cấp cao, thì đầu vào của nó có thể là: mã nhị phân, mã assembly hoặc mã của một ngôn ngữ lập trình cấp cao khác cần chuyển đổi. Tùy vào mức độ trừu tượng của ngôn ngữ đầu vào, các thông tin bị mất ở mã đầu vào sẽ khác nhau. Với mã máy thì tất cả các thông tin nêu trên đều không còn. Với mã assembly, tên biến vẫn xuất hiện trong chương trình vì một số assembler cho phép có các câu lệnh khai báo biến ở mã assembly. Còn với mã ngôn ngữ cấp cao thì gần như tất cả thông tin đều có ở chương trình gốc, và vấn đề cần giải quyết là tìm ra các cấu trúc tương đương ở ngôn ngữ đích.
 
 \section{Bài toán đặt ra}
-
+\label{sec:problem}
 Như đã trình bày ở trên, kiểu dữ liệu là một thông tin quan trọng không xuất hiện ở mã cấp thấp nhưng cần phải có để xây dựng mã đầu ra của trình dịch ngược. Vì vậy, bài toán suy luận kiểu là một thách thức cấp bách cần phải giải quyết trong kỹ thuật dịch ngược. Hiện nay, các giải thuật cho vấn đề này đã tương đối đầy đủ, đưa ra kết quả kiểu dữ liệu chấp nhận được. Tuy nhiên, có vấn đề chưa được giải quyết thấu đáo là ở một số kiến trúc máy, người lập trình có thể vừa truy xuất một vùng nhớ lớn, vừa truy xuất một vùng nhớ nhỏ hơn thuộc vùng nhớ lớn đó, đồng thời có thể đặt tên các vùng nhớ. Vì việc thay đổi giá trị một vùng nhớ nhỏ cũng sẽ làm thay đổi giá trị của vùng nhớ lớn hơn, nên không thể xem vùng nhớ nhỏ như một biến độc lập, mà cần phải gom nhóm các biến đại diện cho vùng nhớ nhỏ và vùng nhớ lớn thành một cấu trúc dữ liệu phù hợp ở ngôn ngữ cấp cao. \\
 
-Một kiến trúc máy có những tính chất trên là 8051. Như trong ví dụ \ref{list:8051exam}, có 2 biến được khai báo là \textit{OPTIONS} với giá trị là \textbf{38H}, và \textit{TESTSUPS} đại diện cho bit thứ nhất của thanh ghi \textit{ACC}. Ở đoạn mã thực thi bên dưới, thanh ghi \textit{ACC} được gán cho giá trị ở vùng nhớ có địa chỉ là giá trị của biến \textit{OPTIONS} (câu lệnh số 1) và sau đó giá trị của \textit{TESTUPS} được chuyển thành 1, nghĩa là bit đầu tiên của thanh ghi \textit{ACC} bật lên. Qua thấy được thanh ghi \textit{ACC} chỉ là trung gian, và thực chất \textit{TESTUPS} đại diện cho bit đầu tiên của vùng nhớ quy định bởi biến \textit{OPTIONS}. Việc sử dụng này đưa đến kết luận là biến \textit{OPTIONS} và \textit{TESTUPS} là cùng một bộ biến vì đều truy xuất đến toàn bộ hoặc một phần vùng nhớ có địa chỉ là \textbf{38H}.\\
+Một kiến trúc máy có những tính chất trên là 8051. Như trong ví dụ \ref{list:8051exam}, có 2 biến được khai báo là \textit{OPTIONS} với giá trị là \textbf{38H}, và \textit{TESTSUPS} đại diện cho bit thứ nhất của thanh ghi \textit{ACC}. Ở đoạn mã thực thi bên dưới, thanh ghi \textit{ACC} được gán cho giá trị ở vùng nhớ có địa chỉ là giá trị của biến \textit{OPTIONS} (câu lệnh số 1) và sau đó giá trị của \textit{TESTUPS} được chuyển thành 1, nghĩa là bit đầu tiên của thanh ghi \textit{ACC} bật lên. Qua thấy được thanh ghi \textit{ACC} chỉ là trung gian, và thực chất \textit{TESTUPS} đại diện cho bit đầu tiên của vùng nhớ quy định bởi biến \textit{OPTIONS}. Việc sử dụng này đưa đến kết luận là biến \textit{OPTIONS} và \textit{TESTUPS} là cùng một bộ biến vì đều truy xuất đến toàn bộ hoặc một phần vùng nhớ có địa chỉ là \textbf{38H}.
 
 \begin{lstlisting}[caption={Một đoạn mã 8051},label={list:8051exam}]
 #DEFINE OPTIONS, #38H
@@ -46,6 +46,24 @@ AA:
 	SETB TESTUPS #2
 \end{lstlisting}
 
+Trong bộ biến này, \textit{OPTIONS} được gọi là \textbf{biến byte}, vì nó truy xuất đến vùng nhớ có độ lớn là 1 byte. Còn các biến truy xuất đến một bit nào đó của vùng nhớ như \textit{TESTSUPS} sẽ được gọi là \textbf{biến bit}. Thông thường, người ta luôn sử dụng các biến byte - biến bit này theo bộ và việc sử dụng các bộ biến này phải tuân thủ nguyên tắc sau: 
+\begin{itemize}
+	\item Chỉ khi thanh ghi \textit{ACC} đang mang giá trị của vùng nhớ có địa chỉ quy định bởi biến byte, thì các biến bit cùng bộ mới được sử dụng.
+	\item Mỗi biến bit chỉ thuộc một bộ duy nhất. Nói cách khác, nếu mỗi thời điểm sử dụng biến bit, thanh ghi \textit{ACC} đang mang giá trị của nhưng vùng nhớ khác nhau, thì việc sử dụng này đã vi phạm nguyên tắc.
+	\item Tại mỗi vị trí bit của một bộ biến chỉ có một biến bit duy nhất tồn tại. Một ví dụ vi phạm nguyên tắc này là ở đoạn mã \ref{list:illegalexam}. Khi thanh ghi \textit{ACC} đang mang giá trị vùng nhớ quy định bởi \textit{OPTIONS}, có hai biến bit cùng truy xuất đến bit đầu tiên của vùng nhớ được sử dụng là \textit{TESTSUPS} và \textit{TESTSUPS1}. Như vậy, ta không thể chọn được biến bit nào sẽ đại diện cho bit đầu tiên của vùng nhớ giữa hai biến trên.
+	\begin{lstlisting}[caption={Một ví dụ vi phạm nguyên tắc sử dụng bộ biến},label={list:illegalexam}]
+	#DEFINE OPTIONS #38H
+	#DEFINE TESTSUPS ACC.1
+	#DEFINE TESTSUPS1 ACC.1
+	
+	public AA
+	AA:
+	MOV A, OPTIONS
+	SETB TESTSUPS
+	CLR TESTSUPS1
+	\end{lstlisting}
+\end{itemize}
+Vì 8051 đáp ứng đầy đủ các yêu cầu về một kiến trúc máy cho phép truy xuất vùng nhớ ở nhiều cấp độ và cho phép đặt tên biến cho vùng nhớ, nên các phân tích sau này của luận văn sẽ chủ yếu dựa vào các đoạn mã của 8051. Tuy nhiên, các nghiên cứu này hoàn toàn có thể áp dụng cho các kiến trúc máy có tính chất tương tự như vậy. Về sau trong luận văn này, khi đề cập đến nguyên tắc sử dụng bộ biến, nghĩa là đang nói đến các nguyên tắc nêu trên. \\
 
 Union là một cấu trúc dữ liệu có nhiều thành phần với những kiểu dữ liệu khác nhau, nhưng cùng chia sẻ một vùng nhớ. Trong ví dụ \ref{list:uniondecl}, hai thành phần của union \textit{ci} là ký tự \textit{c} và số nguyên \textit{i} đều có vùng nhớ giống nhau. Khi thay đổi một thành phần như ở câu lệnh số 3, thành phần còn lại của union cũng thay đổi theo. Giá trị \textit{ci.i} được xuất ra ở câu lệnh số 2 là \textbf{0} (giá trị mặc định của một số nguyên chưa khai báo), còn ở câu lệnh số 4 là \textbf{97}. Như vậy, tính chất này của union là tương tự với tính chất truy xuất vùng nhớ đã nêu ở trên của một số kiến trúc máy.\\
 \begin{lstlisting}[caption={Một đoạn khai báo union},label={list:uniondecl},language=c++]

@@ -14,13 +14,15 @@
 \contentsline {chapter}{\numberline {3}Ki\IeC {\h \ecircumflex }m tra ki\IeC {\h \ecircumflex }u - Type checking}{17}
 \contentsline {section}{\numberline {3.1}R\IeC {\'u}t tr\IeC {\'\i }ch th\IeC {\^o}ng tin t\IeC {\`\uhorn } ph\IeC {\`\acircumflex }n ch\IeC {\'u} th\IeC {\'\i }ch}{17}
 \contentsline {section}{\numberline {3.2}Ki\IeC {\h \ecircumflex }m tra nguy\IeC {\^e}n t\IeC {\'\abreve }c s\IeC {\h \uhorn } d\IeC {\d u}ng b\IeC {\d \ocircumflex } bi\IeC {\'\ecircumflex }n}{19}
-\contentsline {subsection}{\numberline {3.2.1}X\IeC {\'a}c \IeC {\dj }\IeC {\d i}nh gi\IeC {\'a} tr\IeC {\d i} c\IeC {\h u}a thanh ghi \textit {ACC} t\IeC {\d a}i m\IeC {\~\ocircumflex }i \IeC {\dj }i\IeC {\h \ecircumflex }m c\IeC {\h u}a ch\IeC {\uhorn }\IeC {\ohorn }ng tr\IeC {\`\i }nh}{19}
+\contentsline {subsection}{\numberline {3.2.1}X\IeC {\'a}c \IeC {\dj }\IeC {\d i}nh gi\IeC {\'a} tr\IeC {\d i} ki\IeC {\h \ecircumflex }u c\IeC {\h u}a thanh ghi \textit {ACC} t\IeC {\d a}i m\IeC {\~\ocircumflex }i \IeC {\dj }i\IeC {\h \ecircumflex }m c\IeC {\h u}a ch\IeC {\uhorn }\IeC {\ohorn }ng tr\IeC {\`\i }nh}{19}
 \contentsline {subsubsection}{Ph\IeC {\^a}n t\IeC {\'\i }ch Reaching definitions k\IeC {\'\ecircumflex }t h\IeC {\d \ohorn }p ph\IeC {\`\acircumflex }n m\IeC {\h \ohorn } r\IeC {\d \ocircumflex }ng}{19}
 \contentsline {subsubsection}{Ph\IeC {\^a}n t\IeC {\'\i }ch Type propagation}{23}
-\contentsline {subsection}{\numberline {3.2.2}Ki\IeC {\h \ecircumflex }m tra c\IeC {\'a}ch s\IeC {\h \uhorn } d\IeC {\d u}ng b\IeC {\d \ocircumflex } bi\IeC {\'\ecircumflex }n trong to\IeC {\`a}n b\IeC {\d \ocircumflex } ch\IeC {\uhorn }\IeC {\ohorn }ng tr\IeC {\`\i }nh v\IeC {\`a} sinh m\IeC {\~a}}{24}
-\contentsline {chapter}{\numberline {4}Suy lu\IeC {\d \acircumflex }n ki\IeC {\h \ecircumflex }u - Type inference}{27}
-\contentsline {section}{\numberline {4.1}Ph\IeC {\^a}n t\IeC {\'\i }ch Constant propagation}{27}
-\contentsline {section}{\numberline {4.2}Qu\IeC {\'e}t c\IeC {\'a}c c\IeC {\^a}u l\IeC {\d \ecircumflex }nh s\IeC {\h \uhorn } d\IeC {\d u}ng bi\IeC {\'\ecircumflex }n bit}{31}
+\contentsline {subsection}{\numberline {3.2.2}Ki\IeC {\h \ecircumflex }m tra t\IeC {\'\i }nh h\IeC {\d \ohorn }p l\IeC {\d \ecircumflex } v\IeC {\`\ecircumflex } ki\IeC {\h \ecircumflex }u c\IeC {\h u}a t\IeC {\'a}c v\IeC {\d u} v\IeC {\'\ohorn }i bit}{25}
+\contentsline {chapter}{\numberline {4}Suy lu\IeC {\d \acircumflex }n ki\IeC {\h \ecircumflex }u - Type inference}{26}
+\contentsline {section}{\numberline {4.1}X\IeC {\'a}c \IeC {\dj }\IeC {\d i}nh gi\IeC {\'a} tr\IeC {\d i} c\IeC {\h u}a thanh ghi ACC t\IeC {\d a}i m\IeC {\~\ocircumflex }i th\IeC {\`\ohorn }i \IeC {\dj }i\IeC {\h \ecircumflex }m c\IeC {\h u}a ch\IeC {\uhorn }\IeC {\ohorn }ng tr\IeC {\`\i }nh}{26}
+\contentsline {section}{\numberline {4.2}T\IeC {\`\i }m ki\IeC {\'\ecircumflex }m m\IeC {\'\ocircumflex }i quan h\IeC {\d \ecircumflex } gi\IeC {\~\uhorn }a c\IeC {\'a}c bi\IeC {\'\ecircumflex }n}{31}
+\contentsline {subsection}{\numberline {4.2.1}Chuy\IeC {\h \ecircumflex }n \IeC {\dj }\IeC {\h \ocircumflex }i gi\IeC {\~\uhorn }a h\IeC {\`\abreve }ng s\IeC {\'\ocircumflex } nguy\IeC {\^e}n - bi\IeC {\'\ecircumflex }n byte t\IeC {\uhorn }\IeC {\ohorn }ng \IeC {\'\uhorn }ng}{31}
+\contentsline {subsection}{\numberline {4.2.2}Ki\IeC {\h \ecircumflex }m tra v\IeC {\`a} ghi nh\IeC {\d \acircumflex }n m\IeC {\'\ocircumflex }i quan h\IeC {\d \ecircumflex } gi\IeC {\~\uhorn }a c\IeC {\'a}c gi\IeC {\'a} tr\IeC {\d i} - bi\IeC {\'\ecircumflex }n bit}{32}
 \contentsline {chapter}{\numberline {5}Ki\IeC {\h \ecircumflex }m th\IeC {\h \uhorn }}{33}
 \contentsline {section}{\numberline {5.1}H\IeC {\d \ecircumflex } th\IeC {\'\ocircumflex }ng testcase}{33}
 \contentsline {section}{\numberline {5.2}Ph\IeC {\uhorn }\IeC {\ohorn }ng th\IeC {\'\uhorn }c ki\IeC {\h \ecircumflex }m th\IeC {\h \uhorn }}{34}

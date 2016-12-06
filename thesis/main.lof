@@ -1,6 +1,6 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {1.1}{\ignorespaces M\IeC {\d \ocircumflex }t \IeC {\'\uhorn }ng d\IeC {\d u}ng c\IeC {\h u}a tr\IeC {\`\i }nh d\IeC {\d i}ch ng\IeC {\uhorn }\IeC {\d \ohorn }c: chuy\IeC {\h \ecircumflex }n \IeC {\dj }\IeC {\h \ocircumflex }i m\IeC {\~a} ngu\IeC {\`\ocircumflex }n gi\IeC {\~\uhorn }a c\IeC {\'a}c ki\IeC {\'\ecircumflex }n tr\IeC {\'u}c m\IeC {\'a}y kh\IeC {\'a}c nhau}}{2}
-\contentsline {figure}{\numberline {1.2}{\ignorespaces C\IeC {\'a}c h\IeC {\uhorn }\IeC {\'\ohorn }ng ti\IeC {\'\ecircumflex }p c\IeC {\d \acircumflex }n \IeC {\dj }\IeC {\uhorn }\IeC {\d \ohorn }c tr\IeC {\`\i }nh b\IeC {\`a}y trong lu\IeC {\d \acircumflex }n v\IeC {\u a}n}}{4}
+\contentsline {figure}{\numberline {1.2}{\ignorespaces C\IeC {\'a}c h\IeC {\uhorn }\IeC {\'\ohorn }ng ti\IeC {\'\ecircumflex }p c\IeC {\d \acircumflex }n \IeC {\dj }\IeC {\uhorn }\IeC {\d \ohorn }c tr\IeC {\`\i }nh b\IeC {\`a}y trong lu\IeC {\d \acircumflex }n v\IeC {\u a}n}}{5}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Ph\IeC {\^a}n t\IeC {\'\i }ch m\IeC {\d \ocircumflex }t c\IeC {\^a}u l\IeC {\d \ecircumflex }nh th\IeC {\`a}nh c\IeC {\'a}c token}}{7}
 \contentsline {figure}{\numberline {2.2}{\ignorespaces C\IeC {\^a}y c\IeC {\'\acircumflex }u tr\IeC {\'u}c cho m\IeC {\d \ocircumflex }t c\IeC {\^a}u l\IeC {\d \ecircumflex }nh g\IeC {\'a}n}}{7}
@@ -23,10 +23,11 @@
 \contentsline {figure}{\numberline {3.2}{\ignorespaces M\IeC {\d \ocircumflex }t \IeC {\dj }o\IeC {\d a}n ch\IeC {\uhorn }\IeC {\ohorn }ng tr\IeC {\`\i }nh m\IeC {\~\acircumflex }u}}{19}
 \contentsline {figure}{\numberline {3.3}{\ignorespaces Gi\IeC {\h a}i thu\IeC {\d \acircumflex }t t\IeC {\'\i }nh Reaching definitions cho kh\IeC {\'\ocircumflex }i c\IeC {\ohorn } b\IeC {\h a}n}}{21}
 \contentsline {figure}{\numberline {3.4}{\ignorespaces Gi\IeC {\h a}i thu\IeC {\d \acircumflex }t cho h\IeC {\`a}m findRegValue - ph\IeC {\`\acircumflex }n m\IeC {\h \ohorn } r\IeC {\d \ocircumflex }ng c\IeC {\h u}a ph\IeC {\^a}n t\IeC {\'\i }ch Reaching definitions}}{23}
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Qu\IeC {\'a} tr\IeC {\`\i }nh ki\IeC {\h \ecircumflex }m tra m\IeC {\d \ocircumflex }t c\IeC {\^a}u l\IeC {\d \ecircumflex }nh s\IeC {\h \uhorn } d\IeC {\d u}ng bit}}{24}
-\contentsline {figure}{\numberline {3.6}{\ignorespaces H\IeC {\`\i }nh minh ho\IeC {\d a} vi\IeC {\d \ecircumflex }c chuy\IeC {\h \ecircumflex }n \IeC {\dj }\IeC {\h \ocircumflex }i t\IeC {\`\uhorn } class UnionDefine sang c\IeC {\'\acircumflex }u tr\IeC {\'u}c union \IeC {\h \ohorn } m\IeC {\~a} \IeC {\dj }\IeC {\`\acircumflex }u ra}}{25}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Gi\IeC {\h a}i thu\IeC {\d \acircumflex }t c\IeC {\h u}a ph\IeC {\^a}n t\IeC {\'\i }ch Type propagation}}{24}
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Qu\IeC {\'a} tr\IeC {\`\i }nh ki\IeC {\h \ecircumflex }m tra m\IeC {\d \ocircumflex }t c\IeC {\^a}u l\IeC {\d \ecircumflex }nh s\IeC {\h \uhorn } d\IeC {\d u}ng bit}}{25}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Gi\IeC {\h a}i thu\IeC {\d \acircumflex }t Constant propagation \IeC {\dj }\IeC {\~a} \IeC {\dj }\IeC {\uhorn }\IeC {\d \ohorn }c \IeC {\dj }i\IeC {\`\ecircumflex }u ch\IeC {\h i}nh ph\IeC {\`u} h\IeC {\d \ohorn }p v\IeC {\'\ohorn }i y\IeC {\^e}u c\IeC {\`\acircumflex }u c\IeC {\h u}a tr\IeC {\`\i }nh d\IeC {\d i}ch ng\IeC {\uhorn }\IeC {\d \ohorn }c}}{30}
-\contentsline {figure}{\numberline {4.2}{\ignorespaces C\IeC {\'a}c b\IeC {\uhorn }\IeC {\'\ohorn }c ki\IeC {\h \ecircumflex }m tra v\IeC {\`a} ghi nh\IeC {\d \acircumflex }n d\IeC {\~\uhorn } li\IeC {\d \ecircumflex }u v\IeC {\`a}o danh s\IeC {\'a}ch UnionDefine}}{32}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Gi\IeC {\h a}i thu\IeC {\d \acircumflex }t Constant propagation \IeC {\dj }\IeC {\~a} \IeC {\dj }\IeC {\uhorn }\IeC {\d \ohorn }c \IeC {\dj }i\IeC {\`\ecircumflex }u ch\IeC {\h i}nh ph\IeC {\`u} h\IeC {\d \ohorn }p v\IeC {\'\ohorn }i y\IeC {\^e}u c\IeC {\`\acircumflex }u c\IeC {\h u}a tr\IeC {\`\i }nh d\IeC {\d i}ch ng\IeC {\uhorn }\IeC {\d \ohorn }c}}{29}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces C\IeC {\'a}c gi\IeC {\h a}i ph\IeC {\'a}p chuy\IeC {\h \ecircumflex }n \IeC {\dj }\IeC {\h \ocircumflex }i gi\IeC {\'a} tr\IeC {\d i} - bi\IeC {\'\ecircumflex }n byte}}{31}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces C\IeC {\'a}c b\IeC {\uhorn }\IeC {\'\ohorn }c ki\IeC {\h \ecircumflex }m tra v\IeC {\`a} ghi nh\IeC {\d \acircumflex }n d\IeC {\~\uhorn } li\IeC {\d \ecircumflex }u v\IeC {\`a}o danh s\IeC {\'a}ch UnionDefine}}{32}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
