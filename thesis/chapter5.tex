@@ -5,7 +5,7 @@ Bất kỳ một sản phẩm nào đều cần phải được kiểm tra trư�
 \section{Thiết lập Boomerang}
 
 \label{sec:boomchange}
-Ở phần \ref{sec:whyboom}, một bảng đánh giá các trình dịch ngược hiện tại đã được đưa ra để có sự lựa chọn chính xác nhất trình dịch ngược sẽ được dùng để hiện thực giải pháp. Boomerang được chọn vì cấu trúc của nó được tổ chức theo kiểu module, nên dễ dàng chỉnh sửa và thêm mới tính năng, ngoài ra các thuật toán phân tích dữ liệu của Boomerang rất mạnh, đảm bảo mã đầu ra đạt chất lượng cao. Tuy nhiên, để hiện thực các thuật toán của luận văn, cần có các chỉnh sửa sau:
+Ở phần \ref{sec:whyboom}, một bảng đánh giá các trình dịch ngược hiện tại đã được đưa ra để có sự lựa chọn chính xác nhất trình dịch ngược sẽ được dùng để hiện thực giải pháp và Boomerang đã được chọn vì có số điểm ở các tiêu chí cao nhất. Tuy nhiên, để hiện thực các thuật toán của luận văn, cần có các chỉnh sửa sau:
 \begin{itemize}
 	\item Xử lý để Boomerang giữ được tên biến được người dùng tự khai báo. Vì bản thân Boomerang là một trình dịch ngược từ mã máy, nên nó chỉ xử lý dữ liệu dưới dạng thanh ghi, các thanh ghi này phải được định nghĩa trước trong file đặc tả của từng kiến trúc máy.
 	\item Chỉnh sửa giai đoạn sinh mã của Boomerang. Các hướng tiếp cận đưa ra trong luận văn đề có kết quả cuối cùng là một danh sách các UnionDefine, trong đó lưu trữ các biến byte - biến bit cùng một bộ. Để đưa các UnionDefine này thành các cấu trúc union ở mã đầu ra, cần phải có một số thay đổi ở phần sinh mã của Boomerang
@@ -17,10 +17,10 @@ Các thay đổi này sẽ lần lượt được trình bày ở các phần d�
 Vì ở mức độ mã máy, dữ liệu chỉ được lưu ở các thanh ghi cố định hoặc vùng nhớ được truy xuất bằng địa chỉ nên Boomerang không có cơ chế xử lý các biến được người dùng tạo ra ở mã assembly. Tuy nhiên, Boomerang vẫn có cơ chế để giữa được tên các thanh ghi đó ở đoạn mã đầu ra, nên cần tìm hiểu về cơ chế này và chỉnh sửa để nó linh hoạt chấp nhận tất cả các tên biến khác chứ không chỉ riêng tên thanh ghi.
 
 \subsubsection{Phương thức lưu trữ tên thanh ghi của Boomerang}
-Khi chuyển đổi từ mã assembly sang mã trung gian, Boomerang sẽ dùng một class con của Expr để biểu diễn thanh ghi. Cụ thể là class Location, và gọi phương thức static của class Location là Location::regOf(int num). Ta sẽ truyền vào phương thức này một con số đại diện cho thanh ghi đó. Cặp số - tên thanh ghi này được lưu vào một từ điển, để sau này khi thực hiện phân tích xong thì sẽ chuyển lại từ thanh ghi thành biến cục bộ.
+Khi chuyển đổi từ mã assembly sang mã trung gian, Boomerang sẽ dùng một class con của \textit{Expr} để biểu diễn thanh ghi. Cụ thể là class \textit{Location}, và gọi phương thức static của class \textit{Location} là \textit{Location::regOf(int num)}. Ta sẽ truyền vào phương thức này một con số đại diện cho thanh ghi đó. Cặp số - tên thanh ghi này được lưu vào một từ điển, để sau này khi thực hiện phân tích xong thì sẽ chuyển lại từ thanh ghi thành biến cục bộ.
 
-Trong phần giải mã từ mã assembly sang mã trung gian, có một hàm để map giữa tên thanh ghi và con số đại diện cho nó, đó là hàm map\_sfr(string name).
-\begin{lstlisting}[caption={Một số phần mã trong hàm map\_sfr},label={list:listmapsfr}]
+Trong phần giải mã từ mã assembly sang mã trung gian, có một hàm để map giữa tên thanh ghi và con số đại diện cho nó, đó là hàm \textit{map\_sfr(string name)}.
+\begin{lstlisting}[caption={Một số phần mã trong hàm map\_sfr},label={list:listmapsfr},language=c++]
 if (name == "R0") return 0;
 else if (name == "R1") return 1;
 else if (name == "R2") return 2;
@@ -29,8 +29,8 @@ else return -1;
 
 \end{lstlisting}
 
-Sau khi trải qua các quá trình phân tích và đến giai đoạn in ra mã đầu ra, trình dịch ngược sẽ gọi hàm getRegName trong class FrontEnd để trả lại tên ban đầu của thanh ghi. Trong hàm getRegName sẽ lấy từ điển tên thanh ghi - số đại diện được quy định sẵn của mỗi phần giải mã cho các kiến trúc máy khác nhau, tìm tên thanh ghi tương ứng với con số đó và trả về.
-\begin{lstlisting}[caption={Phần mã trong hàm getRegName},label={list:listgetregname}]
+Sau khi trải qua các quá trình phân tích và đến giai đoạn in ra mã đầu ra, trình dịch ngược sẽ gọi hàm \textit{getRegName} trong class \textit{FrontEnd} để trả lại tên ban đầu của thanh ghi. Trong hàm \textit{getRegName} sẽ lấy từ điển tên thanh ghi - số đại diện được quy định sẵn của mỗi phần giải mã cho các kiến trúc máy khác nhau, tìm tên thanh ghi tương ứng với con số đó và trả về.
+\begin{lstlisting}[caption={Phần mã trong hàm getRegName},label={list:listgetregname},language=c++]
 std::map<std::string, int, std::less<std::string> >::iterator it;
 for (it = decoder->getRTLDict().RegMap.begin();	 it != decoder->getRTLDict().RegMap.end(); it++)
 if ((*it).second == idx) 
@@ -39,12 +39,12 @@ return NULL;
 \end{lstlisting}
 
 
-Như vậy, có thể thấy với các tên biến không được quy định trước, hàm map\_sfr sẽ trả về giá trị -1, và vì giá trị -1 sẽ không có trong từ điển của phần giải mã, nên hàm getRegName sẽ trả về NULL, dẫn đến trình dịch ngược sẽ bị lỗi runtime và dừng ngay lập tức.\\
+Như vậy, có thể thấy với các tên biến không được quy định trước, hàm \textit{map\_sfr} sẽ trả về giá trị \textbf{-1}, và vì giá trị \textbf{-1} sẽ không có trong từ điển của phần giải mã, nên hàm \textit{getRegName} sẽ trả về \textbf{NULL}, dẫn đến trình dịch ngược sẽ bị lỗi runtime và dừng ngay lập tức.\\
 
 %lấy mã Boomerang ban đầu về, hiện kết quả khi sử dụng biến đầu vào
 
 \subsubsection{Chỉnh sửa phương thức trên để chấp nhận tên biến tự khai báo}
-Vì số lượng tên biến là rất nhiều, nên ta không thể sử dụng phương pháp thêm mới các tên biến vào từ điển được quy định sẵn được, mà phải có cách để trình dịch ngược linh động hơn, chấp nhận bất kỳ các tên nào được sử dụng trong mã assembly. Giải pháp đưa ra là ngoài việc sử dụng từ điển thanh ghi được quy định sẵn, ta sẽ lập thêm một bảng tên biến, thành phần bao gồm các cặp tên biến - số đại diện. Trong giai đoạn giải mã, khi hàm map\_sfr được gọi, nếu tên truyền vào nằm trong các thanh ghi đã quy định sẵn, thay vì trả về giá trị -1 thì ta sẽ tạo ra một giá trị random và đưa chúng vào bảng tên biến ở trên. Ngoài ra, còn có một đoạn mã kiểm tra biến được sử dụng đã được khai báo bằng câu lệnh \#DEFINE chưa (ngoại trừ một số biến đặc biệt được tự sinh). \\
+Vì số lượng tên biến là rất nhiều, nên ta không thể sử dụng phương pháp thêm mới các tên biến vào từ điển được quy định sẵn được, mà phải có cách để trình dịch ngược linh động hơn, chấp nhận bất kỳ các tên nào được sử dụng trong mã assembly. Giải pháp đưa ra là ngoài việc sử dụng từ điển thanh ghi được quy định sẵn, ta sẽ lập thêm một bảng tên biến, thành phần bao gồm các cặp tên biến - số đại diện. Trong giai đoạn giải mã, khi hàm \textit{map\_sfr} được gọi, nếu tên truyền vào nằm trong các thanh ghi đã quy định sẵn, thay vì trả về giá trị \textbf{-1} thì ta sẽ tạo ra một giá trị random và đưa chúng vào bảng tên biến ở trên. Ngoài ra, còn có một đoạn mã kiểm tra biến được sử dụng đã được khai báo bằng câu lệnh \#DEFINE chưa (ngoại trừ một số biến đặc biệt được tự sinh). \\
 \begin{lstlisting}[caption={Phần mã mới được bổ sung trong hàm map\_sfr},label={list:listmapsfrnew},language=c++]
 bool isDefined = false;
 map<char*, AssemblyArgument*>::iterator it;
@@ -87,7 +87,7 @@ std::cout<<"ERROR: "<<name<<" HAS NOT BEEN DEFINED YET"<<endl;
 exit(1);
 }
 \end{lstlisting}
-Tương ứng với sự thay đổi ở hàm map\_sfr,  ở hàm getRegName, ngoài việc dò trong từ điển quy định trước, ta sẽ thêm một đoạn mã để dò trong bảng tên biến. 
+Tương ứng với sự thay đổi ở hàm \textit{map\_sfr},  ở hàm \textit{getRegName}, ngoài việc dò trong từ điển quy định trước, ta sẽ thêm một đoạn mã để dò trong bảng tên biến. 
 \begin{lstlisting}[caption={Phần mã mới được bổ sung trong hàm getRegName},label={list:listgetregnamenew},language=c++]
 std::map<string,int>::iterator symIt;
 for (symIt = decoder->getSymbolTable().begin(); symIt != decoder->getSymbolTable().end(); symIt++){
@@ -101,7 +101,7 @@ Như vậy, vấn đề giữ nguyên tên biến được giải quyết mà kh
 
 \subsection{Thêm trường hợp cấu trúc union vào đoạn sinh mã của Boomerang}
 
-Các bộ biến được khai báo được lưu bằng cấu trúc UnionDefine, và ta cần thể hiện các bộ biến đó bằng một cấu trúc dữ liệu ở ngôn ngữ cấp cao của mã đầu ra. Như đã phân tích từ trước ở chương \ref{sec:gioithieu}, cấu trúc dữ liệu đó là union. Hình \ref{fig:uniondefinemapping} thể hiện việc chuyển đổi của class UnionDefine sang cấu trúc union.
+Các bộ biến được khai báo được lưu bằng cấu trúc UnionDefine, và ta cần thể hiện các bộ biến đó bằng một cấu trúc dữ liệu ở ngôn ngữ cấp cao của mã đầu ra. Như đã phân tích từ trước ở chương \ref{sec:gioithieu}, cấu trúc dữ liệu đó là union. Hình \ref{fig:uniondefinemapping} thể hiện việc chuyển đổi của class UnionDefine sang cấu trúc union. Và vì ở mã assembly, các bộ biến có giá trị trên toàn bộ chương trình chứ không chỉ riêng một nhãn nào, nên khi chuyển về mã C, ta cũng cần thêm danh sách các union này vào biến toàn cục (global) của chương trình đầu ra.
 
 \begin{figure}
 \centering
@@ -112,37 +112,44 @@ Các bộ biến được khai báo được lưu bằng cấu trúc UnionDefine
 
 Sau khi sinh ra các union như trên, ta cần tiến hành thực hiện các thay thế sau:
 \begin{itemize}
-\item Thay thế các biểu thức thể hiện biến bit dưới dạng thanh ghi độc lập thành một biểu thức truy xuất đến một thành phần của union tương ứng với bộ biến mà biến bit đó thuộc về. Vì ở giai đoạn giải mã, ta không thực hiện kiểm tra biến nào là biến bit, biến nào là biến byte, nên ta sẽ xem tất cả các biến như những thanh ghi độc lập nhau. Sau khi đã trải qua các quá trình phân tích và sinh ra các union, ta cần thay thế để thể hiện rõ mối liên hệ giữa biến bit và biến byte.
-
-\item Thay thế các biểu thức truy xuất trực tiếp bit của thanh ghi ACC thành biểu thức truy xuất đến một thành phần của union tương ứng với bộ biến chứa biến byte mà thanh ghi ACC đang mang giá trị trỏ đến. Vì một số lý do, có đôi khi người lập trình viên không sử dụng biến bit mà sử dụng một truy xuất trực tiếp đến bit trong thanh ghi ACC, ví dụ như: ACC.1. Với trường hợp này, vì ta đã có trong tay bộ biến và giá trị của biến byte thanh ghi ACC đang được trỏ đến, ta sẽ thay thế để đoạn mã đầu ra thống nhất hơn, và có thể tiến hành bước thay thế thanh ghi ACC được trình bày bên dưới. Lưu ý: trong giai đoạn giải mã, ghi gặp biểu thức ACC.x, trình giải mã sẽ chuyển chúng về một thanh ghi đặc biệt có tên là specbitsx, với x là số thứ tự của bit muốn truy xuất (xem ví dụ đoạn mã \ref{list:listbeforereplacebit}).
-\begin{lstlisting}[caption={Mã đầu ra trước khi thực hiện bước thay thế biến bit},label={list:listbeforereplacebit}, language = c]
+\item Thay thế các biểu thức thể hiện biến bit dưới dạng thanh ghi độc lập thành một biểu thức truy xuất đến một thành phần của union tương ứng với bộ biến mà biến bit đó thuộc về. Vì ở giai đoạn giải mã, ta không thực hiện kiểm tra biến nào là biến bit, biến nào là biến byte, nên ta sẽ xem tất cả các biến như những thanh ghi độc lập nhau. Sau khi đã trải qua các quá trình phân tích và sinh ra các union, ta cần thay thế để thể hiện rõ mối liên hệ giữa biến bit và biến byte. Ví dụ như ở đoạn mã \ref{list:listbeforereplacebitvar}, biến bit \textit{TESTSUPS} vẫn đang được xem như là một biến độc lập ở mã đầu ra, và cần phải thay thế nó bằng một truy xuất tới union mang tên biến byte cùng bộ, trong trường hợp này là \textit{OPTIONS}. Kết quả của bước thay thế này được thể hiện ở đoạn mã \ref{list:listafterreplacebitvar}.
+\begin{lstlisting}[caption={Mã đầu ra trước khi thực hiện các bước thay thế},label={list:listbeforereplacebitvar}, language = c]
+a = *OPTIONS;
 TESTSUPS = 1;
-if (specbits5 == 1){
+if (specbits1 == 1){
 ...
 }
+return a;
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Mã đầu ra sau khi thực hiện bước thay thế biến bit},label={list:listafterreplacebit}, language = c]
+\begin{lstlisting}[caption={Mã đầu ra sau khi thực hiện bước thay thế biến bit},label={list:listafterreplacebitvar}, language = c]
+a = *OPTIONS;
+OPTIONS.bits.TESTSUPS = 1;
+if (specbits1 == 1){
+...
+}
+return a;
+\end{lstlisting}
+\item Thay thế các biểu thức truy xuất trực tiếp bit của thanh ghi ACC thành biểu thức truy xuất đến một thành phần của union tương ứng với bộ biến chứa biến byte mà thanh ghi ACC đang mang giá trị trỏ đến. Vì một số lý do, có đôi khi người lập trình viên không sử dụng biến bit mà sử dụng một truy xuất trực tiếp đến bit trong thanh ghi ACC, ví dụ như: ACC.1. Với trường hợp này, vì đã có dữ liệu các bộ biến và giá trị của biến byte thanh ghi ACC đang được trỏ đến, các đoạn mã truy xuất biến bit trực tiếp sẽ được thay thế để đoạn mã đầu ra thống nhất hơn, và có thể tiến hành bước thay thế thanh ghi ACC được trình bày bên dưới. Lưu ý: trong giai đoạn giải mã, ghi gặp biểu thức ACC.x, trình giải mã sẽ chuyển chúng về một thanh ghi đặc biệt có tên là specbitsx, với x là số thứ tự của bit muốn truy xuất như ở đoạn mã \ref{list:listbeforereplacebitvar}. Tiếp tục ví dụ nêu trên, sau khi đã thay thế các biến bit, thì các truy xuất trực tiếp tới bit của thanh ghi cũng sẽ được thay thế bằng các biểu thức gọi thành phần của union tương ứng. Kết quả là đoạn mã \ref{list:listafterreplacebit}, biến bit đặc biệt specbits1 đã được thay thế thành biểu thức OPTIONS.bits.bit1.
+
+\begin{lstlisting}[caption={Mã đầu ra sau khi thực hiện bước thay thế truy xuất đặc biệt đến bit của thanh ghi ACC},label={list:listafterreplacebit}, language = c]
+a = *OPTIONS;
 OPTIONS.bits.TESTSUPS = 1;
 if (OPTIONS.bits.bit1 == 1){
 ...
 }
-\end{lstlisting}
-\item Thay thế các vị trí sử dụng thanh ghi ACC bằng biến byte tương ứng. Khi lập trình ở dạng mã assembly, lập trình viên không được phép xử lý các vùng nhớ trực tiếp mà phải thông qua thanh ghi, tuy nhiên, khi đã chuyển đổi về dạng ngôn ngữ cấp cao, ta có thể sử dụng trực tiếp tên biến trong các câu lệnh mà không cần trung gian qua thanh ghi nữa. Điều này giúp mã đầu ra dễ hiểu và trong sáng hơn.
-
-\begin{lstlisting}[caption={Mã đầu ra trước khi thực hiện bước thay thế thanh ghi ACC},label={list:listbeforereplace}]
-a = *OPTIONS;
-OPTIONS.bits.TESTSUPS1 = 1;
 return a;
 \end{lstlisting}
-\begin{lstlisting}[caption={Mã đầu ra sau khi thực hiện bước thay thế thanh ghi ACC},label={list:listafterreplace}]
-OPTIONS.bits.TESTUPS1 = 1;
+\item Thay thế các vị trí sử dụng thanh ghi ACC bằng biến byte tương ứng. Khi lập trình ở dạng mã assembly, lập trình viên không được phép xử lý các vùng nhớ trực tiếp mà phải thông qua thanh ghi, tuy nhiên, khi đã chuyển đổi về dạng ngôn ngữ cấp cao, ta có thể sử dụng trực tiếp tên biến trong các câu lệnh mà không cần trung gian qua thanh ghi nữa. Điều này giúp mã đầu ra ngắn gọn, dễ hiểu và trong sáng hơn. Đoạn mã \ref{list:listafterreplaceacc} là kết quả sau khi thực hiện bước thay thế này. Dễ dàng thấy đoạn mã đã gọn hơn rất nhiều do loại bỏ được câu lệnh gán cho biến a, và thay thế biến a ở câu lệnh return thành truy xuất OPTIONS.byte. Vì thực chất a cũng đang mang giá trị vùng nhớ của OPTIONS, nên đoạn mã này hoàn toàn tương đương với đoạn mã ở \ref{list:listafterreplacebit}.
+
+\begin{lstlisting}[caption={Mã đầu ra sau khi thực hiện bước thay thế thanh ghi ACC},label={list:listafterreplaceacc}, language = c]
+OPTIONS.bits.TESTSUPS = 1;
+if (OPTIONS.bits.bit1 == 1){
+...
+}
 return OPTIONS.byte;
 \end{lstlisting}
 \end{itemize}
-
-
-
 
 
 \section{Kiểm tra kết quả luận văn trên Boomerang}
