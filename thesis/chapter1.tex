@@ -52,7 +52,7 @@ Trong bộ biến này, \textit{OPTIONS} được gọi là \textbf{biến byte}
 	\item Mỗi biến bit chỉ thuộc một bộ duy nhất. Nói cách khác, nếu mỗi thời điểm sử dụng biến bit, thanh ghi \textit{ACC} đang mang giá trị của nhưng vùng nhớ khác nhau, thì việc sử dụng này đã vi phạm nguyên tắc.
 	\item Tại mỗi vị trí bit của một bộ biến chỉ có một biến bit duy nhất tồn tại. Một ví dụ vi phạm nguyên tắc này là ở đoạn mã \ref{list:illegalexam}. Khi thanh ghi \textit{ACC} đang mang giá trị vùng nhớ quy định bởi \textit{OPTIONS}, có hai biến bit cùng truy xuất đến bit đầu tiên của vùng nhớ được sử dụng là \textit{TESTSUPS} và \textit{TESTSUPS1}. Như vậy, ta không thể chọn được biến bit nào sẽ đại diện cho bit đầu tiên của vùng nhớ giữa hai biến trên.
 	\begin{lstlisting}[caption={Một ví dụ vi phạm nguyên tắc sử dụng bộ biến},label={list:illegalexam}]
-	#DEFINE OPTIONS #38H
+	#DEFINE OPTIONS #38H 
 	#DEFINE TESTSUPS ACC.1
 	#DEFINE TESTSUPS1 ACC.1
 	

@@ -149,7 +149,7 @@ Như vậy, sau giai đoạn parser, ta đã thu được bộ biến theo khai 
 \subsection{Xác định giá trị kiểu của thanh ghi \textit{ACC} tại mỗi điểm của chương trình}
 Để kiểm tra được nguyên tắc sử dụng bộ biến, trước hết, ta phải biết được tại mỗi thời điểm của chương trình, thanh ghi \textit{ACC} đang mang giá trị gì. Có hai phương pháp phân tích được áp dụng trong giải pháp này, đó là Reaching definitions kết hợp phần mở rộng và Type propagation.
 \subsubsection{Phân tích Reaching definitions kết hợp phần mở rộng}
-Mục đích của phân tích Reaching definitions là biết được ở một thời điểm của chương trình, các câu lệnh khai báo nào đang còn hiệu lực, hay nói cách khác là gía trị của các biến đang được khai báo bởi những câu lệnh nào. Phần mở rộng của Reaching definition sẽ giúp xử lý thêm một số trường hợp, khi thanh ghi được truyền giá trị thông qua một thanh ghi trung gian khác.
+Mục đích của phân tích Reaching definitions là biết được ở một thời điểm của chương trình, các câu lệnh khai báo nào đang còn hiệu lực, hay nói cách khác là gía trị của các biến đang được khai báo bởi những câu lệnh nào. Phần mở rộng của Reaching definitions sẽ giúp xử lý thêm một số trường hợp, khi thanh ghi được truyền giá trị thông qua một thanh ghi trung gian khác.
 \begin{figure}
 	\centering
 	\includegraphics[scale=0.75]{image/reachingDefExam}
@@ -202,7 +202,7 @@ Khuyết điểm lớn nhất của phân tích Reaching definitions chỉ cho b
 \begin{lstlisting}[caption={Một số câu lệnh gán mà phương pháp Suy luận kiểu sử dụng Reaching definitions không xử lý được},label={list:listhardcase}]
 MOV A, 38H #1
 MOV A, @DPTR #2
-MOV A, OPTION+1 #2
+MOV A, OPTION+1 #3
 \end{lstlisting}
 Các trường hợp phức tạp nêu trên được trình bày trong đoạn mã \ref{list:listhardcase}. 
 Phương pháp Reaching definitions sẽ không thể xử lý được khi gặp các câu lệnh gán này. Ở câu lệnh số 1, phân tích có thể lấy được giá trị \textbf{38H}, nhưng không thể xác định được biến byte nào đã được khai báo giá trị \textbf{38H}. Ở câu lệnh số 2, Reaching definitions không thể biết được giá trị của thanh ghi \textit{DPTR} là bao nhiêu. Ở câu lệnh số 3, việc xử lý lại càng phức tạp hơn, vì nếu chỉ đơn giản lấy vế phải của khai báo ra, không thể nào biết được giá trị thực sự của nó là bao nhiêu.
@@ -226,12 +226,12 @@ TESTSUPS = 1;
 	\label{fig:reachdefextendalgo}
 \end{figure}
 
-Theo giải thuật nêu trên, để tìm được giá trị của thanh ghi \textit{ACC} tại một thời điểm của chương trình, cần truyền vào hàm \textit{findRegValue} tên thanh ghi ("ACC"), giá trị true để hàm biết đang tìm kiếm giá trị cho thanh ghi \textit{ACC}, tập REACHin tại thời điểm đó của chương trình và danh sách các cặp tên biến - giá trị biến được khai báo ở phần đầu của mã đầu vào. Qua các bước của giải thuật, hàm sẽ trả về giá trị là biến byte quy định vùng nhớ được load dữ liệu vào \textit{ACC} nếu tìm được biến này, còn nếu trả về giá trị \textbf{NULL}, nghĩa là giải thuật đã gặp phải trường hợp không xử lý được, đó là trường hợp biểu thức vế phải gồm hai toán hạng (câu lệnh số 3 của đoạn mã \ref{list:listhardcase}).
+Theo giải thuật nêu trên, để tìm được giá trị của thanh ghi \textit{ACC} tại một thời điểm của chương trình, cần truyền vào hàm \textit{findRegValue} tên thanh ghi ("ACC"), giá trị true để hàm biết đang tìm kiếm giá trị cho thanh ghi \textit{ACC}, tập \textit{REACHin} tại thời điểm đó của chương trình và danh sách các cặp tên biến - giá trị biến được khai báo ở phần đầu của mã đầu vào. Qua các bước của giải thuật, hàm sẽ trả về giá trị là biến byte quy định vùng nhớ được load dữ liệu vào \textit{ACC} nếu tìm được biến này, còn nếu trả về giá trị \textbf{NULL}, nghĩa là giải thuật đã gặp phải trường hợp không xử lý được, đó là trường hợp biểu thức vế phải gồm hai toán hạng (câu lệnh số 3 của đoạn mã \ref{list:listhardcase}).
 
 Tuy đã xử lý được hầu hết các trường hợp của phép gán cho \textit{ACC}, nhưng việc có thêm một phần mở rộng này sẽ làm cho tốc độ xử lý trình dịch ngược giảm đi. Cộng thêm việc bản thân giải thuật Reaching definitions đã có độ phức tạp cao, tổng thời gian xử lý cho bước này của trình dịch ngược là khá lớn. Vì vậy, một phương pháp phân tích khác đã được thực hiện để tìm ra giá trị của thanh ghi \textit{ACC} với độ phức tạp thấp hơn.
 
 \subsubsection{Phân tích Type propagation}
-Phân tích Type propagation có mục đích sẽ tìm ra được kiểu của một thanh ghi bằng cách lan truyền kiểu của những thanh ghi khác. Áp dụng vào trường hợp cụ thể của luận văn, các tên biến byte có thể được xem là một kiểu, vì khi chuyển đổi bộ biến thành một kiểu union ở ngôn ngữ cấp cao, tên biến byte này sẽ được dùng để đặt tên cho kiểu union đó. Như vậy, tác dụng của phân tích Type propagation này là tìm ra được thanh ghi ACC đang mang kiểu union nào tại một thời điểm của chương trình. Các bước của giải thuật phân tích Type propagation được trình bày ở hình \ref{fig:typepropagationalgo}
+Phân tích Type propagation có mục đích sẽ tìm ra được kiểu của một thanh ghi bằng cách lan truyền kiểu của những thanh ghi khác. Áp dụng vào trường hợp cụ thể của luận văn, các tên biến byte có thể được xem là một kiểu, vì khi chuyển đổi bộ biến thành một kiểu union ở ngôn ngữ cấp cao, tên biến byte này sẽ được dùng để đặt tên cho kiểu union đó. Như vậy, tác dụng của phân tích Type propagation này là tìm ra được thanh ghi \textit{ACC} đang mang kiểu union nào tại một thời điểm của chương trình. Các bước của giải thuật phân tích Type propagation được trình bày ở hình \ref{fig:typepropagationalgo}.
 
 \begin{figure}
 	\centering
@@ -240,14 +240,14 @@ Phân tích Type propagation có mục đích sẽ tìm ra được kiểu của
 	\label{fig:typepropagationalgo}
 \end{figure}
 
-Trong giải thuật đã trình bày ở trên, không xét đến trường hợp một biến được khai báo lại nhiều lần và tại mỗi thời điểm sẽ có giá trị khác nhau là do tận dụng được mã trung gian SSA. Hầu hết các trình dịch ngược đều sử dụng mã SSA tại một giai đoạn nào đó trong quá trình phân tích dữ liệu vì các lợi ích của loại mã này (chi tiết về mã SSA được trình bày trong phần \ref{ssa}). Với mã SSA, mỗi biến chỉ được khai báo một lần duy nhất trong chương trình, nên không bị ảnh hưởng bởi trường hợp khai báo lại biến.\\
+Trong giải thuật đã trình bày ở trên, không xét đến trường hợp một biến được khai báo lại nhiều lần và tại mỗi thời điểm sẽ có giá trị khác nhau là do tận dụng được mã trung gian \textit{SSA}. Hầu hết các trình dịch ngược đều sử dụng mã \textit{SSA} tại một giai đoạn nào đó trong quá trình phân tích dữ liệu vì các lợi ích của loại mã này (chi tiết về mã \textit{SSA} được trình bày trong phần \ref{ssa}). Với mã \textit{SSA}, mỗi biến chỉ được khai báo một lần duy nhất trong chương trình, nên không bị ảnh hưởng bởi trường hợp khai báo lại biến.\\
 
 Như vậy, phương pháp Type propagation này sẽ làm giảm đáng kể thời gian xử lý của chương trình so với phương pháp Reaching definitions. Khi có một thay đổi nào đó, chương trình phân tích chỉ cần tính toán lại các câu lệnh khai báo chịu ảnh hưởng của sự thay đổi đó, chứ không cần phải tính toán lại hết tất cả các câu lệnh như giải thuật của Reaching definitions. Phương pháp này cũng không cần một phần mở rộng mà ngay trong quá trình lan truyền, nó đã tính toán được các trường hợp biểu thức vế phải của khai báo là một thanh ghi hoặc một hằng số. Khuyết điểm của Type propagation là vẫn chưa xử lý được trường hợp biểu thức vế phải có hai toán hạng. Để giải quyết được vấn đề này, cần có một phân tích khác mạnh hơn và phân tích đó sẽ được giới thiệu ở chương tiếp theo.
 \subsection{Kiểm tra tính hợp lệ về kiểu của tác vụ với bit}
 
 \label{sec:laststep}
 
-Sau khi đã tìm được thông tin về kiểu của thanh ghi ACC tại mỗi điểm của chương trình, bước tiếp theo của giải pháp Kiểm tra kiểu là kiểm tra tính hợp lệ khi sử dụng các biến bit. Như đã trình bày ở phần \ref{sec:problem}, việc sử dụng các biến byte - biến bit trong mã chương trình 8051 cần tuân thủ các quy định sau:
+Sau khi đã tìm được thông tin về kiểu của thanh ghi \textit{ACC} tại mỗi điểm của chương trình, bước tiếp theo của giải pháp Kiểm tra kiểu là kiểm tra tính hợp lệ khi sử dụng các biến bit. Như đã trình bày ở phần \ref{sec:problem}, việc sử dụng các \textbf{biến byte - biến bit} trong mã chương trình 8051 cần tuân thủ các quy định sau:
 \begin{itemize}
 	\item Chỉ khi thanh ghi \textit{ACC} đang mang giá trị của vùng nhớ có địa chỉ quy định bởi biến byte, thì các biến bit cùng bộ mới được sử dụng.
 	\item Mỗi biến bit chỉ thuộc một bộ duy nhất. 
@@ -263,48 +263,7 @@ Như vậy, ở phần này, chương trình sẽ chạy vòng lặp kiểm tra 
 Nếu có một câu lệnh sử dụng bit nào đó vi phạm nguyên tắc trên, chương trình kiểm tra vẫn tiếp tục chạy để kiểm tra những câu lệnh sau đó. Điều này giúp người lập trình biết được tất cả các lỗi trong chương trình đầu vào của mình để có sự chỉnh sửa phù hợp. Tuy nhiên, khi có vi phạm xảy ra, trình dịch ngược sẽ không sinh được mã đầu ra, vì không có cách thể hiện union phù hợp.
 
 %đoạn mã và output của trình dịch ngược khi vi phạm nguyên tắc sử dụng
-\begin{comment}
-Kết thúc quá trình kiểm tra lỗi, nếu không có vi phạm nào xảy ra, trình dịch ngược sẽ tiến hành sinh ra thêm một số khai báo cho bộ biến, cũng như thực hiện các thay thế cần thiết. Các bộ biến được khai báo được lưu bằng cấu trúc UnionDefine, và ta cần thể hiện các bộ biến đó bằng một cấu trúc dữ liệu ở ngôn ngữ cấp cao của mã đầu ra. Như đã phân tích từ trước ở chương \ref{sec:gioithieu}, cấu trúc dữ liệu đó là union. Hình \ref{fig:uniondefinemapping} thể hiện việc chuyển đổi của class UnionDefine sang cấu trúc union.
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\linewidth]{image/unionDefineMapping}
-	\caption{Hình minh hoạ việc chuyển đổi từ class UnionDefine sang cấu trúc union ở mã đầu ra}
-	\label{fig:uniondefinemapping}
-\end{figure}
-
-Sau khi sinh ra các union như trên, ta cần tiến hành thực hiện các thay thế sau:
-\begin{itemize}
-	\item Thay thế các biểu thức thể hiện biến bit dưới dạng thanh ghi độc lập thành một biểu thức truy xuất đến một thành phần của union tương ứng với bộ biến mà biến bit đó thuộc về. Vì ở giai đoạn giải mã, ta không thực hiện kiểm tra biến nào là biến bit, biến nào là biến byte, nên ta sẽ xem tất cả các biến như những thanh ghi độc lập nhau. Sau khi đã trải qua các quá trình phân tích và sinh ra các union, ta cần thay thế để thể hiện rõ mối liên hệ giữa biến bit và biến byte.
-	
-	\item Thay thế các biểu thức truy xuất trực tiếp bit của thanh ghi ACC thành biểu thức truy xuất đến một thành phần của union tương ứng với bộ biến chứa biến byte mà thanh ghi ACC đang mang giá trị trỏ đến. Vì một số lý do, có đôi khi người lập trình viên không sử dụng biến bit mà sử dụng một truy xuất trực tiếp đến bit trong thanh ghi ACC, ví dụ như: ACC.1. Với trường hợp này, vì ta đã có trong tay bộ biến và giá trị của biến byte thanh ghi ACC đang được trỏ đến, ta sẽ thay thế để đoạn mã đầu ra thống nhất hơn, và có thể tiến hành bước thay thế thanh ghi ACC được trình bày bên dưới. Lưu ý: trong giai đoạn giải mã, ghi gặp biểu thức ACC.x, trình giải mã sẽ chuyển chúng về một thanh ghi đặc biệt có tên là specbitsx, với x là số thứ tự của bit muốn truy xuất (xem ví dụ đoạn mã \ref{list:listbeforereplacebit}).
-	\begin{lstlisting}[caption={Mã đầu ra trước khi thực hiện bước thay thế biến bit},label={list:listbeforereplacebit}, language = c]
-	TESTSUPS = 1;
-	if (specbits5 == 1){
-		 ...
-	}
-	\end{lstlisting}
-	
-	\begin{lstlisting}[caption={Mã đầu ra sau khi thực hiện bước thay thế biến bit},label={list:listafterreplacebit}, language = c]
-	OPTIONS.bits.TESTSUPS = 1;
-	if (OPTIONS.bits.bit1 == 1){
-		...
-	}
-	\end{lstlisting}
-\item Thay thế các vị trí sử dụng thanh ghi ACC bằng biến byte tương ứng. Khi lập trình ở dạng mã assembly, lập trình viên không được phép xử lý các vùng nhớ trực tiếp mà phải thông qua thanh ghi, tuy nhiên, khi đã chuyển đổi về dạng ngôn ngữ cấp cao, ta có thể sử dụng trực tiếp tên biến trong các câu lệnh mà không cần trung gian qua thanh ghi nữa. Điều này giúp mã đầu ra dễ hiểu và trong sáng hơn.
-
-\begin{lstlisting}[caption={Mã đầu ra trước khi thực hiện bước thay thế thanh ghi ACC},label={list:listbeforereplace}]
-a = *OPTIONS;
-OPTIONS.bits.TESTSUPS1 = 1;
-return a;
-\end{lstlisting}
-\begin{lstlisting}[caption={Mã đầu ra sau khi thực hiện bước thay thế thanh ghi ACC},label={list:listafterreplace}]
-OPTIONS.bits.TESTUPS1 = 1;
-return OPTIONS.byte;
-\end{lstlisting}
-\end{itemize}
-
-\end{comment}
 Như vậy, với giải pháp Kiểm tra kiểu, ta đã có sẵn thông tin về bộ biến ngay từ đầu và chỉ cần kiểm tra xem người lập trình có tuân thủ đúng quy tắc không trước khi sinh ra mã ở ngôn ngữ cấp cao. Giải pháp này yêu cầu can thiệp vào trình dịch ngược ít và hiện thực dễ dàng. Tuy nhiên, giải pháp còn nhiều hạn chế như phương pháp phân tích dữ liệu chưa đạt độ chính xác cao, cần người dùng phải chỉnh sửa lại chú thích theo mẫu quy định... Chính vì vậy, giai đoạn sau của luận văn đã phát triển một hướng tiếp cận mới có độ chính xác cao hơn và không cần chỉnh sửa mã đầu vào của người dùng, đó là giải pháp Suy luận kiểu. Giải pháp này sẽ được trình bày ở chương tiếp theo.
 
 

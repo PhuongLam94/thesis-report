@@ -1,8 +1,153 @@
-\chapter{Kiểm thử}
+\chapter{Kiểm tra kết quả}
 
-Bất kỳ một sản phẩm nào đều cần phải được kiểm tra trước khi công bố, luận văn này cũng không phải là một ngoại lệ. Để đảm bảo chất lượng được đánh giá một các khách quan nhất, một hệ thống testcase với các loại tình huống được phân bổ một cách khoa học nhất sẽ được đưa ra, sau đó cho chạy thử qua cả 2 giải pháp của luận văn. Phần một của chương này sẽ trình bày về các testcase đó, phần hai sẽ trình bày cách kiểm tra chúng trên 2 giải pháp, và phần cuối sẽ là kết quả kiểm tra.
+Bất kỳ một sản phẩm nào đều cần phải được kiểm tra trước khi công bố, luận văn này cũng không phải là một ngoại lệ. Để đảm bảo chất lượng được đánh giá một các khách quan nhất, một hệ thống testcase với các loại tình huống được phân bổ một cách khoa học sẽ được đưa ra, sau đó cho chạy thử qua cả 2 hướng tiếp của luận văn để so sánh. Tuy nhiên, để chạy được các giải pháp của luận văn, cần chọn một trình dịch ngược sẵn có và chỉnh sửa, hiện thực giải pháp trên đó. Trình dịch ngược được chọn là Boomerang như đã trình bày ở phần \ref{sec:whyboom}. Phần đầu của chương này sẽ trình bày các thiết lập cần thiết trên Boomerang để hiện thực giải pháp. Phần tiếp theo đề ra phương pháp kiểm thử bao gồm cách lập testcase và kết quả chạy thử testcase trên các giải pháp.
 
-\section{Hệ thống testcase}
+\section{Thiết lập Boomerang}
+
+\label{sec:boomchange}
+Ở phần \ref{sec:whyboom}, một bảng đánh giá các trình dịch ngược hiện tại đã được đưa ra để có sự lựa chọn chính xác nhất trình dịch ngược sẽ được dùng để hiện thực giải pháp. Boomerang được chọn vì cấu trúc của nó được tổ chức theo kiểu module, nên dễ dàng chỉnh sửa và thêm mới tính năng, ngoài ra các thuật toán phân tích dữ liệu của Boomerang rất mạnh, đảm bảo mã đầu ra đạt chất lượng cao. Tuy nhiên, để hiện thực các thuật toán của luận văn, cần có các chỉnh sửa sau:
+\begin{itemize}
+	\item Xử lý để Boomerang giữ được tên biến được người dùng tự khai báo. Vì bản thân Boomerang là một trình dịch ngược từ mã máy, nên nó chỉ xử lý dữ liệu dưới dạng thanh ghi, các thanh ghi này phải được định nghĩa trước trong file đặc tả của từng kiến trúc máy.
+	\item Chỉnh sửa giai đoạn sinh mã của Boomerang. Các hướng tiếp cận đưa ra trong luận văn đề có kết quả cuối cùng là một danh sách các UnionDefine, trong đó lưu trữ các biến byte - biến bit cùng một bộ. Để đưa các UnionDefine này thành các cấu trúc union ở mã đầu ra, cần phải có một số thay đổi ở phần sinh mã của Boomerang
+\end{itemize}
+Các thay đổi này sẽ lần lượt được trình bày ở các phần dưới.
+
+\subsection{Thay đổi cơ chế quản lý tên dữ liệu của Boomerang}
+
+Vì ở mức độ mã máy, dữ liệu chỉ được lưu ở các thanh ghi cố định hoặc vùng nhớ được truy xuất bằng địa chỉ nên Boomerang không có cơ chế xử lý các biến được người dùng tạo ra ở mã assembly. Tuy nhiên, Boomerang vẫn có cơ chế để giữa được tên các thanh ghi đó ở đoạn mã đầu ra, nên cần tìm hiểu về cơ chế này và chỉnh sửa để nó linh hoạt chấp nhận tất cả các tên biến khác chứ không chỉ riêng tên thanh ghi.
+
+\subsubsection{Phương thức lưu trữ tên thanh ghi của Boomerang}
+Khi chuyển đổi từ mã assembly sang mã trung gian, Boomerang sẽ dùng một class con của Expr để biểu diễn thanh ghi. Cụ thể là class Location, và gọi phương thức static của class Location là Location::regOf(int num). Ta sẽ truyền vào phương thức này một con số đại diện cho thanh ghi đó. Cặp số - tên thanh ghi này được lưu vào một từ điển, để sau này khi thực hiện phân tích xong thì sẽ chuyển lại từ thanh ghi thành biến cục bộ.
+
+Trong phần giải mã từ mã assembly sang mã trung gian, có một hàm để map giữa tên thanh ghi và con số đại diện cho nó, đó là hàm map\_sfr(string name).
+\begin{lstlisting}[caption={Một số phần mã trong hàm map\_sfr},label={list:listmapsfr}]
+if (name == "R0") return 0;
+else if (name == "R1") return 1;
+else if (name == "R2") return 2;
+...
+else return -1;
+
+\end{lstlisting}
+
+Sau khi trải qua các quá trình phân tích và đến giai đoạn in ra mã đầu ra, trình dịch ngược sẽ gọi hàm getRegName trong class FrontEnd để trả lại tên ban đầu của thanh ghi. Trong hàm getRegName sẽ lấy từ điển tên thanh ghi - số đại diện được quy định sẵn của mỗi phần giải mã cho các kiến trúc máy khác nhau, tìm tên thanh ghi tương ứng với con số đó và trả về.
+\begin{lstlisting}[caption={Phần mã trong hàm getRegName},label={list:listgetregname}]
+std::map<std::string, int, std::less<std::string> >::iterator it;
+for (it = decoder->getRTLDict().RegMap.begin();	 it != decoder->getRTLDict().RegMap.end(); it++)
+if ((*it).second == idx) 
+return (*it).first.c_str();
+return NULL;
+\end{lstlisting}
+
+
+Như vậy, có thể thấy với các tên biến không được quy định trước, hàm map\_sfr sẽ trả về giá trị -1, và vì giá trị -1 sẽ không có trong từ điển của phần giải mã, nên hàm getRegName sẽ trả về NULL, dẫn đến trình dịch ngược sẽ bị lỗi runtime và dừng ngay lập tức.\\
+
+%lấy mã Boomerang ban đầu về, hiện kết quả khi sử dụng biến đầu vào
+
+\subsubsection{Chỉnh sửa phương thức trên để chấp nhận tên biến tự khai báo}
+Vì số lượng tên biến là rất nhiều, nên ta không thể sử dụng phương pháp thêm mới các tên biến vào từ điển được quy định sẵn được, mà phải có cách để trình dịch ngược linh động hơn, chấp nhận bất kỳ các tên nào được sử dụng trong mã assembly. Giải pháp đưa ra là ngoài việc sử dụng từ điển thanh ghi được quy định sẵn, ta sẽ lập thêm một bảng tên biến, thành phần bao gồm các cặp tên biến - số đại diện. Trong giai đoạn giải mã, khi hàm map\_sfr được gọi, nếu tên truyền vào nằm trong các thanh ghi đã quy định sẵn, thay vì trả về giá trị -1 thì ta sẽ tạo ra một giá trị random và đưa chúng vào bảng tên biến ở trên. Ngoài ra, còn có một đoạn mã kiểm tra biến được sử dụng đã được khai báo bằng câu lệnh \#DEFINE chưa (ngoại trừ một số biến đặc biệt được tự sinh). \\
+\begin{lstlisting}[caption={Phần mã mới được bổ sung trong hàm map\_sfr},label={list:listmapsfrnew},language=c++]
+bool isDefined = false;
+map<char*, AssemblyArgument*>::iterator it;
+for (it = replacement.begin(); it!=replacement.end(); it++){
+if(strcmp((*it).first, name.c_str()) == 0 ){
+isDefined = true;
+break;
+}
+}
+if (isDefined || name.find("specbits") != string::npos ){
+if (symbolTable->find(name) == symbolTable->end()){
+bool existed = false;
+int num;
+do{
+num = std::rand()%200+31;
+map<string, int>::iterator it;
+for (it = symbolTable->begin(); it!=symbolTable->end(); it++){
+bool cond1 = (*it).second == num;
+bool cond2 = (byteVar != -1 && byteVar>=num);
+bool cond3 = (bit != -1 && bit>=num);
+if (cond1 || cond2 || cond3){
+existed = true;
+continue;
+} else {
+existed = false;
+}
+}
+} while (existed); 
+(*symbolTable)[name] = num;
+if (name.find("specbits") != string::npos){
+std::cout<<"Name: "<<name<<", "<<num<<endl;
+}
+return num;
+} else {
+return symbolTable->find(name)->second;
+}
+}
+else {
+std::cout<<"ERROR: "<<name<<" HAS NOT BEEN DEFINED YET"<<endl;
+exit(1);
+}
+\end{lstlisting}
+Tương ứng với sự thay đổi ở hàm map\_sfr,  ở hàm getRegName, ngoài việc dò trong từ điển quy định trước, ta sẽ thêm một đoạn mã để dò trong bảng tên biến. 
+\begin{lstlisting}[caption={Phần mã mới được bổ sung trong hàm getRegName},label={list:listgetregnamenew},language=c++]
+std::map<string,int>::iterator symIt;
+for (symIt = decoder->getSymbolTable().begin(); symIt != decoder->getSymbolTable().end(); symIt++){
+if ((*symIt).second == idx){
+return (*symIt).first.c_str();
+}
+}
+\end{lstlisting}
+Như vậy, vấn đề giữ nguyên tên biến được giải quyết mà không ảnh hưởng nhiều tới trình dịch ngược.
+%đoạn mã đầu vào assembly và mã đầu ra giữ nguyên được tên biến
+
+\subsection{Thêm trường hợp cấu trúc union vào đoạn sinh mã của Boomerang}
+
+Các bộ biến được khai báo được lưu bằng cấu trúc UnionDefine, và ta cần thể hiện các bộ biến đó bằng một cấu trúc dữ liệu ở ngôn ngữ cấp cao của mã đầu ra. Như đã phân tích từ trước ở chương \ref{sec:gioithieu}, cấu trúc dữ liệu đó là union. Hình \ref{fig:uniondefinemapping} thể hiện việc chuyển đổi của class UnionDefine sang cấu trúc union.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{image/unionDefineMapping}
+\caption{Hình minh hoạ việc chuyển đổi từ class UnionDefine sang cấu trúc union ở mã đầu ra}
+\label{fig:uniondefinemapping}
+\end{figure}
+
+Sau khi sinh ra các union như trên, ta cần tiến hành thực hiện các thay thế sau:
+\begin{itemize}
+\item Thay thế các biểu thức thể hiện biến bit dưới dạng thanh ghi độc lập thành một biểu thức truy xuất đến một thành phần của union tương ứng với bộ biến mà biến bit đó thuộc về. Vì ở giai đoạn giải mã, ta không thực hiện kiểm tra biến nào là biến bit, biến nào là biến byte, nên ta sẽ xem tất cả các biến như những thanh ghi độc lập nhau. Sau khi đã trải qua các quá trình phân tích và sinh ra các union, ta cần thay thế để thể hiện rõ mối liên hệ giữa biến bit và biến byte.
+
+\item Thay thế các biểu thức truy xuất trực tiếp bit của thanh ghi ACC thành biểu thức truy xuất đến một thành phần của union tương ứng với bộ biến chứa biến byte mà thanh ghi ACC đang mang giá trị trỏ đến. Vì một số lý do, có đôi khi người lập trình viên không sử dụng biến bit mà sử dụng một truy xuất trực tiếp đến bit trong thanh ghi ACC, ví dụ như: ACC.1. Với trường hợp này, vì ta đã có trong tay bộ biến và giá trị của biến byte thanh ghi ACC đang được trỏ đến, ta sẽ thay thế để đoạn mã đầu ra thống nhất hơn, và có thể tiến hành bước thay thế thanh ghi ACC được trình bày bên dưới. Lưu ý: trong giai đoạn giải mã, ghi gặp biểu thức ACC.x, trình giải mã sẽ chuyển chúng về một thanh ghi đặc biệt có tên là specbitsx, với x là số thứ tự của bit muốn truy xuất (xem ví dụ đoạn mã \ref{list:listbeforereplacebit}).
+\begin{lstlisting}[caption={Mã đầu ra trước khi thực hiện bước thay thế biến bit},label={list:listbeforereplacebit}, language = c]
+TESTSUPS = 1;
+if (specbits5 == 1){
+...
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Mã đầu ra sau khi thực hiện bước thay thế biến bit},label={list:listafterreplacebit}, language = c]
+OPTIONS.bits.TESTSUPS = 1;
+if (OPTIONS.bits.bit1 == 1){
+...
+}
+\end{lstlisting}
+\item Thay thế các vị trí sử dụng thanh ghi ACC bằng biến byte tương ứng. Khi lập trình ở dạng mã assembly, lập trình viên không được phép xử lý các vùng nhớ trực tiếp mà phải thông qua thanh ghi, tuy nhiên, khi đã chuyển đổi về dạng ngôn ngữ cấp cao, ta có thể sử dụng trực tiếp tên biến trong các câu lệnh mà không cần trung gian qua thanh ghi nữa. Điều này giúp mã đầu ra dễ hiểu và trong sáng hơn.
+
+\begin{lstlisting}[caption={Mã đầu ra trước khi thực hiện bước thay thế thanh ghi ACC},label={list:listbeforereplace}]
+a = *OPTIONS;
+OPTIONS.bits.TESTSUPS1 = 1;
+return a;
+\end{lstlisting}
+\begin{lstlisting}[caption={Mã đầu ra sau khi thực hiện bước thay thế thanh ghi ACC},label={list:listafterreplace}]
+OPTIONS.bits.TESTUPS1 = 1;
+return OPTIONS.byte;
+\end{lstlisting}
+\end{itemize}
+
+
+
+
+
+\section{Kiểm tra kết quả luận văn trên Boomerang}
+
+\subsection{Hệ thống testcase}
 Có các tiêu chí phân loại testcase như sau:
 \begin{itemize}
 	\item Loại biểu thức được gán vào thanh ghi ACC (tiêu chí I)
@@ -28,22 +173,40 @@ Tiêu chí II:
 
 Tiêu chí III:
 \begin{enumerate}
-	\item Không vi phạm nguyên tắc sử dụng. Nghĩa là: mỗi một biến bit chỉ được sử dụng khi thanh ghi ACC đang mang giá trị vùng nhớ có địa chỉ quy định bởi một biến byte duy nhất. Và không có hai biến bit nào cùng vị trí được sử dụng khi thanh ghi ACC đang mang giá trị của một biến byte nào đó.
-	\item Vi phạm nguyên tắc sử dụng. Một biến bit được sử dụng ở nhiều chỗ, trong các chỗ đó thanh ghi ACC mang giá trị của những biết byte khác nhau.
-	\item Vi phạm nguyên tắc sử dụng. Một biến bit được sử dụng ở một vị trí, tại vị trí đó thanh ghi ACC có thể mang giá trị của nhiều vùng nhớ khác nhau, không thể xác định trước khi thực thi chương trình.
-	\item Vi phạm nguyên tắc sử dụng. Một biến byte được sử dụng ở nhiều vị trí, sau câu lệnh gán biến byte, có 2 biến bit cùng một vị trí được sử dụng.
+	\item Không vi phạm các nguyên tắc sử dụng được giới thiệu ở chương đầu.
+	\item Vi phạm nguyên tắc sử dụng. Một biến bit thuộc nhiều bộ biến khác nhau như ví dụ ở đoạn mã \ref{ist:invalid1}, biến bit TESTUPS vừa thuộc bộ biến của biến byte OPTIONS, vừa thuộc bộ biến của biến byte OPTIONS2.
+	\begin{lstlisting}[caption={Đoạn mã có một biến bit thuộc nhiều bộ biến khác nhau},label={list:invalid1}]
+	MOV A, OPTIONS
+	SETB TESTSUPS
+	...
+	MOV A, OPTIONS2
+	JB TESTSUPS, BB
+	\end{lstlisting}
+	\item Vi phạm nguyên tắc sử dụng. Tại một thời điểm sử dụng biến bit, thanh ghi ACC có thể mang nhiều giá trị vùng nhớ khác nhau. Xem ví dụ ở đoạn mã \ref{list:invalid2}, ở câu lệnh cuối cùng, biến a có thể mang vùng nhớ của OPTIONS hoặc OPTIONS2, như vậy không thể xác định được TESTSDOWNS thuộc bộ biến nào.
+	\begin{lstlisting}[caption={Đoạn mã ACC có thể mang nhiều giá trị vùng nhớ khác nhau},label={list:invalid2}, language=c++]
+	if (TESTSUPS == 1)
+		a = *OPTIONS;
+	else
+		a = *OPTIONS2;
+	TESTSDOWNS = 0;
+	\end{lstlisting}
+	\item Vi phạm nguyên tắc sử dụng. Ghi nhận được có hai biến bit cùng một vị trí chung bộ với một biến byte như ở đoạn mã \ref{list:invalid3}, biến TESTSUPS và TESTSDOWNS đều được sử dụng như là bit đầu tiên của vùng nhớ quy định bởi biến byte OPTIONS.
+	\begin{lstlisting}[caption={Đoạn mã có 2 biến bit cùng một vị trí và đều được ghi nhận cùng bộ với một biến byte},label={list:invalid3}]
+	...
+	#DEFINE TESTSUPS, ACC.1
+	#DEFINE TESTSDOWNS, ACC.1
+	...
+	MOV A, OPTIONS
+	SETB TESTSUPS
+	...
+	MOV A, OPTIONS
+	CLR TESTSDOWNS
+	\end{lstlisting}
 \end{enumerate}
 
-Dựa vào các tiêu chí và trường hợp trên, ta sẽ có tổng cộng 5x2x4 = 40 loại testcase. Ngoài ra, sẽ có một testcase phức tạp được lấy từ một đoạn chương trình thực của doanh nghiệp được đưa vào kiểm thử, nhằm đảm bảo tính thực tế của luận văn này.\\
+Dựa vào các tiêu chí và trường hợp trên, có tổng cộng 5x2x4 = 40 loại testcase, mỗi loại testcase sẽ có một testcase đại diện. Ngoài ra, sẽ có một testcase phức tạp được lấy từ một đoạn chương trình thực của doanh nghiệp được đưa vào kiểm thử, nhằm đảm bảo tính thực tế của luận văn này. Như vậy, tổng cộng có 41 testcase sẽ được chạy thử trên kết quả hiện thực luận văn.\\
 
-%bảng phân bổ số lượng testcase
-
-\section{Phương thức kiểm thử}
-Vì số lượng testcase không quá lớn, và output ra của trình dịch ngược có khá nhiều thông tin khác ngoài phạm vi luận văn, nên ta sẽ dùng cách kiểm tra bằng tay. Hai bộ source code sẽ được đưa vào vòng lặp, chạy từ testcase 1 đến testcase 50. Output ở console sẽ được lưu vào file có định dạng [số thứ tự testcase]console.txt và đoạn mã đầu ra (nếu có) sẽ được lưu vào file có định dạng [số thứ tự testcase]code.txt. Sau đó người viết sẽ trực tiếp kiểm tra hai file này để xác định kết quả có đúng như mong muốn hay không. \\
-
-%ví dụ đoạn mã đầu vào và 2 file output
-
-\section{Kết quả chạy thử}
+\subsection{Kết quả chạy thử}
 
 Kết quả chạy thử của 2 phương pháp được thể hiện ở bảng dưới.\\
 

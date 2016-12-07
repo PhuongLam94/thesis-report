@@ -139,7 +139,7 @@ Với tính chất của mã SSA, việc lan truyền biểu thức và loại b
 Việc loại bỏ mã chết cũng có thể thực hiện dễ dàng nhờ vào hành động thu thập thông tin về định nghĩa và sử dụng của một biến. Trong quá trình biến đổi từ mã RTL sang SSA, ta có thể xây dựng nên một bảng vị trí câu lệnh gán của một biến và vị trí các câu lệnh sử dụng biến đó. Trải qua các quá trình phân tích, nhất là lan truyền biểu thức, bảng này sẽ được cập nhật lại. Đến cuối cùng, các biến được định nghĩa nhưng không được sử dụng ở bất kỳ câu lệnh nào sẽ được xác định và loại bỏ các câu lệnh gán dư thừa đi.\\
 
 \section{Tình hình phát triển trình dịch ngược hiện nay}
-
+\label{sec:whyboom}
 Hiện nay, có rất nhiều trình dịch ngược đã và đang được phát triển. Hầu hết đều hỗ trợ việc dịch ngược từ mã máy và có thể chia làm hai loại: trình dịch ngược nhận đầu vào là mã máy chạy trên máy ảo (ví dụ: mã máy được dịch từ các chương trình viết bằng Java, C\#) và trình dịch ngược nhận đầu vào là mã máy chạy trên máy thật. Loại thứ nhất có số lượng nhiều hơn, lý do có thể vì mã máy ảo còn lưu giữ được khá nhiều thông tin từ chương trình gốc, điển hình như tên biến toàn cục (xem hình \ref{fig:ilspy}). Vì vậy, bài toán cần giải quyết để xây dựng một trình dịch ngược dạng này không nhiều. Ngược lại, mã máy thật đã bị mất hầu hết các thông tin từ chương trình gốc, nên việc khôi phục thông tin ở các trình dịch ngược từ mã máy thật khá phức tạp. Trong hình \ref{fig:boomerang}, tên biến ở chương trình gốc đã bị mất đi. Ngoài ra, cấu trúc vòng lặp cũng thay đổi từ \textit{for} sang \textit{while}. Đó là do ở mã máy, cấu trúc vòng lặp ở ngôn ngữ cấp cao đã được dịch thành các câu lệnh kiểm tra điều kiện và jump, nên Boomerang phải sử dụng các thuật toán phân tích luồng điều khiển để tạo ra cấu trúc vòng lặp mới, đôi khi có thể không trùng khớp với cấu trúc vòng lặp ban đầu.
 
 \begin{figure}[h]
@@ -164,9 +164,28 @@ Một số trình dịch ngược phổ biến có thể kể đến là:
 	\item Boomerang: Là trình dịch ngược từ mã máy, mục tiêu là tạo ra một trình dịch ngược không quan tâm tới ngôn ngữ viết ra chương trình gốc. Boomerang đã ngừng phát triển từ năm 2006 do hai lập trình viên chính bắt đầu làm việc cho một công ty mà lĩnh vực nghiên cứu của họ trùng lặp với Boomerang.
 \end{itemize}
 
-% bảng đáng giá các trình dịch ngược
-\section{Cấu trúc của Boomerang}
-Ở giai đoạn thực tập tốt nghiệp, sau quá trình nghiên cứu một số trình dịch ngược hiện nay, người viết đã quyết định sử dụng trình dịch ngược Boomerang vì sử dụng nhiều kỹ thuật phân tích giúp chất lượng mã đầu ra cao và có cấu tạo kiểu module dễ thay đổi, thêm mới. Phần này sẽ giới thiệu về cấu trúc code của Boomerang, giúp ích cho việc trình bày các giải pháp của bài toán ở chương kế.
+Trong số các trình dịch ngược nêu trên, cần tìm ra trình dịch ngược phù hợp nhất để làm nền tảng cho việc hiện thực những giải pháp mà luận văn đề ra. Để tìm ra trình dịch ngược đó, phải có sự phân tích, đánh giá sự phù hợp của những trình dịch ngược thông qua một số tiêu chí. Phần đánh giá này được thể hiện ở bảng \ref{table:table1}
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{ |p{0.7cm}| p{2cm}| p{1.5cm}| p{1.5cm}| p{2cm}| p{1.5cm}| p{1.5cm}
+			| p{1.5cm}| p{1.5cm}| p{1.5cm}| }
+	\hline
+		STT & Tên trình dịch ngược & Phù hợp với bài toán cần giải quyết & General compiler & Mã máy lưu trữ được nhiều thông tin gốc của chương trình & Có người hỗ trợ & Có tài liệu đầy đủ & Viết bằng ngôn ngữ quen thuộc & Tổng điểm\\
+		\hline
+		1 & Boomerang & 1 & 1 &0 & 5 & 2 & 0 & 9\\
+	\hline
+		2 & ILSpy & 0 & 0 & 2 & 0& 3 & 2 & 7\\
+		\hline
+		3 & dcc & 0 &1&0&0&0&0&1\\
+		\hline
+		4&Procyon&0&0&2&0&3&2&7\\
+		\hline
+	\end{tabular}
+	\label{table:table1}
+	\caption{Bảng đánh giá các trình dịch ngược}
+\end{table}
+\section{Kiến trúc của Boomerang}
+Phần này sẽ giới thiệu về cấu trúc code của Boomerang, giúp ích cho việc trình bày các giải pháp của bài toán ở chương kế.
 
 Về mặt tổng thể, Boomerang gồm có các phần sau:
 \begin{figure}[h]
