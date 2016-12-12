@@ -97,7 +97,7 @@ MOV ACC, OPTIONS
 MOV ACC, CLAMP+1
 \end{lstlisting}
 
-Phân tích Constant propagation sẽ trả về được giá trị thực sự của một biến, tuy nhiên, thanh ghi \textit{ACC} là một trường hợp đặc biệt. Khi gặp vế trái của câu lệnh khai báo là thanh ghi \textit{ACC}, giá trị thực sự không được quan tâm, mà chỉ giá trị của địa chỉ vùng nhớ đang được \textit{ACC} lưu giữ mới được xét đến. Như vậy, chỉ có các câu lệnh dạng \textbf{MOV ACC, [biểu thức]} sẽ được tính toán còn khi gặp câu lệnh gán có dạng \textbf{MOV ACC, \#[biểu thức]} thì đoạn mã phân tích sẽ xem như giá trị của \textit{ACC} là \textit{bottom}. Như vậy, với các biến khác, giá trị lưu trong thực thể ConstantExpression tương ứng với biến đó là giá trị thực sự của biến, còn riêng với thanh ghi \textit{ACC}, giá trị đó được hiểu là giá trị địa chỉ vùng nhớ mà thanh ghi \textit{ACC} được load vào.
+Phân tích Constant propagation sẽ trả về được giá trị thực sự của một biến, tuy nhiên, thanh ghi \textit{ACC} là một trường hợp đặc biệt. Khi gặp vế trái của câu lệnh khai báo là thanh ghi \textit{ACC}, giá trị thực sự không được quan tâm, mà chỉ giá trị của địa chỉ vùng nhớ đang được \textit{ACC} lưu giữ mới được xét đến. Như vậy, chỉ có các câu lệnh dạng \textbf{MOV ACC, [biểu thức]} sẽ được tính toán, còn khi gặp câu lệnh gán có dạng \textbf{MOV ACC, \#[biểu thức]} thì đoạn mã phân tích sẽ xem như giá trị của \textit{ACC} là \textit{bottom}. Như vậy, với các biến khác, giá trị lưu trong thực thể ConstantExpression tương ứng với biến đó là giá trị thực sự của biến, còn riêng với thanh ghi \textit{ACC}, giá trị đó được hiểu là giá trị địa chỉ vùng nhớ mà thanh ghi \textit{ACC} được load vào.
 \section{Tìm kiếm mối quan hệ giữa các biến}
 \subsection{Chuyển đổi giữa hằng số nguyên - biến byte tương ứng}
 \label{sec:transfer}
@@ -108,13 +108,13 @@ Trước khi bước vào giai đoạn kiểm tra và ghi nhận mối quan hệ
 \end{itemize}
 
 Hai giải pháp trên được mô tả lần lượt ở hình \ref{fig:waytotransfer1} và hình \ref{fig:waytotransfer2}. Qua hai sơ đồ trên, dễ dàng nhận ra giải pháp thứ hai sẽ giúp tiết kiệm thời gian xử lý chương trình hơn, nhờ vào việc chỉ cần truy xuất bảng dữ liệu ở cuối giai đoạn tìm kiếm. Còn giải pháp đầu tiên không hiệu quả do mỗi lần cần kiểm tra giá trị của thanh ghi \textit{ACC} lại phải tìm kiếm dữ liệu. Như vậy, giải pháp thứ hai sẽ được áp dụng.
-\begin{figure}
+\begin{figure} [h!]
 	\centering
 	\includegraphics[width=0.7\linewidth]{image/wayToTransfer1}
 	\caption{Giải pháp chuyển đổi giá trị - biến byte số 1}
 	\label{fig:waytotransfer1}
 \end{figure}
-\begin{figure}
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.7\linewidth]{image/wayToTransfer2}
 	\caption{Giải pháp chuyển đổi giá trị - biến byte số 2}

@@ -1,3 +1,175 @@
-\begin{thebibliography}{}
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.7 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
 
-\end{thebibliography}
+\sortlist[entry]{nty/global/}
+  \entry{reachingdef}{online}{}
+    \name{author}{1}{}{%
+      {{hash=oCSD}{%
+         prefix={of},
+         prefix_i={o\bibinitperiod},
+         family={Computer\bibnamedelima Sciences},
+         family_i={C\bibinitperiod\bibinitdelim S\bibinitperiod},
+         given={Department},
+         given_i={D\bibinitperiod},
+      }}%
+    }
+    \keyw{reachingdefinitions}
+    \strng{namehash}{CSDo1}
+    \strng{fullhash}{CSDo1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{title}{Reaching Definition Analysis}
+    \verb{url}
+    \verb https://www.cs.purdue.edu/homes/ehanau/cs352/supplemental/reachdefpdf
+    \endverb
+  \endentry
+
+  \entry{ssavan}{thesis}{}
+    \name{author}{1}{}{%
+      {{hash=EMJV}{%
+         family={Emmerik},
+         family_i={E\bibinitperiod},
+         given={Michael James\bibnamedelima Van},
+         given_i={M\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim
+  V\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{EMJV1}
+    \strng{fullhash}{EMJV1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{E}
+    \field{sortinithash}{E}
+    \field{title}{Static Single Assignment for Decompilation}
+    \list{institution}{1}{%
+      {Queensland University of Technology}%
+    }
+    \field{type}{phdthesis}
+    \field{year}{2007}
+  \endentry
+
+  \entry{boomeranghomepage}{online}{}
+    \name{author}{3}{}{%
+      {{hash=Q}{%
+         family={QuantumG},
+         family_i={Q\bibinitperiod},
+      }}%
+      {{hash=EMV}{%
+         family={Emmerik},
+         family_i={E\bibinitperiod},
+         given={Mike\bibnamedelima Van},
+         given_i={M\bibinitperiod\bibinitdelim V\bibinitperiod},
+      }}%
+      {{hash=KG}{%
+         family={Krol},
+         family_i={K\bibinitperiod},
+         given={Gerard},
+         given_i={G\bibinitperiod},
+      }}%
+    }
+    \keyw{boomerang,decompiler}
+    \strng{namehash}{QEMVKG1}
+    \strng{fullhash}{QEMVKG1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{Q}
+    \field{sortinithash}{Q}
+    \field{title}{Boomerang Decompiler Homepage}
+    \verb{url}
+    \verb http://boomerang.sourceforge.net
+    \endverb
+  \endentry
+
+  \entry{constantpropagation}{online}{}
+    \name{author}{1}{}{%
+      {{hash=SM}{%
+         family={Sagiv},
+         family_i={S\bibinitperiod},
+         given={Mooly},
+         given_i={M\bibinitperiod},
+      }}%
+    }
+    \keyw{constantpropagation}
+    \strng{namehash}{SM1}
+    \strng{fullhash}{SM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{title}{Constant Propagation}
+    \verb{url}
+    \verb http://www.cs.tau.ac.il/~msagiv/courses/pa07/lecture2-notes-updatepdf
+    \endverb
+  \endentry
+
+  \entry{reverseengineeer}{online}{}
+    \name{author}{1}{}{%
+      {{hash=SBS}{%
+         family={Software},
+         family_i={S\bibinitperiod},
+         given={Backer\bibnamedelima Street},
+         given_i={B\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+    }
+    \keyw{backerstreet}
+    \strng{namehash}{SBS1}
+    \strng{fullhash}{SBS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{title}{Reverse Engineering Resources - Decompilers}
+    \verb{url}
+    \verb http://www.backerstreet.com/decompiler/decompilers.htm
+    \endverb
+  \endentry
+
+  \entry{lvtn}{thesis}{}
+    \name{author}{2}{}{%
+      {{hash=TNT}{%
+         family={Thành},
+         family_i={T\bibinitperiod},
+         given={Nguyễn\bibnamedelima Tiến},
+         given_i={N\bibinitperiod\bibinitdelim T\bibinitperiod},
+      }}%
+      {{hash=�BN}{%
+         prefix={Đôn},
+         prefix_i={�\bibinitperiod},
+         family={Bình},
+         family_i={B\bibinitperiod},
+         given={Nguyễn},
+         given_i={N\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{TNTBN�1}
+    \strng{fullhash}{TNTBN�1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{title}{Kỹ thuật dịch ngược}
+    \list{institution}{1}{%
+      {Đại học Bách Khoa - Đại học Quốc Gia Tp. HCM}%
+    }
+    \field{type}{{B.S. Thesis}}
+    \field{year}{2015}
+  \endentry
+\endsortlist
+\endinput

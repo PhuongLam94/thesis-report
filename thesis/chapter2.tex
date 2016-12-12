@@ -176,7 +176,7 @@ Trong số các trình dịch ngược nêu trên, cần tìm ra trình dịch n
 	\hline
 		2 & ILSpy & 0 & 0 & 2 & 0& 3 & 2 & 7\\
 		\hline
-		3 & dcc & 0 &1&0&0&0&0&1\\
+		3 & dcc & 1 &1&0&0&0&0&2\\
 		\hline
 		4&Procyon&0&0&2&0&3&2&7\\
 		\hline
@@ -195,17 +195,17 @@ Về mặt tổng thể, Boomerang gồm có các phần sau:
 	\label{fig:boomstruct}
 \end{figure}
 
-Khi đọc vào một chương trình assembly, Boomerang sẽ lưu trữ chúng dưới cấu trúc sau:
+Khi đọc vào một chương trình assembly, Boomerang sẽ lưu trữ chúng dưới cấu trúc được mô tả trong hình \ref{fig:assemblyinfo}.
 
-\begin{figure}
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.7\linewidth]{assemblyInfo}
 	\caption{Cấu trúc dữ liệu lưu trữ mã assembly trong Boomerang}
 	\label{fig:assemblyinfo}
 \end{figure}
 
-Lưu ý, trong AssemblyArgument, giá trị thực sự của tham số được lưu vào một union có tên là Arg. Giá trị này có thể là một chuỗi (đối với trường hợp thanh ghi hoặc tên biến), một số nguyên, một số thực hoặc một structure đại diện cho bit (bao gồm tên thanh ghi và vị trí của bit).
-\begin{lstlisting}[caption={Đoạn mã mô tả cách biểu diễn giá trị của tham số trong Boomerang}, label={}]
+Lưu ý, trong AssemblyArgument, giá trị thực sự của tham số được lưu vào một union có tên là Arg. Giá trị này có thể là một chuỗi (đối với trường hợp thanh ghi hoặc tên biến), một số nguyên, một số thực hoặc một structure đại diện cho bit (bao gồm tên thanh ghi và vị trí của bit). Đoạn mã \ref{list:assemblyinfo} thể hiện điều đó.
+\begin{lstlisting}[caption={Đoạn mã mô tả cách biểu diễn giá trị của tham số trong Boomerang}, label={list:assemblyinfo}, language=c++]
 struct bits{
 	char* reg;
 	int pos;
@@ -218,8 +218,7 @@ union Arg{
 }
 \end{lstlisting}
 
-Khi giải mã lên ngôn ngữ trung gian, cấu trúc Boomerang dùng để thể hiện là:
-
+Một lưu ý là cấu trúc nói trên chỉ áp dụng với các chương trình viết bằng ngôn ngữ assembly, còn khi viết bằng mã máy thì Boomerang sẽ sử dụng một cấu trúc khác, tuy nhiên, khi chuyển đổi chương trình đầu vào thành mã trung gian thì chỉ có duy nhất một loại cấu trúc cho tất cả các loại mã máy. Prog là tương ứng với toàn bộ chương trình. Một Proc là một hàm, BasicBlock đại diện cho một khối cơ bản mà ở đó không có một câu lệnh rẽ nhánh nào (ví dụ như if, hoặc vòng lặp...). Statement là một câu lệnh và Expr là các biểu thức trong chương trình. Ngoài ra còn có các class đại diện cho kiểu dữ liệu. Việc thực hiện các phân tích chủ yếu diễn ra tại Proc, vì vậy, các thay đổi trong luận văn này cũng chủ yếu được thực hiện bằng các hàm của Proc. Cấu trúc mã trung gian của Boomerang được thể hiện ở hình \ref{fig:progboomerang}\\
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{progBoomerang}
@@ -228,7 +227,7 @@ Khi giải mã lên ngôn ngữ trung gian, cấu trúc Boomerang dùng để th
 \end{figure}
 
 
-Prog là tương ứng với toàn bộ chương trình. Một Proc là một hàm, BasicBlock đại diện cho một khối cơ bản mà ở đó không có một câu lệnh rẽ nhánh nào (ví dụ như if, hoặc vòng lặp...). Statement là một câu lệnh và Expr là các biểu thức trong chương trình. Ngoài ra còn có các class đại diện cho kiểu dữ liệu. Việc thực hiện các phân tích chủ yếu diễn ra tại Proc, vì vậy, các thay đổi trong luận văn này cũng chủ yếu được thực hiện bằng các hàm của Proc.\\
+
 
 Như vậy, để thực hiện việc xử lý mã 8051, ta cần phải chỉnh sửa các phần sau đây của Boomerang:
 \begin{itemize}

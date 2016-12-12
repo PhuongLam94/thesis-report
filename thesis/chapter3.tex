@@ -6,7 +6,7 @@ Giải pháp Kiểm tra kiểm gồm có các bước sau đây:
 \item Thực hiện phân tích dữ liệu để biết được giá trị của thanh ghi ACC tại một thời điểm của chương trình.
 \item Tại các câu lệnh sử dụng biến bit, tiến hành các bước kiểm tra nguyên tắc sử dụng bộ biến.
 \end{itemize}
-\begin{figure}
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.7\linewidth]{image/soDoTypeChecking}
 	\caption{Sơ đồ các bước thực hiện giải pháp Kiểm tra kiểu}
@@ -111,7 +111,7 @@ Khi lập trình bằng ngôn ngữ assembly và có sử dụng tên biến, c�
 ;END DEFINE
 \end{lstlisting}
 
-Như vậy, cần chỉnh lại phần parser của trình dịch ngược để chấp nhận cấu trúc mới này. Ngoài ra, trong trình dịch ngược, cần có một cấu trúc mới để lưu trữ thông tin của các bộ biến byte và biến bit này. Trong đoạn mã \ref{list:listuniondefine}, có một trường byteVar để lưu tên biến byte, và một sơ đồ lưu thứ tự của biến bit và tên biến bit tương ứng. Hiện tại, cấu trúc này đã đủ cho giải pháp Kiểm tra kiểu. Tuy nhiên, nó sẽ được mở rộng ở giải pháp sau. 
+Như vậy, trong trình dịch ngược, cần có một cấu trúc mới để lưu trữ thông tin của các bộ biến byte và biến bit này. Trong đoạn mã \ref{list:listuniondefine}, có một trường byteVar để lưu tên biến byte, và một sơ đồ lưu thứ tự của biến bit và tên biến bit tương ứng. Hiện tại, cấu trúc này đã đủ cho giải pháp Kiểm tra kiểu. Tuy nhiên, nó sẽ được mở rộng ở giải pháp sau. 
 \begin{lstlisting}[caption={Cấu trúc dữ liệu để lưu trữ một bộ biến},label={list:listuniondefine},language=c++]
 class UnionDefine{
 	public:
@@ -120,7 +120,7 @@ class UnionDefine{
 	}
 };
 \end{lstlisting}
-Như vậy, ta cần phải điều chỉnh lại phần parser của trình dịch ngược, sao cho nó vừa chấp nhận mẫu khai báo biến trên, vừa đưa từng bộ biến được khai báo vào trong một thực thể của class \textit{UnionDefine}. Kết quả là, sau khi kết thúc phần parser, ta sẽ thu được một danh sách các \textit{UnionDefine} tương ứng với các khai báo các bộ biến. Đoạn mã \ref{list:listparser} là phần parser viết dựa trên thư viện Bison++ để thực hiện chức năng trên.\\
+Từ các yêu cầu trên, cần phải điều chỉnh lại phần parser của trình dịch ngược, sao cho nó vừa chấp nhận mẫu khai báo biến ở đoạn mã \ref{list:listdeclarevar}, vừa đưa từng bộ biến được khai báo vào trong một thực thể của class \textit{UnionDefine}. Kết quả là, sau khi kết thúc phần parser, ta sẽ thu được một danh sách các \textit{UnionDefine} tương ứng với các khai báo các bộ biến. Đoạn mã \ref{list:listparser} là phần parser viết dựa trên thư viện Bison++ để thực hiện chức năng trên.\\
 \begin{lstlisting}[caption={Đoạn mã parser cho phần khai báo bộ biến},label={list:listparser}]
 definebit: BEGINDEFINE END_LINE DEFINEBYTE END_LINE 
 define DEFINEBITS END_LINE defineeachbit defineeachbit
@@ -129,7 +129,8 @@ defineeachbit defineeachbit ENDDEFINE END_LINE
 {
 	UnionDefine* ut = new UnionDefine();
 	$5 -> expList -> pop_back();
-	ut->byteVar = $5 -> expList -> back() -> argList.back()->value.c;
+	ut->byteVar = $5 -> expList -> back() -> 
+		argList.back()->value.c;
 	ut->bitVar = bitVar;
 	unionDefine1 -> push_back(ut);
 	bitVar = new map<char*, int>();
@@ -149,14 +150,14 @@ Như vậy, sau giai đoạn parser, ta đã thu được bộ biến theo khai 
 \subsection{Xác định giá trị kiểu của thanh ghi \textit{ACC} tại mỗi điểm của chương trình}
 Để kiểm tra được nguyên tắc sử dụng bộ biến, trước hết, ta phải biết được tại mỗi thời điểm của chương trình, thanh ghi \textit{ACC} đang mang giá trị gì. Có hai phương pháp phân tích được áp dụng trong giải pháp này, đó là Reaching definitions kết hợp phần mở rộng và Type propagation.
 \subsubsection{Phân tích Reaching definitions kết hợp phần mở rộng}
-Mục đích của phân tích Reaching definitions là biết được ở một thời điểm của chương trình, các câu lệnh khai báo nào đang còn hiệu lực, hay nói cách khác là gía trị của các biến đang được khai báo bởi những câu lệnh nào. Phần mở rộng của Reaching definitions sẽ giúp xử lý thêm một số trường hợp, khi thanh ghi được truyền giá trị thông qua một thanh ghi trung gian khác.
-\begin{figure}
+Mục đích của phân tích Reaching definitions là biết được ở một thời điểm của chương trình, các câu lệnh khai báo nào đang còn hiệu lực, hay nói cách khác là giá trị của các biến đang được khai báo bởi những câu lệnh nào. Phần mở rộng của Reaching definitions sẽ giúp xử lý thêm một số trường hợp, khi thanh ghi được truyền giá trị thông qua một thanh ghi trung gian khác.
+\begin{figure}[h!]
 	\centering
 	\includegraphics[scale=0.75]{image/reachingDefExam}
 	\caption{Một đoạn chương trình mẫu}
 	\label{fig:reachingdefexam}
 \end{figure}
-Ví dụ như ở đoạn chương trình \ref{fig:reachingdefexam}, ta cần biết được giá trị của biến \textit{a} ở câu lệnh số 2 được khai báo ở câu lệnh nào. Đối với con người thì rất dễ dàng biết được là biến \textit{a} được sử dụng có thể khai báo ở câu lệnh số 1 hoặc câu lệnh số 5. Tuy nhiên, cần có một phương pháp phân tích để cho máy tính cũng biết được điều đó, và đó chính là phương pháp Reaching definitions. Như vậy, khi áp dụng vào trình dịch ngược, ta sẽ biết được tại thời điểm sử dụng biến bit, giá trị của thanh ghi \textit{ACC} đang được định nghĩa ở câu lệnh nào. Từ đó tiến hành các bước kiểm tra tiếp theo. \\
+Ví dụ như ở đoạn chương trình \ref{fig:reachingdefexam}, cần biết được giá trị của biến \textit{a} ở câu lệnh số 2 được khai báo ở câu lệnh nào. Đối với con người thì rất dễ dàng biết được là biến \textit{a} được sử dụng có thể khai báo ở câu lệnh số 1 hoặc câu lệnh số 5. Tuy nhiên, cần có một phương pháp phân tích để cho máy tính cũng biết được điều đó, và đó chính là phương pháp Reaching definitions. Như vậy, khi áp dụng vào trình dịch ngược, ta sẽ biết được tại thời điểm sử dụng biến bit, giá trị của thanh ghi \textit{ACC} đang được định nghĩa ở câu lệnh nào. Từ đó tiến hành các bước kiểm tra tiếp theo. \\
 
 Để thực hiện Reaching definitions, ta phải làm quen với các định nghĩa sau:
 \begin{itemize}
@@ -233,7 +234,7 @@ Tuy đã xử lý được hầu hết các trường hợp của phép gán cho
 \subsubsection{Phân tích Type propagation}
 Phân tích Type propagation có mục đích sẽ tìm ra được kiểu của một thanh ghi bằng cách lan truyền kiểu của những thanh ghi khác. Áp dụng vào trường hợp cụ thể của luận văn, các tên biến byte có thể được xem là một kiểu, vì khi chuyển đổi bộ biến thành một kiểu union ở ngôn ngữ cấp cao, tên biến byte này sẽ được dùng để đặt tên cho kiểu union đó. Như vậy, tác dụng của phân tích Type propagation này là tìm ra được thanh ghi \textit{ACC} đang mang kiểu union nào tại một thời điểm của chương trình. Các bước của giải thuật phân tích Type propagation được trình bày ở hình \ref{fig:typepropagationalgo}.
 
-\begin{figure}
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.7\linewidth]{image/typePropagationAlgo}
 	\caption{Giải thuật của phân tích Type propagation}

@@ -5,12 +5,12 @@
 Chương này nhằm giới thiệu về bài toán sẽ được giải quyết trong luận văn và các khái niệm liên quan. Đầu chương sẽ trình bày về kỹ thuật dịch ngược, các ứng dụng của nó và những khó khăn trong quá trình dịch ngược. Phần tiếp theo nêu bài toán đặt ra và các thách thức khi giải quyết bài toán. Phần cuối cùng sẽ tóm tắt cấu trúc của luận văn.
 
 \section{Kỹ thuật dịch ngược và ứng dụng}
-Trong khi kỹ thuật dịch phổ biến hiện nay là dịch từ mã viết bằng ngôn ngữ cấp cao xuống mã ngôn ngữ cấp thấp hơn, kỹ thuật dịch ngược thực hiện dịch từ mã ngôn ngữ cấp thấp lên mã ngôn ngữ cấp cao hơn. Kỹ thuật dịch ngược được sử dụng rất nhiều để hỗ trợ trong quá trình phát triển và sử dụng phần mềm:
+Trong khi kỹ thuật dịch phổ biến hiện nay là dịch từ mã viết bằng ngôn ngữ cấp cao xuống mã ngôn ngữ cấp thấp hơn, kỹ thuật dịch ngược thực hiện dịch từ mã ngôn ngữ cấp thấp lên mã ngôn ngữ cấp cao hơn. Kỹ thuật dịch ngược được sử dụng rất nhiều để hỗ trợ trong quá trình phát triển phần mềm:
 
 \begin{itemize}
-	\item Vì một lý do nào đó, mã nguồn của một phần mềm bị mất đi. Để tiếp tục phát triển phần mềm hoặc bảo trì phần mềm đó, ta cần phải khôi phục lại mã nguồn. Nếu viết lại một chương trình mới hoàn toàn từ các tài liệu sẵn có sẽ rất mất thời gian và không đảm bảo sẽ tương đương được phần mềm cũ. Vì vậy một giải pháp phổ biến hiện nay là dựa vào file thực thi dịch ngược lại và hiệu chỉnh để có được mã nguồn mới hoàn chỉnh.
-	\item Các phần mềm độc hại như virus, malware thường sẽ giấu kín mã nguồn. Kỹ thuật dịch ngược giúp sinh ra mã nguồn của chúp, qua đó, việc tìm ra phương pháp giải trừ sẽ dễ dàng hơn.
-	\item Một số chương trình được viết để chạy trên các chip đã lỗi thời, như chip 8051, sẽ ngừng sản xuất trong tương lai gần, cần phải được chuyển đổi để chạy được trên những chip hiện đại đang được sản xuất. Một trong những giải phát để giải quyết vấn đề này là dùng trình dịch ngược để chuyển chương trình viết trên chip lỗi thời sang ngôn ngữ cấp cao, sau đó dùng trình biên dịch để dịch thành mã của chip thay thế.
+	\item Vì một lý do nào đó, mã nguồn của một phần mềm bị mất đi. Để tiếp tục phát triển hoặc bảo trì phần mềm đó, cần phải khôi phục lại mã nguồn. Nếu viết lại một chương trình mới hoàn toàn từ các tài liệu sẵn có sẽ rất mất thời gian và không đảm bảo sẽ tương đương được phần mềm cũ. Vì vậy một giải pháp phổ biến hiện nay là dựa vào file thực thi dịch ngược lại và hiệu chỉnh để có được mã nguồn mới hoàn chỉnh.
+	\item Các phần mềm độc hại như virus, malware thường sẽ giấu kín mã nguồn. Kỹ thuật dịch ngược giúp sinh ra mã nguồn của chúng, qua đó, việc tìm ra phương pháp giải trừ dễ dàng hơn.
+	\item Một số chương trình được viết để chạy trên các chip đã lỗi thời, như chip 8051, sẽ ngừng sản xuất trong tương lai gần, cần phải được chuyển đổi để chạy được trên những chip hiện đại đang được sản xuất. Một trong những giải pháp để giải quyết vấn đề này là dùng trình dịch ngược để chuyển chương trình viết trên chip lỗi thời sang ngôn ngữ cấp cao, sau đó dùng trình biên dịch để dịch thành mã của chip thay thế.
 	
 	\begin{figure}[h]
 		\centering
@@ -78,7 +78,7 @@ cout << i;
 Để giải quyết vấn đề này, có hai hướng tiếp cận được đề ra trong luận văn. Đó là:
 \begin{itemize}
 	\item Dựa trên một số thông tin trong phần chú thích của người lập trình viên. Trong quá trình lập trình, để biết được các biến nào cùng một bộ với nhau, người lập trình phải có chú thích ở phần khai báo của các biến đó. Giải pháp đề ra là đưa ra một mẫu quy định các chú thích này, yêu cầu người lập trình sửa chữa chú thích của mình theo mẫu đó, sau đó dùng parser rút trích thông tin từ chú thích để tìm ra các bộ biến và kiểm tra việc sử dụng biến bên dưới (Kiểm tra kiểu - Type checking).
-	\item Dựa vào quá trình sử dụng các biến trong chương trình. Việc chú thích là không bắt buộc với lập trình viên, nên một số đoạn mã có thể bị thiếu chú thích hoặc chú thích không đầy đủ. Cách giải quyết khả thi là xem xét quá trình sử dụng các biến, phân tích luồng đi của dữ liệu và tìm ra được các union phù hợp. (Suy luận kiểu - Type reference).
+	\item Dựa vào quá trình sử dụng các biến trong chương trình. Việc chú thích là không bắt buộc với lập trình viên, nên một số đoạn mã có thể bị thiếu chú thích hoặc chú thích không đầy đủ. Cách giải quyết khả thi là xem xét quá trình sử dụng các biến, phân tích luồng đi của dữ liệu và tìm ra được các union phù hợp (Suy luận kiểu - Type reference).
 \end{itemize}
 \begin{figure}
 	\centering

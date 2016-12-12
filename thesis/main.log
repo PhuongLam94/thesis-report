@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  7 DEC 2016 15:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  12 DEC 2016 10:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -608,42 +608,14 @@ File: listings.cfg 2015/06/04 1.6 listings configuration
 ))
 Package: listings 2015/06/04 1.6 (Carsten Heinz)
 
-(./main.aux (./chapter1.aux) (./chapter2.aux) (./chapter3.aux) (./chapter4.aux
+(/usr/local/texlive/2016/texmf-dist/tex/latex/biblatex/biblatex.sty
+Package: biblatex 2016/05/14 v3.4 programmable bibliographies (PK/JW/AB)
 
-LaTeX Warning: Label `list:listconstexam5' multiply defined.
-
-) (./chapter5.aux) (./chapter6.aux))
-\openout1 = `main.aux'.
-
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for T5/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-
-(/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
-[Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count100
-\scratchdimen=\dimen117
-\scratchbox=\box28
-\nofMPsegments=\count101
-\nofMParguments=\count102
-\everyMPshowfont=\toks21
-\MPscratchCnt=\count103
-\MPscratchDim=\dimen118
-\MPnumerator=\count104
-\makeMPintoPDFobject=\count105
-\everyMPtoPDFconversion=\toks22
-) (/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+(/usr/local/texlive/2016/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2013/04/04 v0.2 Provides if(tex) conditional for PDFTeX, XeTeX, 
+and LuaTeX
+)
+(/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2016/05/10 v0.21 Utility functions of pdfTeX for LuaTeX (HO
 )
 
@@ -656,15 +628,10 @@ Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
 )
-(/usr/local/texlive/2016/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
-Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
-
-(/usr/local/texlive/2016/texmf-dist/tex/latex/oberdiek/grfext.sty
-Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
-
-(/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
-Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
-))
+(/usr/local/texlive/2016/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2015/08/02 v2.2a e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count100
+)
 (/usr/local/texlive/2016/texmf-dist/tex/latex/oberdiek/kvoptions.sty
 Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
 
@@ -678,6 +645,274 @@ Package etexcmds Info: Could not find \expanded.
 (etexcmds)             that some package has redefined \expanded.
 (etexcmds)             In the latter case, load this package earlier.
 )))
+(/usr/local/texlive/2016/texmf-dist/tex/latex/logreq/logreq.sty
+Package: logreq 2010/08/04 v1.0 xml request logger
+\lrq@indent=\count101
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/logreq/logreq.def
+File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
+))
+(/usr/local/texlive/2016/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip10
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+(/usr/local/texlive/2016/texmf-dist/tex/generic/xstring/xstring.sty
+(/usr/local/texlive/2016/texmf-dist/tex/generic/xstring/xstring.tex
+\@xs@message=\write3
+\integerpart=\count102
+\decimalpart=\count103
+)
+Package: xstring 2013/10/13  v1.7c  String manipulations (C Tellechea)
+)
+\c@tabx@nest=\count104
+\c@listtotal=\count105
+\c@listcount=\count106
+\c@liststart=\count107
+\c@liststop=\count108
+\c@citecount=\count109
+\c@citetotal=\count110
+\c@multicitecount=\count111
+\c@multicitetotal=\count112
+\c@instcount=\count113
+\c@maxnames=\count114
+\c@minnames=\count115
+\c@maxitems=\count116
+\c@minitems=\count117
+\c@citecounter=\count118
+\c@savedcitecounter=\count119
+\c@uniquelist=\count120
+\c@uniquename=\count121
+\c@refsection=\count122
+\c@refsegment=\count123
+\c@maxextratitle=\count124
+\c@maxextratitleyear=\count125
+\c@maxextrayear=\count126
+\c@maxextraalpha=\count127
+\c@abbrvpenalty=\count128
+\c@highnamepenalty=\count129
+\c@lownamepenalty=\count130
+\c@maxparens=\count131
+\c@parenlevel=\count132
+\blx@tempcnta=\count133
+\blx@tempcntb=\count134
+\blx@tempcntc=\count135
+\blx@maxsection=\count136
+\blx@maxsegment@0=\count137
+\blx@notetype=\count138
+\blx@parenlevel@text=\count139
+\blx@parenlevel@foot=\count140
+\blx@sectionciteorder@0=\count141
+\labelnumberwidth=\skip43
+\labelalphawidth=\skip44
+\biblabelsep=\skip45
+\bibitemsep=\skip46
+\bibnamesep=\skip47
+\bibinitsep=\skip48
+\bibparsep=\skip49
+\bibhang=\skip50
+\blx@bcfin=\read2
+\blx@bcfout=\write4
+\c@mincomprange=\count142
+\c@maxcomprange=\count143
+\c@mincompwidth=\count144
+Package biblatex Info: Trying to load biblatex default data model...
+Package biblatex Info: ... file 'blx-dm.def' found.
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/biblatex/blx-dm.def)
+Package biblatex Info: Trying to load biblatex style data model...
+Package biblatex Info: ... file 'numeric.dbx' not found.
+Package biblatex Info: Trying to load biblatex custom data model...
+Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
+\c@afterword=\count145
+\c@savedafterword=\count146
+\c@annotator=\count147
+\c@savedannotator=\count148
+\c@author=\count149
+\c@savedauthor=\count150
+\c@bookauthor=\count151
+\c@savedbookauthor=\count152
+\c@commentator=\count153
+\c@savedcommentator=\count154
+\c@editor=\count155
+\c@savededitor=\count156
+\c@editora=\count157
+\c@savededitora=\count158
+\c@editorb=\count159
+\c@savededitorb=\count160
+\c@editorc=\count161
+\c@savededitorc=\count162
+\c@foreword=\count163
+\c@savedforeword=\count164
+\c@holder=\count165
+\c@savedholder=\count166
+\c@introduction=\count167
+\c@savedintroduction=\count168
+\c@namea=\count169
+\c@savednamea=\count170
+\c@nameb=\count171
+\c@savednameb=\count172
+\c@namec=\count173
+\c@savednamec=\count174
+\c@translator=\count175
+\c@savedtranslator=\count176
+\c@shortauthor=\count177
+\c@savedshortauthor=\count178
+\c@shorteditor=\count179
+\c@savedshorteditor=\count180
+\c@labelname=\count181
+\c@savedlabelname=\count182
+\c@institution=\count183
+\c@savedinstitution=\count184
+\c@lista=\count185
+\c@savedlista=\count186
+\c@listb=\count187
+\c@savedlistb=\count188
+\c@listc=\count189
+\c@savedlistc=\count190
+\c@listd=\count191
+\c@savedlistd=\count192
+\c@liste=\count193
+\c@savedliste=\count194
+\c@listf=\count195
+\c@savedlistf=\count196
+\c@location=\count197
+\c@savedlocation=\count198
+\c@organization=\count199
+\c@savedorganization=\count266
+\c@origlocation=\count267
+\c@savedoriglocation=\count268
+\c@origpublisher=\count269
+\c@savedorigpublisher=\count270
+\c@publisher=\count271
+\c@savedpublisher=\count272
+\c@language=\count273
+\c@savedlanguage=\count274
+\c@pageref=\count275
+\c@savedpageref=\count276
+\shorthandwidth=\skip51
+\shortjournalwidth=\skip52
+\shortserieswidth=\skip53
+\shorttitlewidth=\skip54
+\shortauthorwidth=\skip55
+\shorteditorwidth=\skip56
+Package biblatex Info: Trying to load compatibility code...
+Package biblatex Info: ... file 'blx-compat.def' found.
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/biblatex/blx-compat.def
+File: blx-compat.def 2016/05/14 v3.4 biblatex compatibility (PK/JW/AB)
+)
+Package biblatex Info: Trying to load BibTeX backend compatibility...
+Package biblatex Info: ... file 'blx-bibtex.def' found.
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/biblatex/blx-bibtex.def
+File: blx-bibtex.def 2016/05/14 v3.4 biblatex compatibility (PK/JW/AB)
+
+
+Package biblatex Warning: Using fall-back BibTeX(8) backend:
+(biblatex)                functionality may be reduced/unavailable.
+
+)
+Package biblatex Info: Trying to load generic definitions...
+Package biblatex Info: ... file 'biblatex.def' found.
+ (/usr/local/texlive/2016/texmf-dist/tex/latex/biblatex/biblatex.def
+File: biblatex.def 2016/05/14 v3.4 biblatex compatibility (PK/JW/AB)
+\c@textcitecount=\count277
+\c@textcitetotal=\count278
+\c@textcitemaxnames=\count279
+\c@biburlnumpenalty=\count280
+\c@biburlucpenalty=\count281
+\c@biburllcpenalty=\count282
+\c@smartand=\count283
+)
+Package biblatex Info: Trying to load bibliography style 'numeric'...
+Package biblatex Info: ... file 'numeric.bbx' found.
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
+File: numeric.bbx 2016/05/14 v3.4 biblatex bibliography style (PK/JW/AB)
+Package biblatex Info: Trying to load bibliography style 'standard'...
+Package biblatex Info: ... file 'standard.bbx' found.
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
+File: standard.bbx 2016/05/14 v3.4 biblatex bibliography style (PK/JW/AB)
+\c@bbx:relatedcount=\count284
+\c@bbx:relatedtotal=\count285
+))
+Package biblatex Info: Trying to load citation style 'numeric'...
+Package biblatex Info: ... file 'numeric.cbx' found.
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/biblatex/cbx/numeric.cbx
+File: numeric.cbx 2016/05/14 v3.4 biblatex citation style (PK/JW/AB)
+Package biblatex Info: Redefining '\cite'.
+Package biblatex Info: Redefining '\parencite'.
+Package biblatex Info: Redefining '\footcite'.
+Package biblatex Info: Redefining '\footcitetext'.
+Package biblatex Info: Redefining '\smartcite'.
+Package biblatex Info: Redefining '\supercite'.
+Package biblatex Info: Redefining '\textcite'.
+Package biblatex Info: Redefining '\textcites'.
+Package biblatex Info: Redefining '\cites'.
+Package biblatex Info: Redefining '\parencites'.
+Package biblatex Info: Redefining '\smartcites'.
+)
+Package biblatex Info: Trying to load configuration file...
+Package biblatex Info: ... file 'biblatex.cfg' found.
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/biblatex/biblatex.cfg
+File: biblatex.cfg 
+))
+Package biblatex Info: Trying to load language 'english'...
+Package biblatex Info: ... file 'english.lbx' found.
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/biblatex/lbx/english.lbx
+File: english.lbx 2016/05/14 v3.4 biblatex localization (PK/JW/AB)
+)
+\@quotelevel=\count286
+\@quotereset=\count287
+
+(./main.aux (./chapter1.aux) (./chapter2.aux) (./chapter3.aux) (./chapter4.aux
+
+LaTeX Warning: Label `list:listconstexam5' multiply defined.
+
+) (./chapter5.aux) (./chapter6.aux))
+\openout1 = `main.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for T5/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+
+(/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count288
+\scratchdimen=\dimen117
+\scratchbox=\box28
+\nofMPsegments=\count289
+\nofMParguments=\count290
+\everyMPshowfont=\toks21
+\MPscratchCnt=\count291
+\MPscratchDim=\dimen118
+\MPnumerator=\count292
+\makeMPintoPDFobject=\count293
+\everyMPtoPDFconversion=\toks22
+) (/usr/local/texlive/2016/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
+
+(/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+))
 Package grfext Info: Graphics extension search list:
 (grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
 G,.JBIG2,.JB2,.eps]
@@ -721,20 +956,33 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\c@lstlisting=\count106
-<image/logoBK_jpg.jpg, id=1, 207.77625pt x 208.78pt>
+\c@lstlisting=\count294
+Package biblatex Info: Input encoding 'utf8' detected.
+Package biblatex Info: Automatic encoding selection.
+(biblatex)             Assuming data encoding 'utf8'.
+Package biblatex Info: Input encoding 'utf8' specified.
+Package biblatex Info: Data encoding 'utf8' specified.
+(biblatex)             No need to reencode data.
+\openout4 = `main-blx.bib'.
+
+Package biblatex Info: Trying to load bibliographic data...
+Package biblatex Info: ... file 'main.bbl' found.
+(./main.bbl)
+Package biblatex Info: Reference section=0 on input line 27.
+Package biblatex Info: Reference segment=0 on input line 27.
+ <image/logoBK_jpg.jpg, id=1, 207.77625pt x 208.78pt>
 File: image/logoBK_jpg.jpg Graphic file (type jpg)
 
 <use image/logoBK_jpg.jpg>
-Package pdftex.def Info: image/logoBK_jpg.jpg used on input line 26.
+Package pdftex.def Info: image/logoBK_jpg.jpg used on input line 34.
 (pdftex.def)             Requested size: 103.88786pt x 104.38972pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 32--34
+Underfull \hbox (badness 10000) in paragraph at lines 40--42
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 35--36
+Underfull \hbox (badness 10000) in paragraph at lines 43--44
 
  []
 
@@ -746,36 +994,38 @@ Underfull \hbox (badness 10000) in paragraph at lines 35--36
 
 ] [2
 
+] [3
+
 ] (./main.toc
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 2.
+(Font)              <12> on input line 5.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 2.
+(Font)              <8> on input line 5.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 2.
+(Font)              <6> on input line 5.
 
-Overfull \hbox (7.03474pt too wide) in paragraph at lines 31--31
+Overfull \hbox (7.03474pt too wide) in paragraph at lines 63--63
  [][] []\T5/cmr/m/n/12 Th¶m tr÷íng hñp c§u tróc union v o ^^_o¤n sinh m¢ cõa Bo
 omerang []  
  []
 
 )
-\tf@toc=\write3
-\openout3 = `main.toc'.
-
- [3
-
-] (./main.lof)
-\tf@lof=\write4
-\openout4 = `main.lof'.
+\tf@toc=\write5
+\openout5 = `main.toc'.
 
  [4
 
-] (./main.lol)
-\tf@lol=\write5
-\openout5 = `main.lol'.
+] [5] (./main.lof)
+\tf@lof=\write6
+\openout6 = `main.lof'.
 
- [5
+ [6
+
+] (./main.lol)
+\tf@lol=\write7
+\openout7 = `main.lol'.
+
+ [7
 
 ]
 \openout2 = `chapter1.aux'.
@@ -789,7 +1039,7 @@ File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 11.
 
-<image/fig12.png, id=25, 448.67625pt x 224.63925pt>
+<image/fig12.png, id=32, 448.67625pt x 224.63925pt>
 File: image/fig12.png Graphic file (type png)
  <use image/fig12.png>
 Package pdftex.def Info: image/fig12.png used on input line 17.
@@ -833,7 +1083,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 76--77
 
  []
 
-[4] <image/main.png, id=42, 564.1075pt x 283.0575pt>
+[4] <image/main.png, id=48, 564.1075pt x 283.0575pt>
 File: image/main.png Graphic file (type png)
  <use image/main.png>
 Package pdftex.def Info: image/main.png used on input line 85.
@@ -854,7 +1104,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 7--8
 
  []
 
-<image/fig21.png, id=47, 264.99pt x 134.904pt>
+<image/fig21.png, id=54, 264.99pt x 134.904pt>
 File: image/fig21.png Graphic file (type png)
  <use image/fig21.png>
 Package pdftex.def Info: image/fig21.png used on input line 13.
@@ -863,7 +1113,7 @@ Package pdftex.def Info: image/fig21.png used on input line 13.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<image/fig22.png, id=48, 317.988pt x 247.52475pt>
+<image/fig22.png, id=55, 317.988pt x 247.52475pt>
 File: image/fig22.png Graphic file (type png)
  <use image/fig22.png>
 Package pdftex.def Info: image/fig22.png used on input line 24.
@@ -872,7 +1122,7 @@ Package pdftex.def Info: image/fig22.png used on input line 24.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<image/fig23.png, id=49, 211.38976pt x 47.57774pt>
+<image/fig23.png, id=56, 211.38976pt x 47.57774pt>
 File: image/fig23.png Graphic file (type png)
  <use image/fig23.png>
 Package pdftex.def Info: image/fig23.png used on input line 33.
@@ -892,25 +1142,25 @@ Underfull \hbox (badness 10000) in paragraph at lines 50--51
 
  []
 
-<image/fig24.png, id=58, 420.3705pt x 93.34875pt>
+<image/fig24.png, id=64, 420.3705pt x 93.34875pt>
 File: image/fig24.png Graphic file (type png)
  <use image/fig24.png>
 Package pdftex.def Info: image/fig24.png used on input line 54.
 (pdftex.def)             Requested size: 420.36948pt x 93.34851pt.
 
-[8 <./image/fig24.png>] <image/fig27.png, id=62, 265.59225pt x 107.2005pt>
+[8 <./image/fig24.png>] <image/fig27.png, id=68, 265.59225pt x 107.2005pt>
 File: image/fig27.png Graphic file (type png)
 
 <use image/fig27.png>
 Package pdftex.def Info: image/fig27.png used on input line 67.
 (pdftex.def)             Requested size: 265.59158pt x 107.20023pt.
- <image/fig33.png, id=63, 254.75175pt x 155.98276pt>
+ <image/fig33.png, id=69, 254.75175pt x 155.98276pt>
 File: image/fig33.png Graphic file (type png)
 
 <use image/fig33.png>
 Package pdftex.def Info: image/fig33.png used on input line 75.
 (pdftex.def)             Requested size: 254.75111pt x 155.98238pt.
- <image/fig34.png, id=64, 151.767pt x 152.36925pt>
+ <image/fig34.png, id=70, 151.767pt x 152.36925pt>
 File: image/fig34.png Graphic file (type png)
 
 <use image/fig34.png>
@@ -925,7 +1175,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 72--86
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [9 <./image/fig27.png> <./image/fig33.png>]
-<image/fig35.png, id=70, 145.14224pt x 55.407pt>
+<image/fig35.png, id=76, 145.14224pt x 55.407pt>
 File: image/fig35.png Graphic file (type png)
  <use image/fig35.png>
 Package pdftex.def Info: image/fig35.png used on input line 95.
@@ -936,7 +1186,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 99--100
  []
 
 [10 <./image/fig34.png> <./image/fig35.png>]
-<image/fig36.png, id=76, 151.16475pt x 61.4295pt>
+<image/fig36.png, id=82, 151.16475pt x 61.4295pt>
 File: image/fig36.png Graphic file (type png)
  <use image/fig36.png>
 Package pdftex.def Info: image/fig36.png used on input line 109.
@@ -946,13 +1196,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 117--118
 
  []
 
-<image/fig37.png, id=77, 116.23425pt x 71.0655pt>
+<image/fig37.png, id=83, 116.23425pt x 71.0655pt>
 File: image/fig37.png Graphic file (type png)
  <use image/fig37.png>
 Package pdftex.def Info: image/fig37.png used on input line 123.
 (pdftex.def)             Requested size: 116.23395pt x 71.0653pt.
 
-<image/fig38.png, id=78, 132.495pt x 66.84975pt>
+<image/fig38.png, id=84, 132.495pt x 66.84975pt>
 File: image/fig38.png Graphic file (type png)
  <use image/fig38.png>
 Package pdftex.def Info: image/fig38.png used on input line 130.
@@ -976,7 +1226,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 139--140
 
  []
 
-<image/fig25.png, id=84, 297.5115pt x 178.266pt>
+<image/fig25.png, id=91, 297.5115pt x 178.266pt>
 File: image/fig25.png Graphic file (type png)
  <use image/fig25.png>
 Package pdftex.def Info: image/fig25.png used on input line 147.
@@ -985,7 +1235,7 @@ Package pdftex.def Info: image/fig25.png used on input line 147.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<image/fig26.png, id=85, 464.937pt x 158.994pt>
+<image/fig26.png, id=92, 464.937pt x 158.994pt>
 File: image/fig26.png Graphic file (type png)
  <use image/fig26.png>
 Package pdftex.def Info: image/fig26.png used on input line 153.
@@ -1112,37 +1362,35 @@ Overfull \hbox (71.01125pt too wide) in paragraph at lines 170--185
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [13 <./image/fig25.png> <./image/fig26.png>]
-<image/fig32.png, id=95, 346.896pt x 158.39175pt>
+<image/fig32.png, id=101, 346.896pt x 158.39175pt>
 File: image/fig32.png Graphic file (type png)
  <use image/fig32.png>
 Package pdftex.def Info: image/fig32.png used on input line 193.
 (pdftex.def)             Requested size: 346.89514pt x 158.39136pt.
 
-<image/assemblyInfo.png, id=96, 744.7825pt x 473.77pt>
+<image/assemblyInfo.png, id=102, 744.7825pt x 473.77pt>
 File: image/assemblyInfo.png Graphic file (type png)
 
 <use image/assemblyInfo.png>
 Package pdftex.def Info: image/assemblyInfo.png used on input line 202.
 (pdftex.def)             Requested size: 298.75262pt x 190.04683pt.
- [14 <./image/fig32.png>]
-<image/progBoomerang.png, id=101, 774.895pt x 473.77pt>
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[14 <./image/fig32.png>]
+<image/progBoomerang.png, id=107, 774.895pt x 473.77pt>
 File: image/progBoomerang.png Graphic file (type png)
 
 <use image/progBoomerang.png>
-Package pdftex.def Info: image/progBoomerang.png used on input line 225.
+Package pdftex.def Info: image/progBoomerang.png used on input line 224.
 (pdftex.def)             Requested size: 298.75262pt x 182.65865pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 231--232
-
- []
-
-[15 <./image/assemblyInfo.png> <./image/progBoomerang.png>]) [16]
+ [15 <./image/assemblyInfo.png> <./image/progBoomerang.png>]) [16]
 \openout2 = `chapter3.aux'.
 
-
-(./chapter3.tex
+ (./chapter3.tex
 Ch\uhorn \ohorn ng 3.
-<image/soDoTypeChecking.png, id=110, 766.865pt x 92.345pt>
+<image/soDoTypeChecking.png, id=116, 766.865pt x 92.345pt>
 File: image/soDoTypeChecking.png Graphic file (type png)
 
 <use image/soDoTypeChecking.png>
@@ -1157,59 +1405,54 @@ Underfull \hbox (badness 10000) in paragraph at lines 123--124
 
  []
 
-
-Overfull \hbox (87.73747pt too wide) in paragraph at lines 132--133
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-[18] <image/reachingDefExam.png, id=118, 144.03813pt x 289.08pt>
+[18] <image/reachingDefExam.png, id=125, 144.03813pt x 289.08pt>
 File: image/reachingDefExam.png Graphic file (type png)
 
 <use image/reachingDefExam.png>
-Package pdftex.def Info: image/reachingDefExam.png used on input line 155.
+Package pdftex.def Info: image/reachingDefExam.png used on input line 156.
 (pdftex.def)             Requested size: 108.02832pt x 216.80946pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 152--160
+Underfull \hbox (badness 10000) in paragraph at lines 153--161
 
  []
 
 [19 <./image/reachingDefExam.png>]
-<image/reachingDefAlgo.png, id=125, 222.8325pt x 762.85pt>
+<image/reachingDefAlgo.png, id=131, 222.8325pt x 762.85pt>
 File: image/reachingDefAlgo.png Graphic file (type png)
 
 <use image/reachingDefAlgo.png>
-Package pdftex.def Info: image/reachingDefAlgo.png used on input line 187.
+Package pdftex.def Info: image/reachingDefAlgo.png used on input line 188.
 (pdftex.def)             Requested size: 167.12396pt x 572.13611pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 192--193
+Underfull \hbox (badness 10000) in paragraph at lines 193--194
 
  []
 
 [20] [21 <./image/reachingDefAlgo.png>]
-<image/reachdefextendalgo.png, id=138, 835.12pt x 815.045pt>
+<image/reachdefextendalgo.png, id=144, 835.12pt x 815.045pt>
 File: image/reachdefextendalgo.png Graphic file (type png)
 
 <use image/reachdefextendalgo.png>
-Package pdftex.def Info: image/reachdefextendalgo.png used on input line 224.
+Package pdftex.def Info: image/reachdefextendalgo.png used on input line 225.
 (pdftex.def)             Requested size: 298.75262pt x 291.57536pt.
  [22] [23 <./image/reachdefextendalgo.png>]
-<image/typePropagationAlgo.png, id=146, 762.85pt x 1065.9825pt>
+<image/typePropagationAlgo.png, id=153, 762.85pt x 1065.9825pt>
 File: image/typePropagationAlgo.png Graphic file (type png)
 
 <use image/typePropagationAlgo.png>
-Package pdftex.def Info: image/typePropagationAlgo.png used on input line 238.
+Package pdftex.def Info: image/typePropagationAlgo.png used on input line 239.
 (pdftex.def)             Requested size: 298.75262pt x 417.45566pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 243--244
+Underfull \hbox (badness 10000) in paragraph at lines 244--245
 
  []
 
 [24 <./image/typePropagationAlgo.png>]
-<image/checkUnionSteps.png, id=151, 614.295pt x 192.72pt>
+<image/checkUnionSteps.png, id=158, 614.295pt x 192.72pt>
 File: image/checkUnionSteps.png Graphic file (type png)
 
 <use image/checkUnionSteps.png>
-Package pdftex.def Info: image/checkUnionSteps.png used on input line 259.
+Package pdftex.def Info: image/checkUnionSteps.png used on input line 260.
 (pdftex.def)             Requested size: 298.75262pt x 93.72786pt.
 ) [25 <./image/checkUnionSteps.png>]
 \openout2 = `chapter4.aux'.
@@ -1221,7 +1464,7 @@ Ch\uhorn \ohorn ng 4.
 
 
 
-] [27] <image/constantPropagationAlgo.png, id=163, 582.175pt x 855.195pt>
+] [27] <image/constantPropagationAlgo.png, id=169, 582.175pt x 855.195pt>
 File: image/constantPropagationAlgo.png Graphic file (type png)
 
 <use image/constantPropagationAlgo.png>
@@ -1244,33 +1487,36 @@ Underfull \hbox (badness 10000) in paragraph at lines 78--79
  []
 
 [28] [29 <./image/constantPropagationAlgo.png>] [30]
-<image/wayToTransfer1.png, id=174, 729.72626pt x 262.9825pt>
+<image/wayToTransfer1.png, id=181, 729.72626pt x 262.9825pt>
 File: image/wayToTransfer1.png Graphic file (type png)
 
 <use image/wayToTransfer1.png>
 Package pdftex.def Info: image/wayToTransfer1.png used on input line 113.
 (pdftex.def)             Requested size: 298.75262pt x 107.663pt.
 
-<image/wayToTransfer2.png, id=175, 569.12625pt x 262.9825pt>
+<image/wayToTransfer2.png, id=182, 569.12625pt x 262.9825pt>
 File: image/wayToTransfer2.png Graphic file (type png)
 
 <use image/wayToTransfer2.png>
 Package pdftex.def Info: image/wayToTransfer2.png used on input line 119.
 (pdftex.def)             Requested size: 298.75262pt x 138.05182pt.
 
-<image/stepUnionMaking.png, id=176, 1166.3575pt x 383.4325pt>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<image/stepUnionMaking.png, id=183, 1166.3575pt x 383.4325pt>
 File: image/stepUnionMaking.png Graphic file (type png)
 
 <use image/stepUnionMaking.png>
 Package pdftex.def Info: image/stepUnionMaking.png used on input line 127.
 (pdftex.def)             Requested size: 298.75262pt x 98.20987pt.
  [31 <./image/wayToTransfer1.png>]) [32 <./image/wayToTransfer2.png> <./image/s
-tepUnionMaking.png>]
+tepUnionMaking.png>] [33]
 \openout2 = `chapter5.aux'.
 
  (./chapter5.tex
 Ch\uhorn \ohorn ng 5.
-[33
+[34
 
 
 
@@ -1294,51 +1540,59 @@ Underfull \hbox (badness 10000) in paragraph at lines 47--48
 
  []
 
-[34]
-Overfull \hbox (10.20573pt too wide) in paragraph at lines 64--65
-[][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Overfull \hbox (10.20573pt too wide) in paragraph at lines 86--87
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
 [35]
+Overfull \hbox (179.36589pt too wide) in paragraph at lines 64--65
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (31.35075pt too wide) in paragraph at lines 65--66
+[][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (115.93083pt too wide) in paragraph at lines 66--67
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (59.54411pt too wide) in paragraph at lines 67--68
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (3.1574pt too wide) in paragraph at lines 68--69
+[][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (45.44743pt too wide) in paragraph at lines 78--79
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (66.59245pt too wide) in paragraph at lines 86--87
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+[36]
 Overfull \hbox (270.99431pt too wide) in paragraph at lines 93--94
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-<image/unionDefineMapping.png, id=196, 664.4825pt x 562.1pt>
+<image/unionDefineMapping.png, id=206, 664.4825pt x 562.1pt>
 File: image/unionDefineMapping.png Graphic file (type png)
 
 <use image/unionDefineMapping.png>
 Package pdftex.def Info: image/unionDefineMapping.png used on input line 108.
 (pdftex.def)             Requested size: 298.75262pt x 252.71967pt.
-
-
-LaTeX Warning: Reference `list:listbeforereplacebitvar' on page 36 undefined on
- input line 115.
-
-
-LaTeX Warning: Reference `list:listafterreplacebitvar' on page 36 undefined on 
-input line 115.
-
-[36 <./image/unionDefineMapping.png>]
-
-LaTeX Warning: Reference `list:listbeforereplacebitvar' on page 37 undefined on
- input line 133.
-
-
-LaTeX Warning: Reference `list:listafterreplaceacc' on page 37 undefined on inp
-ut line 143.
-
-[37]
-
-LaTeX Warning: Reference `ist:invalid1' on page 38 undefined on input line 184.
-
-
+ [37 <./image/unionDefineMapping.png>]
 [38]
+
+LaTeX Warning: Reference `ist:invalid1' on page 39 undefined on input line 184.
+
+
+[39]
 Underfull \hbox (badness 10000) in paragraph at lines 214--215
 
  []
@@ -1348,44 +1602,48 @@ Underfull \hbox (badness 10000) in paragraph at lines 218--219
 
  []
 
-[39])
-Underfull \hbox (badness 10000) in paragraph at lines 222--73
+[40])
+Underfull \hbox (badness 10000) in paragraph at lines 222--86
 
  []
 
-[40]
+[41]
 \openout2 = `chapter6.aux'.
 
  (./chapter6.tex
 Ch\uhorn \ohorn ng 6.
-) [41
-
-
-
-] (./main.bbl
-
-LaTeX Warning: Empty `thebibliography' environment on input line 3.
-
 ) [42
 
 
-] (./main.aux (./chapter1.aux) (./chapter2.aux) (./chapter3.aux)
-(./chapter4.aux) (./chapter5.aux) (./chapter6.aux))
+
+]
+LaTeX Font Info:    Try loading font information for T5+cmtt on input line 91.
+ (/usr/local/texlive/2016/texmf-dist/tex/latex/vntex/t5cmtt.fd
+File: t5cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+) [43
+
+
+]
+(./main.aux (./chapter1.aux) (./chapter2.aux) (./chapter3.aux) (./chapter4.aux)
+(./chapter5.aux) (./chapter6.aux))
 
 LaTeX Warning: There were undefined references.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
+Package logreq Info: Writing requests to 'main.run.xml'.
+\openout1 = `main.run.xml'.
+
  ) 
 Here is how much of TeX's memory you used:
- 5296 strings out of 493014
- 70082 string characters out of 6133351
- 173126 words of memory out of 5000000
- 8689 multiletter control sequences out of 15000+600000
- 16683 words of font info for 34 fonts, out of 8000000 for 9000
+ 11279 strings out of 493014
+ 178323 string characters out of 6133351
+ 434681 words of memory out of 5000000
+ 14604 multiletter control sequences out of 15000+600000
+ 17802 words of font info for 36 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,10n,62p,1619b,1596s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,10n,62p,1664b,1596s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb
 ></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><
 /usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></u
@@ -1394,12 +1652,14 @@ local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/l
 ocal/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/loc
 al/texlive/2016/texmf-dist/fonts/type1/vntex/vnr/vnbx12.pfb></usr/local/texlive
 /2016/texmf-dist/fonts/type1/vntex/vnr/vnbxti10.pfb></usr/local/texlive/2016/te
-xmf-dist/fonts/type1/vntex/vnr/vnr12.pfb></usr/local/texlive/2016/texmf-dist/fo
-nts/type1/vntex/vnr/vnti12.pfb>
-Output written on main.pdf (48 pages, 1304312 bytes).
+xmf-dist/fonts/type1/vntex/vnr/vncsc10.pfb></usr/local/texlive/2016/texmf-dist/
+fonts/type1/vntex/vnr/vnr12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1
+/vntex/vnr/vnti12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/vntex/vnr
+/vntt12.pfb>
+Output written on main.pdf (51 pages, 1314765 bytes).
 PDF statistics:
- 256 PDF objects out of 1000 (max. 8388607)
- 139 compressed objects within 2 object streams
+ 274 PDF objects out of 1000 (max. 8388607)
+ 152 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  151 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -4,8 +4,16 @@
 \usepackage{verbatim}
 \usepackage[a4paper,width=150mm,top=25mm,bottom=25mm]{geometry}
 \usepackage{listings}
+\usepackage[
+backend=bibtex,
+style=numeric
+]{biblatex}
+\bibliography{thesis}
+
 \title{Kỹ thuật dịch ngược}
 \graphicspath{ {image/} }
+
+\renewcommand*{\finalnamedelim}{\addcomma\addspace}
 \begin{comment}
 -	Lời cam đoan
 -	Lời cảm ơn/ Lời ngỏ
@@ -48,12 +56,17 @@
 	\hspace*{8cm}\textbf{Sinh viên thực hiện}
 	\\[10ex]
 	\hspace*{9cm}Lâm Minh Phương
-	
+		
 	\chapter*{Lời cảm ơn}
 	Tôi xin gửi lời cảm ơn đến Tiến sĩ Nguyễn Hứa Phùng - Giảng viên trường Đại học Bách Khoa - Đại học Quốc Gia TP. HCM - đã giúp đỡ tôi trong suốt quá trình thực hiện luận văn này.\\
 	Tôi cũng xin chân thành cảm ơn Michael James Van Emmerik, Trent Waddington và các lập trình viên đã phát triển nên nền tảng Boomerang.\\
 	Ngoài ra, luận văn tốt nghiệp này là một sản phẩm kế thừa từ luận văn tốt nghiệp đề tài "Kỹ thuật dịch ngược" của Nguyễn Tiến Thành và Nguyễn Đôn Bình. Xin ghi nhận đóng góp của hai anh.\\
-	Cuối cùng, xin gửi lời cám ơn đến các tác giả của tài liệu được trích dẫn trong báo cáo này.
+	Cuối cùng, xin gửi lời cám ơn đến các tác giả của tài liệu được trích dẫn trong báo cáo này. \cite{boomeranghomepage}
+	
+	\newpage
+	\chapter*{Tóm tắt luận văn}
+	Kỹ thuật dịch ngược ngày nay đã được ứng dụng nhiều trong ngành công nghiệp phần mềm. Để xây dựng một trình dịch ngược thành công, cần phải giải quyết nhiều bài toán phức tạp, chủ yếu liên quan đến việc khôi phục những thông tin không được lưu trữ ở ngôn ngữ gốc nhưng cần thiết phải có ở ngôn ngữ đích. Một trong những thông tin quan trọng nhất cần khôi phục là kiểu dữ liệu, và đã có nhiều giải pháp cho vấn đề này với độ chính xác chấp nhận được. Tuy nhiên, có những kiến trúc máy có các tính chất đặc biệt và đòi hỏi phải tạo ra một cấu trúc dữ liệu cấp cao phù hợp để đảm bảo mã cấp cao giữ nguyên được những tính chấp đó, cụ thể là cấu trúc union, và bài toán này vẫn chưa được giải quyết thấu đáo. Mục tiêu của luận văn là nghiên cứu và đưa ra những giải pháp phù hợp cho bài toán tìm kiếm union này.
+	
 	
 	\newpage
 	\tableofcontents
@@ -72,9 +85,9 @@
 	\include{chapter4}
 	\include{chapter5}
 	\include{chapter6}
-	\newpage
 	
+	\newpage
 	\nocite{*}
-	\bibliography{thesis} 
-	\bibliographystyle{ieeetr}
+	\printbibliography
+
 \end{document}
