@@ -10,7 +10,7 @@ Bất kỳ một sản phẩm nào đều cần phải được kiểm tra trư�
 	\item Xử lý để Boomerang giữ được tên biến được người dùng tự khai báo. Vì bản thân Boomerang là một trình dịch ngược từ mã máy, nên nó chỉ xử lý dữ liệu dưới dạng thanh ghi, các thanh ghi này phải được định nghĩa trước trong file đặc tả của từng kiến trúc máy.
 	\item Chỉnh sửa giai đoạn sinh mã của Boomerang. Các hướng tiếp cận đưa ra trong luận văn đề có kết quả cuối cùng là một danh sách các UnionDefine, trong đó lưu trữ các biến byte - biến bit cùng một bộ. Để đưa các UnionDefine này thành các cấu trúc union ở mã đầu ra, cần phải có một số thay đổi ở phần sinh mã của Boomerang
 \end{itemize}
-Các thay đổi này sẽ lần lượt được trình bày ở các phần dưới.
+Các thay đổi này s	 lần lượt được trình bày ở các phần dưới.
 
 \subsection{Thay đổi cơ chế quản lý tên dữ liệu của Boomerang}
 
@@ -165,23 +165,23 @@ Với mỗi tiêu chí, ta sẽ có các trường hợp sau đây:
 
 Tiêu chí I:
 \begin{enumerate}
-	\item Một giá trị trực tiếp
-	\item Giá trị ở một vùng nhớ có địa chỉ là một biến byte
-	\item Giá trị ở một vùng nhớ có địa chỉ là một giá trị trực tiếp
-	\item Giá trị ở một vùng nhớ có địa chỉ là một thanh ghi
-	\item Giá trị ở một vùng nhớ có địa chỉ là một biểu thức 2 vế. Mỗi vế có thể là một biến byte, một thanh ghi, hoặc một giá trị trực tiếp
+	\item Một giá trị trực tiếp (I.1)
+	\item Giá trị ở một vùng nhớ có địa chỉ là một biến byte (I.2)
+	\item Giá trị ở một vùng nhớ có địa chỉ là một giá trị trực tiếp (I.3)
+	\item Giá trị ở một vùng nhớ có địa chỉ là một thanh ghi (I.4)
+	\item Giá trị ở một vùng nhớ có địa chỉ là một biểu thức 2 vế. Mỗi vế có thể là một biến byte, một thanh ghi, hoặc một giá trị trực tiếp (I.5)
 \end{enumerate}
 
 Tiêu chí II:
 \begin{enumerate}
-	\item Truy xuất dựa vào một biến bit.
-	\item Truy xuất bằng cấu trúc truy xuất trực tiếp một bit của thanh ghi. Ví dụ: \textit{ACC.5}
+	\item Truy xuất dựa vào một biến bit. (II.1)
+	\item Truy xuất bằng cấu trúc truy xuất trực tiếp một bit của thanh ghi. Ví dụ: \textit{ACC.5} (II.2)
 \end{enumerate}
 
 Tiêu chí III:
 \begin{enumerate}
-	\item Không vi phạm các nguyên tắc sử dụng được giới thiệu ở chương đầu.
-	\item Vi phạm nguyên tắc sử dụng. Một biến bit thuộc nhiều bộ biến khác nhau như ví dụ ở đoạn mã \ref{ist:invalid1}, biến bit \textit{TESTUPS} vừa thuộc bộ biến của biến byte \textit{OPTIONS}, vừa thuộc bộ biến của biến byte \textit{OPTIONS2}.
+	\item Không vi phạm các nguyên tắc sử dụng được giới thiệu ở chương đầu. (III.1)
+	\item Vi phạm nguyên tắc sử dụng. Một biến bit thuộc nhiều bộ biến khác nhau như ví dụ ở đoạn mã \ref{ist:invalid1}, biến bit \textit{TESTUPS} vừa thuộc bộ biến của biến byte \textit{OPTIONS}, vừa thuộc bộ biến của biến byte \textit{OPTIONS2}. (III.2)
 	\begin{lstlisting}[caption={Đoạn mã có một biến bit thuộc nhiều bộ biến khác nhau},label={list:invalid1}]
 	MOV A, OPTIONS
 	SETB TESTSUPS
@@ -189,7 +189,7 @@ Tiêu chí III:
 	MOV A, OPTIONS2
 	JB TESTSUPS, BB
 	\end{lstlisting}
-	\item Vi phạm nguyên tắc sử dụng. Tại một thời điểm sử dụng biến bit, thanh ghi \textit{ACC} có thể mang nhiều giá trị vùng nhớ khác nhau. Xem ví dụ ở đoạn mã \ref{list:invalid2}, ở câu lệnh cuối cùng, biến a có thể mang vùng nhớ của \textit{OPTIONS} hoặc \textit{OPTIONS2}, như vậy không thể xác định được \textit{TESTSDOWNS} thuộc bộ biến nào.
+	\item Vi phạm nguyên tắc sử dụng. Tại một thời điểm sử dụng biến bit, thanh ghi \textit{ACC} có thể mang nhiều giá trị vùng nhớ khác nhau. Xem ví dụ ở đoạn mã \ref{list:invalid2}, ở câu lệnh cuối cùng, biến a có thể mang vùng nhớ của \textit{OPTIONS} hoặc \textit{OPTIONS2}, như vậy không thể xác định được \textit{TESTSDOWNS} thuộc bộ biến nào. (III.3)
 	\begin{lstlisting}[caption={Đoạn mã ACC có thể mang nhiều giá trị vùng nhớ khác nhau},label={list:invalid2}, language=c++]
 	if (TESTSUPS == 1)
 		a = *OPTIONS;
@@ -197,7 +197,7 @@ Tiêu chí III:
 		a = *OPTIONS2;
 	TESTSDOWNS = 0;
 	\end{lstlisting}
-	\item Vi phạm nguyên tắc sử dụng. Ghi nhận được có hai biến bit cùng một vị trí chung bộ với một biến byte như ở đoạn mã \ref{list:invalid3}, biến \textit{TESTSUPS} và \textit{TESTSDOWNS} đều được sử dụng như là bit đầu tiên của vùng nhớ quy định bởi biến byte \textit{OPTIONS}.
+	\item Vi phạm nguyên tắc sử dụng. Ghi nhận được có hai biến bit cùng một vị trí chung bộ với một biến byte như ở đoạn mã \ref{list:invalid3}, biến \textit{TESTSUPS} và \textit{TESTSDOWNS} đều được sử dụng như là bit đầu tiên của vùng nhớ quy định bởi biến byte \textit{OPTIONS}. (III.4)
 	\begin{lstlisting}[caption={Đoạn mã có 2 biến bit cùng một vị trí và đều được ghi nhận cùng bộ với một biến byte},label={list:invalid3}]
 	...
 	#DEFINE TESTSUPS, ACC.1
@@ -211,7 +211,7 @@ Tiêu chí III:
 	\end{lstlisting}
 \end{enumerate}
 
-Dựa vào các tiêu chí và trường hợp trên, có tổng cộng 5x2x4 = 40 loại testcase, mỗi loại testcase sẽ có một testcase đại diện. Ngoài ra, sẽ có một testcase phức tạp được lấy từ một đoạn chương trình thực của doanh nghiệp được đưa vào kiểm thử, nhằm đảm bảo tính thực tế của luận văn này. Như vậy, tổng cộng có 41 testcase sẽ được chạy thử trên kết quả hiện thực luận văn.\\
+Dựa vào các tiêu chí và trường hợp trên, có tổng cộng 5x2x4 = 40 loại testcase, một số loại testcase phức tạp sẽ có nhiều hơn 1 testcase, còn lại các loại khác sẽ có 1 testcase đại diện mỗi loại. Ngoài ra, sẽ có một testcase phức tạp được lấy từ một đoạn chương trình thực của doanh nghiệp được đưa vào kiểm thử, nhằm đảm bảo tính thực tế của luận văn này. Việc phân bố các testcase được trình bày ở bảng \ref{table:table2}. Như vậy, tổng cộng có 50 testcase sẽ được chạy thử trên kết quả hiện thực luận văn.\\
 
 \subsection{Kết quả chạy thử}
 
