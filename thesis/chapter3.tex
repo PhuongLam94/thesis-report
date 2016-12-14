@@ -1,10 +1,10 @@
 \chapter{Kiểm tra kiểu - Type checking}
 \label{chap:typechecking}
-Giải pháp Kiểm tra kiểm gồm có các bước sau đây:
+Chương này trình bày cách giải quyết bài toán Kiểm tra kiểu thông qua các bước sau:
 \begin{itemize}
-\item Rút trích thông tin từ phần chú thích trong đoạn mã chương trình đầu vào để biết được các biến byte - biến bit nào thuộc cùng một bộ.
-\item Thực hiện phân tích dữ liệu để biết được giá trị của thanh ghi ACC tại một thời điểm của chương trình.
-\item Tại các câu lệnh sử dụng biến bit, tiến hành các bước kiểm tra nguyên tắc sử dụng bộ biến.
+\item Mở rộng ngôn ngữ assembly để người lập trình có thể cung cấp thông tin về kiểu union cho trình dịch ngược.
+\item Xác định kiểu của thanh ghi trung gian.
+\item Kiểm tra tính hợp lệ về kiểu union.
 \end{itemize}
 \begin{figure}[h!]
 	\centering
@@ -36,7 +36,7 @@ std::map<std::string, int, std::less<std::string> >::iterator it;
 for (it = decoder->getRTLDict().RegMap.begin();	 it != decoder->getRTLDict().RegMap.end(); it++)
 if ((*it).second == idx) 
 return (*it).first.c_str();
-return NULL;
+return NULL;a
 \end{lstlisting}
 
 
@@ -183,12 +183,7 @@ REACHin(B) = \cup_{j \in Pred(B)} REACHout(j)
 
 Từ hai công thức \ref{eq:reachout} và \ref{eq:reachin}, ta thấy ở phân tích này, tập hợp các giá trị ra (\textit{REACHin}) được quyết định bởi các giá trị vào (\textit{REACHout}), ngược lại với phân tích liveness (tìm tập hợp biến đang sống tại một thời điểm của chương trình). Như vậy, luồng đi của phân tích là cùng chiều với luồng đi của chương trình. Tương tự một số phương pháp phân tích dữ liệu khác, ta sẽ lần lượt tính toán các tập hợp vào và tập hợp ra của từng khối cơ bản cho đến khi không còn thay đổi nào được ghi nhận. Xem sơ đồ khối hình \ref{fig:reachingdefalgo}.
 
-\begin{figure}
-	\centering
-	\includegraphics[scale=0.75]{image/reachingDefAlgo}
-	\caption{Giải thuật tính Reaching definitions cho khối cơ bản}
-	\label{fig:reachingdefalgo}
-\end{figure}
+
 
 Tuy nhiên, trong trường hợp của bài toán cần giải quyết, ta cần phải biết tập hợp ra vào của từng câu lệnh một, chứ không chỉ của toàn bộ khối cơ bản, vì vậy, khi ứng dụng vào Boomerang, giải thuật sẽ được điều chỉnh lại để tìm tập \textit{REACHin} và \textit{REACHout} của từng câu lệnh. Việc điều chỉnh này là khá nhỏ, và các bước vẫn sẽ giữ nguyên, không thay đổi nhiều.\\
 

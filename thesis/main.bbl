@@ -17,20 +17,43 @@
 \endgroup
 
 \sortlist[entry]{nty/global/}
+  \entry{compiler}{book}{}
+    \name{author}{1}{}{%
+      {{hash=AAW}{%
+         family={APPEL},
+         family_i={A\bibinitperiod},
+         given={ANDREW\bibnamedelima W.},
+         given_i={A\bibinitperiod\bibinitdelim W\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {THE PRESS SYNDICATE OF THE UNIVERSITY OF CAMBRIDGE}%
+    }
+    \keyw{physics}
+    \strng{namehash}{AAW1}
+    \strng{fullhash}{AAW1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{title}{Modern Compiler Implementation in C}
+    \field{year}{1997}
+  \endentry
+
   \entry{reachingdef}{online}{}
     \name{author}{1}{}{%
-      {{hash=oCSD}{%
-         prefix={of},
-         prefix_i={o\bibinitperiod},
+      {{hash=DoCSPU}{%
+         prefix={Department\bibnamedelima of},
+         prefix_i={D\bibinitperiod\bibinitdelim o\bibinitperiod},
          family={Computer\bibnamedelima Sciences},
          family_i={C\bibinitperiod\bibinitdelim S\bibinitperiod},
-         given={Department},
-         given_i={D\bibinitperiod},
+         given={Purdue\bibnamedelima University},
+         given_i={P\bibinitperiod\bibinitdelim U\bibinitperiod},
       }}%
     }
     \keyw{reachingdefinitions}
-    \strng{namehash}{CSDo1}
-    \strng{fullhash}{CSDo1}
+    \strng{namehash}{CSPUDo1}
+    \strng{fullhash}{CSPUDo1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{sortinit}{C}
@@ -38,6 +61,70 @@
     \field{title}{Reaching Definition Analysis}
     \verb{url}
     \verb https://www.cs.purdue.edu/homes/ehanau/cs352/supplemental/reachdefpdf
+    \endverb
+  \endentry
+
+  \entry{ssa}{article}{}
+    \name{author}{5}{}{%
+      {{hash=CR}{%
+         family={Cytron},
+         family_i={C\bibinitperiod},
+         given={Ron},
+         given_i={R\bibinitperiod},
+      }}%
+      {{hash=FJ}{%
+         family={Ferrante},
+         family_i={F\bibinitperiod},
+         given={Jeanne},
+         given_i={J\bibinitperiod},
+      }}%
+      {{hash=RBK}{%
+         family={Rosen},
+         family_i={R\bibinitperiod},
+         given={Barry\bibnamedelima K.},
+         given_i={B\bibinitperiod\bibinitdelim K\bibinitperiod},
+      }}%
+      {{hash=WMN}{%
+         family={Wegman},
+         family_i={W\bibinitperiod},
+         given={Mark\bibnamedelima N.},
+         given_i={M\bibinitperiod\bibinitdelim N\bibinitperiod},
+      }}%
+      {{hash=ZFK}{%
+         family={Zadeck},
+         family_i={Z\bibinitperiod},
+         given={F.\bibnamedelima Kenneth},
+         given_i={F\bibinitperiod\bibinitdelim K\bibinitperiod},
+      }}%
+    }
+    \keyw{ssa}
+    \strng{namehash}{CR+1}
+    \strng{fullhash}{CRFJRBKWMNZFK1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \verb{doi}
+    \verb https://dx.doi.org/10.1145%2F115372.115320
+    \endverb
+    \field{number}{4}
+    \field{pages}{451\bibrangedash 490}
+    \field{title}{Efficiently computing static single assignment form and the
+  control dependence graph}
+    \field{volume}{13}
+    \field{journaltitle}{ACM Transactions on Programming Languages and Systems
+  (TOPLAS)}
+    \field{year}{1991}
+  \endentry
+
+  \entry{dcc}{online}{}
+    \keyw{dcc}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{title}{dcc Decompiler Homepage}
+    \verb{url}
+    \verb https://github.com/nemerle/dcc
     \endverb
   \endentry
 
@@ -63,6 +150,50 @@
     }
     \field{type}{phdthesis}
     \field{year}{2007}
+  \endentry
+
+  \entry{ilspy}{online}{}
+    \keyw{ilspy}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{I}
+    \field{sortinithash}{I}
+    \field{title}{ILSpy Decompiler Homepage}
+    \verb{url}
+    \verb http://ilspy.net
+    \endverb
+  \endentry
+
+  \entry{monoreach}{online}{}
+    \name{author}{1}{}{%
+      {{hash=LP}{%
+         family={Lee},
+         family_i={L\bibinitperiod},
+         given={Peter},
+         given_i={P\bibinitperiod},
+      }}%
+    }
+    \keyw{reachingdefinitions}
+    \strng{namehash}{LP1}
+    \strng{fullhash}{LP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{title}{Foundations of Dataflow Analysis}
+    \verb{url}
+    \verb http://www.cs.cmu.edu/afs/cs/academic/class/15745s06/web/handouts
+    \endverb
+  \endentry
+
+  \entry{procyon}{online}{}
+    \keyw{procyon}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{Procyon Decompiler Homepage}
+    \verb{url}
+    \verb https://bitbucket.org/mstrobel/procyon
+    \endverb
   \endentry
 
   \entry{boomeranghomepage}{online}{}
@@ -119,6 +250,28 @@
     \endverb
   \endentry
 
+  \entry{exprop}{online}{}
+    \name{author}{1}{}{%
+      {{hash=SBS}{%
+         family={Software},
+         family_i={S\bibinitperiod},
+         given={Backer\bibnamedelima Street},
+         given_i={B\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+    }
+    \keyw{backerstreet}
+    \strng{namehash}{SBS1}
+    \strng{fullhash}{SBS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{title}{Decompiler Design - Expression Propagation}
+    \verb{url}
+    \verb https://www.backerstreet.com/decompiler/expression_propagation.php
+    \endverb
+  \endentry
+
   \entry{reverseengineeer}{online}{}
     \name{author}{1}{}{%
       {{hash=SBS}{%
@@ -170,6 +323,46 @@
     }
     \field{type}{{B.S. Thesis}}
     \field{year}{2015}
+  \endentry
+
+  \entry{dce}{online}{}
+    \name{author}{1}{}{%
+      {{hash=W}{%
+         family={Wikipedia},
+         family_i={W\bibinitperiod},
+      }}%
+    }
+    \keyw{backerstreet}
+    \strng{namehash}{W1}
+    \strng{fullhash}{W1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{title}{Dead Code Elimination}
+    \verb{url}
+    \verb https://en.wikipedia.org/wiki/Dead_code_elimination
+    \endverb
+  \endentry
+
+  \entry{decompilersi}{online}{}
+    \name{author}{1}{}{%
+      {{hash=W}{%
+         family={Wikipedia},
+         family_i={W\bibinitperiod},
+      }}%
+    }
+    \keyw{decompiler}
+    \strng{namehash}{W1}
+    \strng{fullhash}{W1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{title}{Decompiler}
+    \verb{url}
+    \verb https://en.wikipedia.org/wiki/Decompiler
+    \endverb
   \endentry
 \endsortlist
 \endinput

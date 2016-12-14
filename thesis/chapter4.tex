@@ -10,57 +10,9 @@ Tương tự như ở chương trước, bước đầu tiên của giải pháp
 \begin{lstlisting}[caption={Trường hợp không thể xử lý được bằng các phương pháp phân tích dữ liệu trước},label={list:hardone}]
 MOV ACC, OPTIONS+1
 \end{lstlisting}
-Để mở rộng khả năng xử lý của trình dịch ngược, cần phải tìm ra một phương pháp khác tốt hơn. Phương pháp đạt yêu cầu phải tính toán được chính xác giá trị hiện có của thanh ghi \textit{ACC} cho dù biểu thức bên phải của phép gán là gì. Cụ thể, chỉ các trường hợp giá trị ở thanh ghi \textit{ACC} là một giá trị cố định, có thể tính toán được trước khi thực thi chương trình mới được xét đến vì nếu thanh ghi \textit{ACC} có thể mang nhiều giá trị vùng nhớ khác nhau thì nguyên tắc sử dụng bộ biến sẽ bị vi phạm. Từ các yêu cầu trên, phương pháp phân tích phù hợp nhất trong trường hợp này là Lan truyền hằng số - Constant propagation. Phương pháp này cho phép tính toán giá trị của các biến, cho biết được giá trị đó có phải là một hằng số tại một thời điểm của chương trình hay không. Ví dụ như đoạn mã ban đầu \ref{list:listconstexam1}, chương trình phân tích có thể thấy giá trị của biến \textit{x} là \textbf{14}, nhưng không biết được giá trị thực sự của biến \textit{y}, cũng như biểu thức trả về là bao nhiêu. Nhờ vào việc lan truyền hằng số, các giá trị này sẽ được tính toán, như trong đoạn mã \ref{list:listconstexam2} và \ref{list:listconstexam3}.
-\begin{lstlisting}[caption={Đoạn mã trước khi thực hiện lan truyền hằng số},label={list:listconstexam1}, language=c++]
- int x = 14;
-int y = 7 - x / 2;
-return y * (28 / x + 2);
-\end{lstlisting}
-\begin{lstlisting}[caption={Đoạn mã sau khi thực hiện lan truyền hằng số cho biến y},label={list:listconstexam2}, language=c++]
-int x = 14;
-int y = 0;
-return y * (28 / x + 2);
-\end{lstlisting}
-\begin{lstlisting}[caption={Đoạn mã sau khi thực hiện lan truyền hằng số cho biểu thức trả về},label={list:listconstexam3}, language=c++]
-int x = 14;
-int y = 0;
-return 0;
-\end{lstlisting}
-Với phương pháp này, một biến có thể có ba giá trị sau:
-\begin{itemize}
-	\item \textit{Top}: Nghĩa là chưa biết được biến có giá trị gì.
-	\item \textit{Hằng số}: Nghĩa là đã xác định được giá trị của biến là một hằng số.
-	\item \textit{Bottom}: Nghĩa là biến có thể mang những giá trị khác nhau, tuỳ thuộc vào luồng chạy của chương trình.
-\end{itemize}
-
-Ở bước khai báo ban đầu của giải thuật, tất cả các biến đều được truyền vào giá trị top (chưa biết), sau đó, trải qua quá trình phân tích thì giá trị của một biến có thể được xác định là \textit{hằng số} hoặc \textit{bottom}. Trong ví dụ \ref{list:listconstexam4}, dễ dàng thấy được ở câu lệnh số 2, biến \textit{a} được gán giá trị là hằng số \textbf{4}. Và vì không có câu lệnh khai báo biến \textit{a} nào xuất hiện ở giữa, nên ở câu lệnh số 3, giá trị của biến \textit{a} cũng vẫn là hằng số \textbf{4}. Còn ở ví dụ \ref{list:listconstexam5}, giá trị của biến \textit{b} được người dùng nhập vào, nên không thể biết trước được giá trị chính xác của nó là gì. Vì vậy, cũng không thể xác định chính xác luồng đi của chương trình như thế nào. Trong quá trình thực thi, chương trình có thể đi theo nhánh \#1, cũng có thể đi theo nhánh \#2 tuỳ thuộc vào người dùng nhập gì cho biến \textit{b}. Kết quả cuối cùng là biến \textit{a} có thể mang những giá trị khác nhau ở câu lệnh dòng thứ 9. Hay nếu dựa vào định nghĩa 3 loại giá trị của biến đã nêu trên, giá trị của \textit{a} tại câu lệnh return này là \textit{bottom}.
-\begin{lstlisting}[caption={Đoạn mã ví dụ biến có giá trị là hằng số},label={list:listconstexam4}, language=c++]
-int a;
-a = 4;
-b = a*4;
-\end{lstlisting}
-\begin{lstlisting}[caption={Đoạn mã ví dụ biến có giá trị là bottom},label={list:listconstexam5}, language=c++]
-int a;
-int b;
-cout<<"Enter b: ";
-cin >> b;
-if (b>15) #1
-	a = 4;
-else #2
-	a = 5;
-return a;
-\end{lstlisting}
-
+Để mở rộng khả năng xử lý của trình dịch ngược, cần phải tìm ra một phương pháp khác tốt hơn. Phương pháp đạt yêu cầu phải tính toán được chính xác giá trị hiện có của thanh ghi \textit{ACC} cho dù biểu thức bên phải của phép gán là gì. Cụ thể, chỉ các trường hợp giá trị ở thanh ghi \textit{ACC} là một giá trị cố định, có thể tính toán được trước khi thực thi chương trình mới được xét đến vì nếu thanh ghi \textit{ACC} có thể mang nhiều giá trị vùng nhớ khác nhau thì nguyên tắc sử dụng bộ biến sẽ bị vi phạm. Từ các yêu cầu trên, phương pháp phân tích phù hợp nhất trong trường hợp này là Lan truyền hằng số - Constant propagation. Phương pháp này cho phép 
 Như vậy, khi áp dụng vào trình dịch ngược Boomerang, mục tiêu của giải thuật này là để tìm ra được ở mỗi điểm của chương trình, thanh ghi \textit{ACC} có mang giá trị của một vùng nhớ duy nhất hay không, và nếu có thì giá trị thật sự của địa chỉ vùng nhớ đó là gì.
 
-Có nhiều cách thực hiện Constant propagation, và như đã trình bày ở chương trước, thường có một giai đoạn code trung gian trong các trình dịch ngược được giữ ở dạng \textit{SSA}, nên cách phân tích \textbf{Sparse constant propagation} sẽ được lựa chọn để giảm thiểu thời gian xử lý. Và việc phân tích này sẽ được thực hiện ở cuối giai đoạn \textit{SSA}, khi các phân tích khác đã hoàn tất. Giải thuật của phân tích Sparse constant propagation gồm có các bước được trình bày ở hình \ref{fig:constantpropagationalgo}
-
-\begin{figure}
-	\centering
-	\includegraphics[scale=0.75]{image/constantPropagationAlgo}
-	\caption{Giải thuật Constant propagation đã được điều chỉnh phù hợp với yêu cầu của trình dịch ngược}
-	\label{fig:constantpropagationalgo}
-\end{figure}
 
 Để thể hiện giá trị của một biến có thể thuộc ba loại là \textit{top}, \textit{hằng số} hoặc \textit{bottom}, cần tạo ra một class mới để lưu trữ loại giá trị, đồng thời lưu trữ giá trị thực sự nếu biến đó là một hằng số. Class này được đặt tên là \textbf{ConstantVariable} và có khai báo được trình bày ở đoạn mã \ref{list:listconstexam5}
 \begin{lstlisting}[caption={Đoạn mã thể hiện class ConstantVariable},label={list:listconstexam5}, language=c++]

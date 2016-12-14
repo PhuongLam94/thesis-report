@@ -2,7 +2,7 @@
 \usepackage{vntex}
 \usepackage{graphicx}
 \usepackage{verbatim}
-\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm]{geometry}
+\usepackage[a4paper,left=30mm,right=20mm,top=20mm,bottom=20mm]{geometry}
 \usepackage{listings}
 \usepackage[
 backend=bibtex,
@@ -26,26 +26,29 @@ style=numeric
 \end{comment}
 \begin{document}
 	\pagenumbering{gobble}
-	\chapter*{}
 	\begin{center}
+		\large{
 		ĐẠI HỌC QUỐC GIA TP. HCM\\
 		TRƯỜNG ĐẠI HỌC BÁCH KHOA\\
-		KHOA KHOA HỌC VÀ KỸ THUẬT MÁY TÍNH\\[10ex]
-		\includegraphics[scale=0.5]{logoBK_jpg.jpg}\\[15ex]
-		LUẬN VĂN TỐT NGHIỆP\\[10ex]
-		\Large \textbf{KỸ THUẬT DỊCH NGƯỢC}\\[10ex]
+		KHOA KHOA HỌC VÀ KỸ THUẬT MÁY TÍNH\\[10ex]}
+		\includegraphics[scale=0.5]{logoBK_jpg.jpg}\\[10ex]
+		\large{LUẬN VĂN TỐT NGHIỆP\\[10ex]}
+		\LARGE{\textbf{KỸ THUẬT DỊCH NGƯỢC}\\[10ex]}
 	\end{center}
 	
-	
-	\hspace*{7.5cm}GVHD: TS. Nguyễn Hứa Phùng\\
-	\hspace*{8.15cm}GVPB: ThS. Võ Thanh Hùng\\[1ex]
-	
-	\hspace*{7.5cm}SVTH: Lâm Minh Phương - 51202846\\[8ex]
-	
+	\large{
+		\textbf{
+	\hspace*{4.95cm}HỘI ĐỒNG: KHOA HỌC MÁY TÍNH 3\\
+	\hspace*{7cm}GVHD: TS. Nguyễn Hứa Phùng\\
+	\hspace*{7.05cm}GVPB: ThS. Võ Thanh Hùng\\
+	\hspace*{10cm}---o0o---\\
+	\hspace*{7.05cm}SVTH: Lâm Minh Phương - 51202846\\[5ex]
+	}
 	\begin{center}
-		\textit{Tp. Hồ Chí Minh, tháng 12/2016}
+		\textit{TP. HỒ CHÍ MINH, 12/2016}
 	\end{center}
 	
+	}
 	\chapter*{Lời cam đoan}
 	\pagenumbering{Roman}
 	
@@ -60,12 +63,12 @@ style=numeric
 	\chapter*{Lời cảm ơn}
 	Tôi xin gửi lời cảm ơn đến Tiến sĩ Nguyễn Hứa Phùng - Giảng viên trường Đại học Bách Khoa - Đại học Quốc Gia TP. HCM - đã giúp đỡ tôi trong suốt quá trình thực hiện luận văn này.\\
 	Tôi cũng xin chân thành cảm ơn Michael James Van Emmerik, Trent Waddington và các lập trình viên đã phát triển nên nền tảng Boomerang.\\
-	Ngoài ra, luận văn tốt nghiệp này là một sản phẩm kế thừa từ luận văn tốt nghiệp đề tài "Kỹ thuật dịch ngược" của Nguyễn Tiến Thành và Nguyễn Đôn Bình. Xin ghi nhận đóng góp của hai anh.\\
+	Ngoài ra, luận văn tốt nghiệp này có sử dụng kết quả nghiên cứu từ luận văn tốt nghiệp đề tài "Kỹ thuật dịch ngược" của Nguyễn Tiến Thành và Nguyễn Đôn Bình năm 2015. Xin ghi nhận đóng góp của hai anh.\\
 	Cuối cùng, xin gửi lời cám ơn đến các tác giả của tài liệu được trích dẫn trong báo cáo này. 
 	
 	\newpage
 	\chapter*{Tóm tắt luận văn}
-	Kỹ thuật dịch ngược ngày nay đã được ứng dụng nhiều trong ngành công nghiệp phần mềm. Để xây dựng một trình dịch ngược thành công, cần phải giải quyết nhiều bài toán phức tạp, chủ yếu liên quan đến việc khôi phục những thông tin không được lưu trữ ở ngôn ngữ gốc nhưng cần thiết phải có ở ngôn ngữ đích. Một trong những thông tin quan trọng nhất cần khôi phục là kiểu dữ liệu, và đã có nhiều giải pháp cho vấn đề này với độ chính xác chấp nhận được. Tuy nhiên, có những kiến trúc máy có các tính chất đặc biệt và đòi hỏi phải tạo ra một cấu trúc dữ liệu cấp cao phù hợp để đảm bảo mã cấp cao giữ nguyên được những tính chấp đó, cụ thể là cấu trúc union, và bài toán này vẫn chưa được giải quyết thấu đáo. Mục tiêu của luận văn là nghiên cứu và đưa ra những giải pháp phù hợp cho bài toán tìm kiếm union này.
+	Kỹ thuật dịch ngược ngày nay đã được ứng dụng nhiều trong ngành công nghiệp phần mềm. Để xây dựng một trình dịch ngược thành công, cần phải giải quyết nhiều bài toán phức tạp, chủ yếu liên quan đến việc khôi phục những thông tin không được lưu trữ ở ngôn ngữ gốc nhưng cần thiết phải có ở ngôn ngữ đích. Một trong những thông tin quan trọng nhất cần khôi phục là kiểu dữ liệu, và đã có nhiều giải pháp cho vấn đề này. Tuy nhiên, hầu hết giải pháp chỉ dừng lại ở mức nhận dạng các kiểu đơn giản (số nguyên, số thực, chuỗi, pointer...), còn một số cấu trúc phức tạp hơn như structure, union, class vẫn chưa được giải quyết hoàn toàn \cite{ssavan}. Mục tiêu của luận văn là nghiên cứu và đưa ra những giải pháp phù hợp cho bài toán kiểu tra và suy diễn kiểu union đối với trình dịch ngược.
 	
 	
 	\newpage
@@ -87,7 +90,6 @@ style=numeric
 	\include{chapter6}
 	
 	\newpage
-	\nocite{*}
 	\printbibliography
 
 \end{document}
