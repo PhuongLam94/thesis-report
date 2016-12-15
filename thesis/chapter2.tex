@@ -140,6 +140,7 @@ Với tính chất của mã SSA, việc lan truyền biểu thức và loại b
 Việc loại bỏ mã chết cũng có thể thực hiện dễ dàng nhờ vào hành động thu thập thông tin về định nghĩa và sử dụng của một biến. Trong quá trình biến đổi từ mã RTL sang SSA, ta có thể xây dựng nên một bảng vị trí câu lệnh gán của một biến và vị trí các câu lệnh sử dụng biến đó. Trải qua các quá trình phân tích, nhất là lan truyền biểu thức, bảng này sẽ được cập nhật lại. Đến cuối cùng, các biến được định nghĩa nhưng không được sử dụng ở bất kỳ câu lệnh nào sẽ được xác định và loại bỏ các câu lệnh gán dư thừa đi.\\
 \section{Các kỹ thuật phân tích luồng dữ liệu được sử dụng trong luận văn}
 \subsection{Reaching defintions}
+\label{sec:reachdef}
 Reaching definitions \cite{reachingdef} là một kỹ thuật phân tích dữ liệu nhằm cho biết tại một thời điểm của chương trình, các câu lệnh gán nào còn có giá trị, hay nói cách khác là giá trị của các biến đang được gán ở những câu lệnh nào. Như ví dụ trong hình \ref{fig:reachingdefexam}, nếu áp dụng phân tích Reaching definitions, sẽ biết được tại câu lệnh số 2, có hai câu lệnh gán cho a còn có giá trị là câu lệnh số 1 và câu lệnh số 5, việc a nhận giá trị từ câu lệnh nào là tuỳ vào quá trình thực thi của chương trình.
 \begin{figure}[h!]
 	\centering
