@@ -2,14 +2,13 @@
 \label{chap:typechecking}
 Chương này trình bày cách giải quyết bài toán Kiểm tra kiểu thông qua các bước sau:
 \begin{itemize}
-\item Mở rộng ngôn ngữ assembly để người lập trình có thể cung cấp thông tin về kiểu union cho trình dịch ngược.
-\item Xác định kiểu của thanh ghi trung gian.
-\item Kiểm tra tính hợp lệ về kiểu union.
+\item Mở rộng ngôn ngữ assembly để lưu trữ thông tin về kiểu union.
+\item Kiểm tra tính hợp lệ của việc sử dụng kiểu union trong thân chương trình.
 \end{itemize}
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.7\linewidth]{image/soDoTypeChecking}
-	\caption{Sơ đồ các bước thực hiện giải pháp Kiểm tra kiểu}
+	\includegraphics[width=\linewidth]{image/soDoTypeChecking}
+	\caption{Sơ đồ các bước giải quyết bài toán Kiểm tra kiểu}
 	\label{fig:sodotypechecking}
 \end{figure}
 
@@ -99,54 +98,114 @@ for (symIt = decoder->getSymbolTable().begin(); symIt != decoder->getSymbolTable
 Như vậy, vấn đề giữ nguyên tên biến được giải quyết mà không ảnh hưởng nhiều tới trình dịch ngược.
 %đoạn mã đầu vào assembly và mã đầu ra giữ nguyên được tên biến
 \end{comment}
-\section{Rút trích thông tin từ phần chú thích}
-Khi lập trình bằng ngôn ngữ assembly và có sử dụng tên biến, các lập trình viên thường có phần chú thích bên cạnh để biết được các biến này dùng cho mục đích gì. Đối với các tên biến bit, người lập trình còn phải chỉ rõ ra họ sẽ dùng biến bit này với biến byte nào. Như vậy, nếu đọc các phần chú thích này, những người lập trình khác sẽ biết được các biến byte - biến bit nào là cùng một bộ với nhau và sử dụng đúng theo nguyên tắc. Tuy nhiên, để làm cho trình dịch ngược cũng đọc được thông tin này, cần phải có một quy định chung về việc chú thích cho các tên biến. Mẫu khai báo này được trình bày ở đoạn mã \ref{list:listdeclarevar}. Vì các thay đổi nằm ở phần chú thích, nên sẽ không ảnh hưởng tới nội dung chính của chương trình đầu vào.
-
+\section{Mở rộng ngôn ngữ assembly}
+Để kiểm tra được tính hợp lệ khi sử dụng kiểu union trong đoạn mã đầu vào, trình dịch ngược cần phải được cung cấp thông tin về các kiểu union thông qua một phương thức nào đó. Có hai hướng để giải quyết vấn đề này là:
+\begin{itemize}
+	\item Đưa ra một cấu trúc khai báo mới cho ngôn ngữ assembly. Cấu trúc khai báo này có thể tương tự như khai báo union ở ngôn ngữ cấp cao. Tuy nhiên, cách làm này sẽ làm cho đoạn mã assembly không thể compile được vì các assembler không chấp nhận cấu trúc mới thêm vào đó.
+	\item Cho phép người lập trình đưa các thông tin về kiểu union vào trong phần chú thích theo một mẫu quy định từ trước. Với giải pháp này, đoạn mã không bị ảnh hưởng vì chú thích là một thành phần đã có sẵn trong ngôn ngữ assembly, và khi compile thì các assembler sẽ bỏ qua phần chú thích.
+\end{itemize}
+Như vậy, giải pháp thứ hai là tối ưu hơn và sẽ được áp dụng trong luận văn này. Mẫu chú thích được viết cho 8051 được thể hiện ở đoạn mã \ref{list:listdeclarevar}
 \begin{lstlisting}[caption={Mẫu khai báo bộ biến},label={list:listdeclarevar}]
 ;BEGIN DEFINE
-;BYTE VAR
+;DEFINE BYTE
 [byte var declare]
-;BIT VAR
+;DEFINE BITS
 [eight bit var declares]
 ;END DEFINE
 \end{lstlisting}
+Tuy nhiên, cũng giống như assembler, các trình dịch ngược hầu như sẽ bỏ qua phần chú thích khi đọc đoạn mã đầu vào, và để cho chúng có thể rút trích được thông tin từ phần chú thích thì phải thực hiện một số chỉnh sửa trong giai đoạn lexer và parser, cụ thể là:
+\begin{itemize}
+	\item Chỉnh sửa lexer để nhận biết các token là những chú thích đặc biệt. Như trong ví dụ \ref{list:listdeclarevar}, các chú thích ";BEGIN DEFINE", ";DEFINE BYTE", ";DEFINE BITS" không thể được đọc vào như là token COMMENT bình thường, mà phải có những token riêng biệt cho chúng để phục vụ giai đoạn parser sau đó. Đoạn mã \ref{list:8051lexer} được viết để chạy trên thư viện flex++ thể hiện điều đó. Có thể thấy, khi bắt được một chú thích, thay vì trả về token COMMENT như trước đó, phần lexer mới này sẽ kiểm tra nội dung chú thích, nếu trùng với các chú thích đặc biệt thì sẽ trả về token tương ứng. 
+\end{itemize}
+\begin{changemargin}{0cm}{0cm} 
+	\begin{lstlisting}[caption={Phần lexer được chỉnh sửa để nhận biết các chú thích đặc biệt},label={list:8051lexer}]
+	(\;.*)  { 
+		string beginDefine = ";BEGIN DEFINE";
+		string endDefine = ";END DEFINE";
+		string defineByte = ";DEFINE BYTE";
+		string defineBits = ";DEFINE BITS";
+		string val = strdup(yytext);
+		if (beginDefine == val)
+			return BEGINDEFINE;
+		else if (endDefine == val)
+			return ENDDEFINE;
+		else if (defineByte == val)
+			return DEFINEBYTE;
+		else if (defineBits == val)
+			return DEFINEBITS;
+		else return COMMENT;
+		}
+	\end{lstlisting}
 
-Như vậy, trong trình dịch ngược, cần có một cấu trúc mới để lưu trữ thông tin của các bộ biến byte và biến bit này. Trong đoạn mã \ref{list:listuniondefine}, có một trường byteVar để lưu tên biến byte, và một sơ đồ lưu thứ tự của biến bit và tên biến bit tương ứng. Hiện tại, cấu trúc này đã đủ cho giải pháp Kiểm tra kiểu. Tuy nhiên, nó sẽ được mở rộng ở giải pháp sau. 
-\begin{lstlisting}[caption={Cấu trúc dữ liệu để lưu trữ một bộ biến},label={list:listuniondefine},language=c++]
-class UnionDefine{
-	public:
-	char* byteVar;
-	map<int, char*>* bitVar;
-	}
-};
-\end{lstlisting}
-Từ các yêu cầu trên, cần phải điều chỉnh lại phần parser của trình dịch ngược, sao cho nó vừa chấp nhận mẫu khai báo biến ở đoạn mã \ref{list:listdeclarevar}, vừa đưa từng bộ biến được khai báo vào trong một thực thể của class \textit{UnionDefine}. Kết quả là, sau khi kết thúc phần parser, ta sẽ thu được một danh sách các \textit{UnionDefine} tương ứng với các khai báo các bộ biến. Đoạn mã \ref{list:listparser} là phần parser viết dựa trên thư viện Bison++ để thực hiện chức năng trên.\\
-\begin{lstlisting}[caption={Đoạn mã parser cho phần khai báo bộ biến},label={list:listparser}]
-definebit: BEGINDEFINE END_LINE DEFINEBYTE END_LINE 
-define DEFINEBITS END_LINE defineeachbit defineeachbit
-defineeachbit defineeachbit defineeachbit defineeachbit 
-defineeachbit defineeachbit ENDDEFINE END_LINE
-{
-	UnionDefine* ut = new UnionDefine();
-	$5 -> expList -> pop_back();
-	ut->byteVar = $5 -> expList -> back() -> 
+\end{changemargin} 
+\begin{itemize}
+	\item Chỉnh sửa parser để nhận vào cấu trúc khai báo union. Tiếp tục với ví dụ mẫu khai báo \ref{list:listdeclarevar}, nếu phần parser chỉ đọc các câu lệnh khai báo biến bình thường, thì không thể xác định được các union mà người dùng khai báo trước. Như vậy, cần chỉnh sửa parser để bắt được những mẫu khai báo đặc biệt. Phần parser viết bằng thư viện bison++ cho mẫu khai báo \ref{list:listdeclarevar} được trình bày ở đoạn mã \ref{list:8051parser}. Trước khi chỉnh sửa, phần parser này chỉ có luật define, đọc vào từng câu lệnh khai báo độc lập. Sau khi được chỉnh sửa lại, luật definebit có độ ưu tiên cao hơn sẽ đọc vào cấu trúc khai báo union gồm nhiều câu lệnh khai báo khác nhau.
+\end{itemize}
+\begin{changemargin}{0cm}{0cm} 
+	\begin{lstlisting}[caption={Đoạn mã parser nhận biết các mẫu khai báo union},label={list:8051parser}]
+	definebit: BEGINDEFINE END_LINE DEFINEBYTE END_LINE 
+					define DEFINEBITS END_LINE defineeachbit{8} 
+					ENDDEFINE END_LINE;
+	defineeachbit: DEFINE ID bit END_LINE;
+	define:	DEFINE ID expressions END_LINE;
+	\end{lstlisting}
+\end{changemargin} 
+\begin{itemize}
+	\item Chỉnh sửa các hành động sau khi parser nhận biết được những cấu trúc khai báo union. Sau khi parser đã bắt được các mẫu khai báo union, cần lập trình để lưu trữ thông tin về các union đó vào dữ liệu của chương trình. Cấu trúc được dùng để lưu trữ thông tin về union này là UnionDefine, được trình bày ở đoạn mã \ref{list:listuniondefine}, trong đó, byteVar để lưu trữ tên của union đó, còn bitVar chứa các thành phần bit thuộc union và số thứ tự của bit mà thành phần đó truy xuất. Đoạn mã \ref{list:8051parser2} thể hiện phần code đưa các khai báo union từ mã đầu vào thành các thực thể UnionDefine tương ứng.
+\end{itemize}
+\begin{changemargin}{0cm}{0cm} 
+	\begin{lstlisting}[caption={Cấu trúc dữ liệu để lưu trữ một union},label={list:listuniondefine},language=c++]
+	class UnionDefine{
+		public:
+			char* byteVar;
+			map<int, char*>* bitVar;
+	};
+	\end{lstlisting}
+	\begin{lstlisting}[caption={Đoạn mã parser bao gồm các hành động sau khi nhận biết được union},label={list:8051parser2}]
+	definebit: BEGINDEFINE END_LINE DEFINEBYTE END_LINE 
+					define DEFINEBITS END_LINE defineeachbit{8} 
+					ENDDEFINE END_LINE
+	{
+		UnionDefine* ut = new UnionDefine();
+		$5 -> expList -> pop_back();
+		ut->byteVar = $5 -> expList -> back() -> 
 		argList.back()->value.c;
-	ut->bitVar = bitVar;
-	unionDefine1 -> push_back(ut);
-	bitVar = new map<char*, int>();
-}
-;
-defineeachbit: DEFINE ID bit END_LINE {
-	std::string temp($3->value.c);
-	char c =  temp.at(temp.size()-1);
-	int num = c - '0';
-	(*bitVar)[$2] = num;
-}
-;
-\end{lstlisting}
-Như vậy, sau giai đoạn parser, ta đã thu được bộ biến theo khai báo của người dùng. Tuy nhiên, nguyên tắc sử dụng bộ biến này là không bắt buộc trong quá trình lập trình 8051, và các assembler cũng không hề kiểm tra việc người dùng có tuân thủ nguyên tắc này không. Vì vậy, trước khi chuyển hoá các bộ biến này sang cấu trúc union ở mã đầu ra, ta cần phải kiểm tra đoạn mã của người dùng sử dụng các bộ biến như thế nào.
-
-\section{Kiểm tra nguyên tắc sử dụng bộ biến}
+		ut->bitVar = bitVar;
+		unionDefine1 -> push_back(ut);
+		bitVar = new map<char*, int>();
+	};
+	defineeachbit: DEFINE ID bit END_LINE {
+		std::string temp($3->value.c);
+		char c =  temp.at(temp.size()-1);
+		int num = c - '0';
+		(*bitVar)[$2] = num;
+	};
+	define: DEFINE ID expressions END_LINE 
+	{ 
+		AssemblyLine* line = new AssemblyLine();
+		line -> expList = new list<AssemblyExpression*>();
+		line->kind = INSTRUCTION;
+		line->name = "DEFINE";
+		AssemblyExpression* expr1 = new AssemblyExpression();
+		expr1 -> kind = UNARY;
+		Arg a;
+		a.c=$2;
+		expr1 -> argList.push_back(new AssemblyArgument(6, a));
+		line -> expList->push_back(expr1);
+		line->expList ->push_back(expr);//*/
+		expr = new AssemblyExpression();
+		$$=line;
+	};
+	\end{lstlisting}
+\end{changemargin} 
+	
+Như vậy, sau khi thực hiện các chỉnh sửa trên, trình dịch ngược đã có thể đọc vào các thông tin về union được người dùng cung cấp ở phần chú thích của đoạn mã đầu vào, đồng thời lưu trữ thông tin đó vào cấu trúc dữ liệu UnionDefine. Tuy đã xác định được những union nào được khai báo trong mã đầu vào, nhưng cần phải có một bước để kiểm tra những union đó có được sử dụng hợp lý hay không.
+\section{Kiểm tra tính hợp lệ của việc sử dụng kiểu union}
+Như đã trình bày ở phần \ref{sec:challenge}, ngôn ngữ assembly không cho phép thao tác trực tiếp trên các vùng nhớ, mà phải thông qua một thanh ghi trung gian và việc sử dụng một thành phần y thuộc union x chỉ hợp lệ khi mà thanh ghi trung gian đang mang kiểu union x đó. Như vậy, quá trình kiểm tra kiểu union sẽ gồm 2 bước:
+\begin{itemize}
+	\item Xác định kiểu của thanh ghi trung gian tại mỗi điểm của chương trình.
+	\item Kiểm tra việc truy xuất thành phần của union có hợp lý hay không.
+\end{itemize}
 \subsection{Xác định giá trị kiểu của thanh ghi \textit{ACC} tại mỗi điểm của chương trình}
 Để kiểm tra được nguyên tắc sử dụng bộ biến, trước hết, ta phải biết được tại mỗi thời điểm của chương trình, thanh ghi \textit{ACC} đang mang giá trị gì. Có hai phương pháp phân tích được áp dụng trong giải pháp này, đó là Reaching definitions kết hợp phần mở rộng và Type propagation.
 \subsubsection{Phân tích Reaching definitions kết hợp phần mở rộng}

@@ -148,7 +148,7 @@ Reaching definitions \cite{reachingdef} là một kỹ thuật phân tích dữ 
 	\label{fig:reachingdefexam}
 \end{figure}
 
-Để tính toán tập Reaching definitions ở một câu lệnh, cần đưa ra các định nghĩa sau:
+Để tính toán tập Reaching definitions, cần đưa ra các định nghĩa sau:
 
 \begin{itemize}
 	\item Nếu một biến được gán giá trị ở câu lệnh \textit{def1}, sau đó được gán tiếp ở câu lệnh \textit{def2} sau đó, thì câu lệnh \textit{def1} đã \textbf{bị giết (killed)} bởi câu lệnh \textit{def2}.
@@ -298,7 +298,7 @@ Phần này sẽ giới thiệu về cấu trúc code của Boomerang \cite{boom
 Về mặt tổng thể, Boomerang gồm có các phần sau:
 \begin{figure}[h]
 	\centering
-	\includegraphics{fig32.png}
+	\includegraphics[scale=1.3]{fig32.png}
 	\caption{Cấu trúc các khối lớn của Boomerang}
 	\label{fig:boomstruct}
 \end{figure}
@@ -307,7 +307,7 @@ Khi đọc vào một chương trình assembly, Boomerang sẽ lưu trữ chúng
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.7\linewidth]{assemblyInfo}
+	\includegraphics[scale=0.6]{assemblyInfo}
 	\caption{Cấu trúc dữ liệu lưu trữ mã assembly trong Boomerang}
 	\label{fig:assemblyinfo}
 \end{figure}
@@ -329,7 +329,7 @@ union Arg{
 Một lưu ý là cấu trúc nói trên chỉ áp dụng với các chương trình viết bằng ngôn ngữ assembly, còn khi viết bằng mã máy thì Boomerang sẽ sử dụng một cấu trúc khác, tuy nhiên, khi chuyển đổi chương trình đầu vào thành mã trung gian thì chỉ có duy nhất một loại cấu trúc cho tất cả các loại mã máy. Prog là tương ứng với toàn bộ chương trình. Một Proc là một hàm, BasicBlock đại diện cho một khối cơ bản mà ở đó không có một câu lệnh rẽ nhánh nào (ví dụ như if, hoặc vòng lặp...). Statement là một câu lệnh và Expr là các biểu thức trong chương trình. Ngoài ra còn có các class đại diện cho kiểu dữ liệu. Việc thực hiện các phân tích chủ yếu diễn ra tại Proc, vì vậy, các thay đổi trong luận văn này cũng chủ yếu được thực hiện bằng các hàm của Proc. Cấu trúc mã trung gian của Boomerang được thể hiện ở hình \ref{fig:progboomerang}\\
 \begin{figure}
 	\centering
-	\includegraphics[width=0.7\linewidth]{progBoomerang}
+	\includegraphics[scale=0.6]{progBoomerang}
 	\caption{Cách lưu trữ một chương trình dưới dạng mã trung gian của Boomerang}
 	\label{fig:progboomerang}
 \end{figure}
