@@ -214,7 +214,7 @@ Phân tích Reaching definitions cho biết được tại một thời điểm 
 	\item Một thanh ghi, giá trị của thanh ghi có thể được khai báo ở các câu lệnh trước đó.
 	\item Một biểu thức có hai vế, các vế của biểu thức có thể là một biến, một thanh ghi hoặc một hằng số.
 \end{itemize}
-Ví dụ về các câu lệnh gán vùng nhớ cho thanh ghi viết bằng mã 8051 được thể hiện ở đoạn mã \ref{list:listhardtestcase}. Phương pháp Reaching definitions sẽ không thể xử lý được khi gặp các câu lệnh gán này. Ở câu lệnh số 1, phân tích có thể lấy được giá trị \textbf{38H}, nhưng không thể xác định được biến nào đã được khai báo giá trị \textbf{38H}. Ở câu lệnh số 2, Reaching definitions không thể biết được giá trị của thanh ghi \textit{DPTR} là bao nhiêu. Ở câu lệnh số 3, việc xử lý lại càng phức tạp hơn, vì nếu chỉ đơn giản lấy biểu thức vế phải \textit{OPTIONS+1} của khai báo ra, không thể nào biết được giá trị thực sự của nó là bao nhiêu. \\
+Ví dụ về các câu lệnh gán vùng nhớ cho thanh ghi viết bằng mã 8051 được thể hiện ở đoạn mã \ref{list:listhardcase}. Phương pháp Reaching definitions sẽ không thể xử lý được khi gặp các câu lệnh gán này. Ở câu lệnh số 1, phân tích có thể lấy được giá trị \textbf{38H}, nhưng không thể xác định được biến nào đã được khai báo giá trị \textbf{38H}. Ở câu lệnh số 2, Reaching definitions không thể biết được giá trị của thanh ghi \textit{DPTR} là bao nhiêu. Ở câu lệnh số 3, việc xử lý lại càng phức tạp hơn, vì nếu chỉ đơn giản lấy biểu thức vế phải \textit{OPTIONS+1} của khai báo ra, không thể nào biết được giá trị thực sự của nó là bao nhiêu. \\
 \begin{lstlisting}[caption={Một số câu lệnh gán trên 8051 mà Reaching definitions không xử lý được},label={list:listhardcase}]
 MOV A, 38H ;1
 MOV A, @DPTR ;2

@@ -10,14 +10,14 @@ Bất kỳ một sản phẩm nào đều cần phải được kiểm tra trư�
 	\item Xử lý để Boomerang giữ được tên biến được người dùng tự khai báo. Vì bản thân Boomerang là một trình dịch ngược từ mã máy, nên nó chỉ xử lý dữ liệu dưới dạng thanh ghi, các thanh ghi này phải được định nghĩa trước trong file đặc tả của từng kiến trúc máy.
 	\item Chỉnh sửa giai đoạn sinh mã của Boomerang. Các hướng tiếp cận đưa ra trong luận văn đề có kết quả cuối cùng là một danh sách các UnionDefine, trong đó lưu trữ các biến byte - biến bit cùng một bộ. Để đưa các UnionDefine này thành các cấu trúc union ở mã đầu ra, cần phải có một số thay đổi ở phần sinh mã của Boomerang
 \end{itemize}
-Các thay đổi này s	 lần lượt được trình bày ở các phần dưới.
+Các thay đổi này sẽ	 lần lượt được trình bày ở các phần dưới.
 
 \subsection{Thay đổi cơ chế quản lý tên dữ liệu của Boomerang}
 
 Vì ở mức độ mã máy, dữ liệu chỉ được lưu ở các thanh ghi cố định hoặc vùng nhớ được truy xuất bằng địa chỉ nên Boomerang không có cơ chế xử lý các biến được người dùng tạo ra ở mã assembly. Tuy nhiên, Boomerang vẫn có cơ chế để giữa được tên các thanh ghi đó ở đoạn mã đầu ra, nên cần tìm hiểu về cơ chế này và chỉnh sửa để nó linh hoạt chấp nhận tất cả các tên biến khác chứ không chỉ riêng tên thanh ghi.
 
 \subsubsection{Phương thức lưu trữ tên thanh ghi của Boomerang}
-Khi chuyển đổi từ mã assembly sang mã trung gian, Boomerang sẽ dùng một class con của \textit{Expr} để biểu diễn thanh ghi. Cụ thể là class \textit{Location}, và gọi phương thức static của class \textit{Location} là \textit{Location::regOf(int num)}. Ta sẽ truyền vào phương thức này một con số đại diện cho thanh ghi đó. Cặp số - tên thanh ghi này được lưu vào một từ điển, để sau này khi thực hiện phân tích xong thì sẽ chuyển lại từ thanh ghi thành biến cục bộ.
+Khi chuyển đổi từ mã assembly sang mã trung gian, Boomerang sẽ dùng một class con của \textit{Expr} để biểu diễn thanh ghi. Cụ thể là class \textit{Location}, và gọi phương thức static của class \textit{Location} là \textit{Location::regOf(int num)}, phương thức này cần được truyền vào một con số đại diện cho thanh ghi. Cặp số - tên thanh ghi này được lưu vào một từ điển, để sau này khi thực hiện phân tích xong thì sẽ chuyển lại từ thanh ghi thành biến cục bộ.
 
 Trong phần giải mã từ mã assembly sang mã trung gian, có một hàm để map giữa tên thanh ghi và con số đại diện cho nó, đó là hàm \textit{map\_sfr(string name)}.
 \begin{lstlisting}[caption={Một số phần mã trong hàm map\_sfr},label={list:listmapsfr},language=c++]
@@ -31,10 +31,12 @@ else return -1;
 
 Sau khi trải qua các quá trình phân tích và đến giai đoạn in ra mã đầu ra, trình dịch ngược sẽ gọi hàm \textit{getRegName} trong class \textit{FrontEnd} để trả lại tên ban đầu của thanh ghi. Trong hàm \textit{getRegName} sẽ lấy từ điển tên thanh ghi - số đại diện được quy định sẵn của mỗi phần giải mã cho các kiến trúc máy khác nhau, tìm tên thanh ghi tương ứng với con số đó và trả về.
 \begin{lstlisting}[caption={Phần mã trong hàm getRegName},label={list:listgetregname},language=c++]
-std::map<std::string, int, std::less<std::string> >::iterator it;
-for (it = decoder->getRTLDict().RegMap.begin();	 it != decoder->getRTLDict().RegMap.end(); it++)
-if ((*it).second == idx) 
-return (*it).first.c_str();
+std::map<std::string, int, std::less<std::string>>::
+																				iterator it;
+for (it = decoder->getRTLDict().RegMap.begin();	 it != 										
+	decoder->getRTLDict().RegMap.end(); it++)
+	if ((*it).second == idx) 
+		return (*it).first.c_str();
 return NULL;
 \end{lstlisting}
 
@@ -48,20 +50,23 @@ Vì số lượng tên biến là rất nhiều, nên ta không thể sử dụn
 \begin{lstlisting}[caption={Phần mã mới được bổ sung trong hàm map\_sfr},label={list:listmapsfrnew},language=c++]
 bool isDefined = false;
 map<char*, AssemblyArgument*>::iterator it;
-for (it = replacement.begin(); it!=replacement.end(); it++){
+for (it = replacement.begin(); it!=replacement.end()
+		; it++){
 	if(strcmp((*it).first, name.c_str()) == 0 ){
-	isDefined = true;
-	break;
+		isDefined = true;
+		break;
 	}
 }
 if (isDefined || name.find("specbits") != string::npos ){
-	if (symbolTable->find(name) == symbolTable->end()){
+	if (symbolTable->find(name) 
+		== symbolTable->end()){
 		bool existed = false;
 		int num;
 		do{
 			num = std::rand()%200+31;
 			map<string, int>::iterator it;
-			for (it = symbolTable->begin(); it!=symbolTable->end(); it++){
+			for (it = symbolTable->begin(); it!=symbolTable->end()
+				; it++){
 				bool cond1 = (*it).second == num;
 				bool cond2 = (byteVar != -1 && byteVar>=num);
 				bool cond3 = (bit != -1 && bit>=num);
@@ -83,14 +88,16 @@ if (isDefined || name.find("specbits") != string::npos ){
 	}
 }
 else {
-	std::cout<<"ERROR: "<<name<<" HAS NOT BEEN DEFINED YET"<<endl;
+	std::cout<<"ERROR: "<<name<<" HAS NOT BEEN DEFINED YET"
+			<<endl;
 	exit(1);
 }
 \end{lstlisting}
 Tương ứng với sự thay đổi ở hàm \textit{map\_sfr},  ở hàm \textit{getRegName}, ngoài việc dò trong từ điển quy định trước, ta sẽ thêm một đoạn mã để dò trong bảng tên biến. 
 \begin{lstlisting}[caption={Phần mã mới được bổ sung trong hàm getRegName},label={list:listgetregnamenew},language=c++]
 std::map<string,int>::iterator symIt;
-for (symIt = decoder->getSymbolTable().begin(); symIt != decoder->getSymbolTable().end(); symIt++){
+for (symIt = decoder->getSymbolTable().begin(); symIt != 
+	decoder->getSymbolTable().end(); symIt++){
 	if ((*symIt).second == idx){
 		return (*symIt).first.c_str();
 	}
@@ -101,7 +108,7 @@ Như vậy, vấn đề giữ nguyên tên biến được giải quyết mà kh
 
 \subsection{Thêm trường hợp cấu trúc union vào đoạn sinh mã của Boomerang}
 
-Các bộ biến được khai báo được lưu bằng cấu trúc UnionDefine, và ta cần thể hiện các bộ biến đó bằng một cấu trúc dữ liệu ở ngôn ngữ cấp cao của mã đầu ra. Như đã phân tích từ trước ở chương \ref{sec:gioithieu}, cấu trúc dữ liệu đó là \textbf{union}. Hình \ref{fig:uniondefinemapping} thể hiện việc chuyển đổi của class UnionDefine sang cấu trúc union. Và vì ở mã assembly, các bộ biến có giá trị trên toàn bộ chương trình chứ không chỉ riêng một nhãn nào, nên khi chuyển về mã C, cần thêm danh sách các union này vào biến toàn cục (global) của chương trình đầu ra.
+Từ dữ liệu là danh sách các thực thể UnionDefine được rút trích thông qua các giải thuật của luận văn, trình dịch ngược cần phải đưa ra các union tương ứng. Hình \ref{fig:uniondefinemapping} thể hiện việc chuyển đổi của class UnionDefine sang cấu trúc union. Các union này được thêm vào danh sách biến toàn cục (global) của chương trình vì chúng có tác dụng trên toàn chương trình chứ không riêng một hàm nào.
 
 \begin{figure}[h!]
 \centering
@@ -112,7 +119,7 @@ Các bộ biến được khai báo được lưu bằng cấu trúc UnionDefine
 
 Sau khi sinh ra các union như trên, một số thay thế cần được thực hiện trên đoạn mã đầu ra. Cụ thể như sau:
 \begin{itemize}
-\item Thay thế các biểu thức thể hiện biến bit dưới dạng thanh ghi độc lập thành một biểu thức truy xuất đến một thành phần của union tương ứng với bộ biến mà biến bit đó thuộc về. Vì ở giai đoạn giải mã, ta không thực hiện kiểm tra biến nào là biến bit, biến nào là biến byte, nên ta sẽ xem tất cả các biến như những thanh ghi độc lập nhau. Sau khi đã trải qua các quá trình phân tích và sinh ra các union, ta cần thay thế để thể hiện rõ mối liên hệ giữa biến bit và biến byte. Ví dụ như ở đoạn mã \ref{list:listbeforereplacebitvar}, biến bit \textit{TESTSUPS} vẫn đang được xem như là một biến độc lập ở mã đầu ra, và cần phải thay thế nó bằng một truy xuất tới union mang tên biến byte cùng bộ, trong trường hợp này là \textit{OPTIONS}. Kết quả của bước thay thế này được thể hiện ở đoạn mã \ref{list:listafterreplacebitvar}.
+\item Thay thế các biểu thức thể hiện các thành phần của union dưới dạng thanh ghi độc lập thành một biểu thức truy xuất đến union đó. Vì ở giai đoạn giải mã, chưa có thông tin nào về các kiểu union, nên trình dịch ngược sẽ xem tất cả các biến là những đối tượng dữ liệu độc lập với nhau. Sau khi đã trải qua các quá trình phân tích và sinh ra các union, ta cần thay thế để thể hiện rõ mối liên hệ giữa các thành phần của những union đó. Ví dụ như ở đoạn mã \ref{list:listbeforereplacebitvar}, thành phần \textit{TESTSUPS} vẫn đang được xem như là một biến độc lập ở mã đầu ra, và cần phải thay thế nó bằng một truy xuất tới union chứa thành phần \textit{TESTSUPS}, trong trường hợp này là \textit{OPTIONS}. Kết quả của bước thay thế này được thể hiện ở đoạn mã \ref{list:listafterreplacebitvar}.
 \begin{lstlisting}[caption={Mã đầu ra trước khi thực hiện các bước thay thế},label={list:listbeforereplacebitvar}, language = c]
 a = *OPTIONS;
 TESTSUPS = 1;
@@ -122,7 +129,7 @@ if (specbits1 == 1){
 return a;
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Mã đầu ra sau khi thực hiện bước thay thế biến bit},label={list:listafterreplacebitvar}, language = c]
+\begin{lstlisting}[caption={Mã đầu ra sau khi thực hiện bước thay thế thành phần của union},label={list:listafterreplacebitvar}, language = c]
 a = *OPTIONS;
 OPTIONS.bits.TESTSUPS = 1;
 if (specbits1 == 1){
@@ -130,9 +137,9 @@ if (specbits1 == 1){
 }
 return a;
 \end{lstlisting}
-\item Thay thế các biểu thức truy xuất trực tiếp bit của thanh ghi \textit{ACC} thành biểu thức truy xuất đến một thành phần của union tương ứng với bộ biến chứa biến byte mà thanh ghi \textit{ACC} đang mang giá trị trỏ đến. Vì một số lý do, có đôi khi người lập trình viên không sử dụng biến bit mà sử dụng một truy xuất trực tiếp đến bit trong thanh ghi \textit{ACC}, ví dụ như: \textit{ACC.1}. Với trường hợp này, vì đã có dữ liệu các bộ biến và giá trị của biến byte thanh ghi \textit{ACC} đang được trỏ đến, các đoạn mã truy xuất biến bit trực tiếp sẽ được thay thế để đoạn mã đầu ra thống nhất hơn, và có thể tiến hành bước thay thế thanh ghi ACC được trình bày bên dưới. Lưu ý: trong giai đoạn giải mã, khi gặp biểu thức \textit{ACC.x}, trình giải mã sẽ chuyển chúng về một thanh ghi đặc biệt có tên là \textit{specbitsx}, với \textit{x} là số thứ tự của bit muốn truy xuất như ở đoạn mã \ref{list:listbeforereplacebitvar}. Tiếp tục ví dụ nêu trên, sau khi đã thay thế các biến bit, thì các truy xuất trực tiếp tới bit của thanh ghi cũng sẽ được thay thế bằng các biểu thức gọi thành phần của union tương ứng. Kết quả là đoạn mã \ref{list:listafterreplacebit}, biến bit đặc biệt \textit{specbits1} đã được thay thế thành biểu thức \textit{OPTIONS.bits.bit1}.
+\item Thay thế các biểu thức truy xuất trực tiếp một phần của thanh ghi trung gian thành biểu thức truy xuất đến thành phần tương ứng trong kiểu union của thanh ghi đó. Vì một số lý do, có đôi khi lập trình viên không sử dụng tên biến mà dùng biểu thức truy xuất trực tiếp đến một thành phần của thanh ghi trung gian. Ví dụ như trong 8051, người lập trình có thể dùng biểu thức \textit{ACC.1 }để truy xuất tới bit đầu tiên của thanh ghi \textit{ACC}. Với trường hợp này, vì đã có dữ liệu về kiểu union mà thanh ghi trung gian đang mang, các biểu thức dạng này sẽ được thay thế bằng biểu thức truy xuất đến union để đoạn mã đầu ra thống nhất hơn, và có thể tiến hành bước thay thế thanh ghi trung gian được trình bày bên dưới. Lưu ý: trong giai đoạn giải mã, các biểu thức truy xuất trực tiếp này sẽ được thể hiện dưới dạng đặc biệt để dễ dàng nhận biết sau này. Ví dụ như với mã 8051, khi gặp biểu thức \textit{ACC.x}, trình giải mã sẽ chuyển chúng về một thanh ghi đặc biệt có tên là \textit{specbitsx}, với \textit{x} là số thứ tự của bit muốn truy xuất như ở đoạn mã \ref{list:listbeforereplacebitvar}. Tiếp tục ví dụ nêu trên, các truy xuất trực tiếp tới bit của thanh ghi \textit{ACC} cũng được thay thế bằng các biểu thức truy thành phần của union tương ứng. Kết quả là đoạn mã \ref{list:listafterreplacebit}, biến đặc biệt \textit{specbits1} đã được thay thế thành biểu thức \textit{OPTIONS.bits.bit1}.
 
-\begin{lstlisting}[caption={Mã đầu ra sau khi thực hiện bước thay thế truy xuất đặc biệt đến bit của thanh ghi ACC},label={list:listafterreplacebit}, language = c]
+\begin{lstlisting}[caption={Mã đầu ra sau khi thực hiện bước thay thế truy xuất trực tiếp đến một phần của thanh ghi trung gian},label={list:listafterreplacebit}, language = c]
 a = *OPTIONS;
 OPTIONS.bits.TESTSUPS = 1;
 if (OPTIONS.bits.bit1 == 1){
@@ -140,9 +147,9 @@ if (OPTIONS.bits.bit1 == 1){
 }
 return a;
 \end{lstlisting}
-\item Thay thế các vị trí sử dụng thanh ghi \textit{ACC} bằng biến byte tương ứng. Khi lập trình ở dạng mã assembly, lập trình viên không được phép xử lý các vùng nhớ trực tiếp mà phải thông qua thanh ghi, tuy nhiên, khi đã chuyển đổi về dạng ngôn ngữ cấp cao, ta có thể sử dụng trực tiếp tên biến trong các câu lệnh mà không cần trung gian qua thanh ghi nữa. Điều này giúp mã đầu ra ngắn gọn, dễ hiểu và trong sáng hơn. Đoạn mã \ref{list:listafterreplaceacc} là kết quả sau khi thực hiện bước thay thế này. Dễ dàng thấy đoạn mã đã gọn hơn rất nhiều do loại bỏ được câu lệnh gán cho biến \textit{a}, và thay thế biến \textit{a} ở câu lệnh return thành truy xuất \textit{OPTIONS.byte}. Vì thực chất \textit{a} cũng đang mang giá trị vùng nhớ của \textit{OPTIONS}, nên đoạn mã này hoàn toàn tương đương với đoạn mã ở \ref{list:listafterreplacebit}.
+\item Thay thế các vị trí sử dụng thanh ghi trung gian bằng union tương ứng. Khi lập trình ở dạng mã assembly, lập trình viên không được phép xử lý các vùng nhớ trực tiếp mà phải thông qua thanh ghi trung gian, tuy nhiên, khi đã chuyển đổi về dạng ngôn ngữ cấp cao, có thể sử dụng trực tiếp tên union trong các câu lệnh mà không cần trung gian qua thanh ghi nữa. Điều này giúp mã đầu ra ngắn gọn, dễ hiểu và trong sáng hơn. Đoạn mã \ref{list:listafterreplaceacc} là kết quả sau khi thực hiện bước thay thế này. Dễ dàng thấy đoạn mã đã gọn hơn rất nhiều do loại bỏ được câu lệnh gán cho biến \textit{a}, và thay thế biến \textit{a} ở câu lệnh return thành truy xuất \textit{OPTIONS.byte}. Vì thực chất \textit{a} đang mang kiểu union \textit{OPTIONS}, nên đoạn mã này hoàn toàn tương đương với đoạn mã ở \ref{list:listafterreplacebit}.
 
-\begin{lstlisting}[caption={Mã đầu ra sau khi thực hiện bước thay thế thanh ghi ACC},label={list:listafterreplaceacc}, language = c]
+\begin{lstlisting}[caption={Mã đầu ra sau khi thực hiện bước thay thế thanh ghi trung gian},label={list:listafterreplaceacc}, language = c]
 OPTIONS.bits.TESTSUPS = 1;
 if (OPTIONS.bits.bit1 == 1){
 ...
@@ -157,39 +164,39 @@ return OPTIONS.byte;
 \subsection{Hệ thống testcase}
 Có các tiêu chí phân loại testcase như sau:
 \begin{itemize}
-	\item Loại biểu thức được gán vào thanh ghi ACC (tiêu chí I)
-	\item Cách truy xuất bit của thanh ghi (tiêu chí II)
-	\item Có vi phạm nguyên tắc sử dụng bộ biến hay không (tiêu chí III)
+	\item Loại biểu thức được gán vào thanh ghi trung gian (tiêu chí I)
+	\item Cách truy xuất một thành phần của thanh ghi (tiêu chí II)
+	\item Có vi phạm nguyên tắc sử dụng kiểu union hay không (tiêu chí III)
 \end{itemize}
 Với mỗi tiêu chí, ta sẽ có các trường hợp sau đây:
 
 Tiêu chí I:
 \begin{enumerate}
-	\item Một giá trị trực tiếp (I.1)
-	\item Giá trị ở một vùng nhớ có địa chỉ là một biến byte (I.2)
-	\item Giá trị ở một vùng nhớ có địa chỉ là một giá trị trực tiếp (I.3)
+	\item Một hằng số (I.1)
+	\item Giá trị ở một vùng nhớ có địa chỉ là một biến (I.2)
+	\item Giá trị ở một vùng nhớ có địa chỉ là một hằng số (I.3)
 	\item Giá trị ở một vùng nhớ có địa chỉ là một thanh ghi (I.4)
-	\item Giá trị ở một vùng nhớ có địa chỉ là một biểu thức 2 vế. Mỗi vế có thể là một biến byte, một thanh ghi, hoặc một giá trị trực tiếp (I.5)
+	\item Giá trị ở một vùng nhớ có địa chỉ là một biểu thức 2 vế. Mỗi vế có thể là một biến byte, một thanh ghi, hoặc một hằng số (I.5)
 \end{enumerate}
 
 Tiêu chí II:
 \begin{enumerate}
-	\item Truy xuất dựa vào một biến bit. (II.1)
-	\item Truy xuất bằng cấu trúc truy xuất trực tiếp một bit của thanh ghi. Ví dụ: \textit{ACC.5} (II.2)
+	\item Truy xuất dựa vào một biến đại diện. (II.1)
+	\item Truy xuất bằng cấu trúc truy xuất trực tiếp một phần nhỏ hơn của thanh ghi. Ví dụ: \textit{ACC.5} trong mã 8051. (II.2)
 \end{enumerate}
 
 Tiêu chí III:
 \begin{enumerate}
-	\item Không vi phạm các nguyên tắc sử dụng được giới thiệu ở chương đầu. (III.1)
-	\item Vi phạm nguyên tắc sử dụng. Một biến bit thuộc nhiều bộ biến khác nhau như ví dụ ở đoạn mã \ref{ist:invalid1}, biến bit \textit{TESTUPS} vừa thuộc bộ biến của biến byte \textit{OPTIONS}, vừa thuộc bộ biến của biến byte \textit{OPTIONS2}. (III.2)
+	\item Không vi phạm nguyên tắc sử dụng kiểu union. (III.1)
+	\item Một thành phần của union này được sử dụng khi thanh ghi trung gian đang có kiểu là một union khác. Như ví dụ ở đoạn mã \ref{ist:invalid1}, thành phần \textit{TESTUPS} được xác định thuộc union \textit{OPTIONS} thông qua 2 câu lệnh 1 và 2, nhưng sau đó lại được truy xuất ở câu lệnh số 4 khi mà thanh ghi trung gian \textit{ACC} đang mang kiểu union \textit{OPTIONS2}. (III.2)
 	\begin{lstlisting}[caption={Đoạn mã có một biến bit thuộc nhiều bộ biến khác nhau},label={list:invalid1}]
-	MOV A, OPTIONS
-	SETB TESTSUPS
+	MOV A, OPTIONS ;1
+	SETB TESTSUPS ;2
 	...
-	MOV A, OPTIONS2
-	JB TESTSUPS, BB
+	MOV A, OPTIONS2 ;3
+	JB TESTSUPS, BB ;4
 	\end{lstlisting}
-	\item Vi phạm nguyên tắc sử dụng. Tại một thời điểm sử dụng biến bit, thanh ghi \textit{ACC} có thể mang nhiều giá trị vùng nhớ khác nhau. Xem ví dụ ở đoạn mã \ref{list:invalid2}, ở câu lệnh cuối cùng, biến a có thể mang vùng nhớ của \textit{OPTIONS} hoặc \textit{OPTIONS2}, như vậy không thể xác định được \textit{TESTSDOWNS} thuộc bộ biến nào. (III.3)
+	\item Tại một thời điểm sử dụng thành phần của một union, thanh ghi trung gian có thể mang nhiều kiểu union khác. Xem ví dụ ở đoạn mã \ref{list:invalid2}, ở câu lệnh cuối cùng, biến \textit{a} có thể mang kiểu union \textit{OPTIONS} hoặc \textit{OPTIONS2}, như vậy không thể xác định được \textit{TESTSDOWNS} thuộc union nào. (III.3)
 	\begin{lstlisting}[caption={Đoạn mã ACC có thể mang nhiều giá trị vùng nhớ khác nhau},label={list:invalid2}, language=c++]
 	if (TESTSUPS == 1)
 		a = *OPTIONS;
@@ -197,7 +204,7 @@ Tiêu chí III:
 		a = *OPTIONS2;
 	TESTSDOWNS = 0;
 	\end{lstlisting}
-	\item Vi phạm nguyên tắc sử dụng. Ghi nhận được có hai biến bit cùng một vị trí chung bộ với một biến byte như ở đoạn mã \ref{list:invalid3}, biến \textit{TESTSUPS} và \textit{TESTSDOWNS} đều được sử dụng như là bit đầu tiên của vùng nhớ quy định bởi biến byte \textit{OPTIONS}. (III.4)
+	\item Ghi nhận được có hai thành phần cùng thuộc một union và cùng truy xuất đến một vị trí của union đó. Như ở đoạn mã \ref{list:invalid3}, biến \textit{TESTSUPS} và \textit{TESTSDOWNS} đều được sử dụng để truy xuất tới bit đầu tiên của union \textit{OPTIONS}. (III.4)
 	\begin{lstlisting}[caption={Đoạn mã có 2 biến bit cùng một vị trí và đều được ghi nhận cùng bộ với một biến byte},label={list:invalid3}]
 	...
 	#DEFINE TESTSUPS, ACC.1
@@ -211,12 +218,79 @@ Tiêu chí III:
 	\end{lstlisting}
 \end{enumerate}
 
-Dựa vào các tiêu chí và trường hợp trên, có tổng cộng 5x2x4 = 40 loại testcase, một số loại testcase phức tạp sẽ có nhiều hơn 1 testcase, còn lại các loại khác sẽ có 1 testcase đại diện mỗi loại. Ngoài ra, sẽ có một testcase phức tạp được lấy từ một đoạn chương trình thực của doanh nghiệp được đưa vào kiểm thử, nhằm đảm bảo tính thực tế của luận văn này. Việc phân bố các testcase được trình bày ở bảng \ref{table:table2}. Như vậy, tổng cộng có 50 testcase sẽ được chạy thử trên kết quả hiện thực luận văn.\\
-
+Kết hợp các tiêu chí trên, loại bỏ đi một số trường hợp không thể xảy ra, có tổng cộng 18 trường hợp cần kiểm thử. Hầu hết mỗi trường hợp sẽ có một testcase đại diện, nhưng với một số trường hợp phức tạp sẽ có nhiều testcase hơn. Bảng 5.1 thể hiện việc phân bổ testcase theo các trường hợp của các tiêu chí.
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{ |p{0.7cm}| p{2cm}| p{2cm}| p{2cm}| p{5cm}|}
+		\hline
+		
+		STT & Tiêu chí I & Tiêu chí II & Tiêu chí III & Mã testcase\\
+		\hline
+		1 & 1 & 1 & 1 &TC001\\
+		\hline
+		2 & 1 & 2 & 1 &TC002\\
+		\hline
+		3 & 2 & 1 & 1 &TC003\\
+		\hline
+		4 & 2 & 2 & 1 &TC004\\
+		\hline
+		5 & 3 & 1 & 1 &TC005\\
+		\hline
+		6 & 3 & 2 & 1 &TC006\\
+		\hline
+		7 & 4 & 1 & 1 &TC007, TC019, TC024\\
+		\hline
+		8 & 4 & 2 & 1 &TC008\\
+		\hline
+		9 & 5 & 1 & 1 &TC009\\
+		\hline
+		10 & 5 & 2 & 1 &TC010, TC020\\
+		\hline
+		11 & 2-3& 1 & 2 &TC011\\
+		\hline
+		12 & 4-5 & 1 & 2 &TC012\\
+		\hline
+		13 & 2-3 & 1 & 3 &TC013, TC023\\
+		\hline
+		14 & 2-3 & 2 & 3 &TC014\\
+		\hline
+		15 & 4-5 & 1 & 3 &TC015, TC021, TC022\\
+		\hline
+		16 & 4-5 & 2 & 3 &TC016\\
+		\hline
+		17 & 2-3 & 1 & 4 &TC017\\
+		\hline
+		18 & 4-5 & 1 & 4 &TC018\\
+		\hline
+	\end{tabular}
+	
+	
+	\label{table:table2}
+	\caption{Bảng phân bổ các testcase theo từng trường hợp của các tiêu chí}
+\end{table}
 \subsection{Kết quả chạy thử}
 
-Kết quả chạy thử của 2 phương pháp được thể hiện ở bảng dưới.\\
+Tuỳ thuộc vào bài toán cần kiểm tra kết quả là gì, các testcase sẽ được điều chỉnh cho phù hợp. Với bài toán Kiểm tra kiểu, phần khai báo của testcase phải cung cấp thông tin về các union theo mẫu quy định, còn bài toán Suy luận kiểu thì không cần. Tuy nhiên nội dung của của các testcase được giữ nguyên để đảm bảo kết quả chạy ra của hai bài toán là như nhau. Kết quả chạy thử các testcase trên từng bài toán được thể hiện ở bảng 5.2
 
-[bảng kết quả chạy thử]
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{ |p{0.7cm}| p{3cm}| p{5cm}| p{5cm}|}
+		\hline
+		
+		STT & Tiêu chí & Bài toán Kiểm tra kiểu & Bài toán Suy luận kiểu\\
+		\hline
+		1 & Số testcase đúng & 15/24 & 24/24\\
+		\hline
+		2 & Các testcase bị sai &TC009, TC010, TC012, TC015, TC016, TC018, TC020, TC021, TC022 &\\
+		\hline
+		3 & Nguyên nhân bị sai & Do phương pháp phân tích dữ liệu được sử dụng không xử lý được hết các trường hợp biểu thức quy định địa chỉ vùng nhớ gán cho thanh ghi trung gian, nên những testcase mà biểu thức này có hai toán hạng sẽ bị sai & \\
+		\hline
+	\end{tabular}
+	
+	
+	\label{table:table3}
+	\caption{Bảng kết quả chạy thử testcase cho hai bài toán}
+\end{table}
+\newpage
+Như vậy, có thể thấy với bài toán Kiểm tra kiểu, có nhiều testcase cho ra kết quả sai, còn bài toán Suy luận kiểu thì tất cả các trường hợp đều chính xác. Điều này đã được dự báo trước vì kỹ thuật phân tích sử dụng trong bài toán Kiểm tra kiểu còn nhiều hạn chế.\\
 
-Như vậy, có thể thấy giải pháp đầu tiên ra kết quả không chính xác rất nhiều, còn giải pháp Suy luận kiểu thì ra được kết quả chấp nhận được. Điều này đã được dự báo trước vì giải pháp Kiểm tra kiểu còn nhiều hạn chế.\\

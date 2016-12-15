@@ -182,6 +182,7 @@ Cũng giống như các phương pháp phân tích dữ liệu khác, các tập
 \end{figure}
 
 \subsection{Lan truyền hằng số - Constant propagation}
+\label{sec:constantprop}
 Mục tiêu của kỹ thuật Lan truyền hằng số - Type propagation \cite{constantpropagation} là tính toán giá trị của các biến, xác định được giá trị đó có phải là một hằng số tại một thời điểm của chương trình hay không. Ví dụ như đoạn mã ban đầu \ref{list:listconstexam1}, chương trình phân tích có thể thấy giá trị của biến \textit{x} là \textbf{14}, nhưng không biết được giá trị thực sự của biến \textit{y}, cũng như biểu thức trả về là bao nhiêu. Nhờ vào việc lan truyền hằng số, các giá trị này sẽ được tính toán, như trong đoạn mã \ref{list:listconstexam2} và \ref{list:listconstexam3}.
 \begin{lstlisting}[caption={Đoạn mã trước khi thực hiện lan truyền hằng số},label={list:listconstexam1}, language=c++]
 int x = 14;

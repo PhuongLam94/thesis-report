@@ -1,11 +1,38 @@
 \chapter{Suy luận kiểu - Type inference}
-Giải pháp Kiểm tra kiểu bắt buộc người lập trình chương trình đầu vào phải để lại chú thích ở phần khai báo biến, tuy nhiên, vì một số lý do, có thể phần chú thích này sẽ không xuất hiện hoặc không thể hiện đầy đủ thông tin, vì vậy cần có một giải pháp khác để xử lý trường hợp này. Giải pháp được giới thiệu ở chương này là Suy luận kiểu, với giải pháp này, bằng các phép phân tích dữ liệu, trình dịch ngược sẽ tự động tìm ra được các bộ biến được sử dụng trong chương trình. Các bước của giải pháp Suy luận kiểu gồm có:
+
+Đối với bài toán Suy luận kiểu, trình dịch ngược không đòi hỏi người dùng phải cung cấp thông tin về kiểu union mà sẽ dựa vào việc sử dụng dữ liệu để suy diễn ra các union tồn tại trong chương trình. Để làm được điều đó, cần thực hiện hai bước sau:
+
 \begin{enumerate}
-	\item Xác định giá trị của thanh ghi \textit{ACC} tại mỗi thời điểm của chương trình.
-	\item Thông qua quá trình sử dụng biến của chương trình, lấy ra được mối quan hệ của các biến.
+	\item Vì chưa có thông tin về các vùng nhớ có kiểu union trong chương trình, nên bước đầu tiên chỉ dừng lại ở việc xác định vùng nhớ mà thanh ghi trung gian đang mang tại mỗi thời điểm của chương trình.
+	\item Dựa vào các câu lệnh có sử dụng những đối tượng dữ liệu truy xuất đến một phần của một vùng nhớ, xác định được vùng nhớ nào có kiểu là union cũng như các thành phần thuộc union đó.
 \end{enumerate}
 
-\section{Xác định giá trị của thanh ghi \textit{ACC} tại mỗi thời điểm của chương trình}
+Hai phần tiếp theo sẽ lần lượt trình bày các bước trên.
+
+\section{Xác định vùng nhớ thanh ghi trung gian đang mang tại mỗi thời điểm của chương trình}
+
+Ở ngôn ngữ assembly, các vùng nhớ được đại diện bởi địa chỉ của chúng, vì vậy việc xác định vùng nhớ thanh ghi trung gian đang mang thực chất là xác định giá trị của địa chỉ vùng nhớ đó. Để xác định được giá trị này, phương pháp phân tích Lan truyền hằng số - Constant propagation sẽ được áp dụng. Như đã giới thiệu ở phần \ref{sec:constantprop}, mục tiêu của Lan truyền hằng số là xác định giá trị của một biến tại một thời điểm của chương trình có phải là hằng số hay không và giá trị của hằng số đó là bao nhiêu. Điều này phù hợp với yêu cầu tìm ra giá trị địa chỉ vùng nhớ mà thanh ghi trung gian đang mang.
+
+Tuy nhiên, vì đối với mỗi loại thanh ghi khác nhau, loại giá trị được quan tâm sẽ khác nhau nên cần phải chỉnh sửa giải thuật của Lan truyền biểu thức như sau:
+\begin{itemize}
+	\item Đối với những thanh ghi trung gian, trình dịch ngược chỉ quan tâm đến việc nó đang được load vào vùng nhớ nào, còn việc giá trị thực sự của thanh ghi này là gì thì không quan trọng. Vì vậy, với loại thanh ghi này, hằng số cần tìm ra là giá trị của địa chỉ vùng nhớ mà nó đang mang.
+	\item Đối với những thanh ghi khác, chúng chỉ được xét đến khi xuất hiện trong biểu thức quy định giá trị địa chỉ vùng nhớ ở các câu lệnh gán vùng nhớ cho thanh ghi trung gian. Vì vậy, trình dịch ngược chỉ quan tâm đến giá trị thật sự của những thanh ghi này để tính toán giá trị của địa chỉ vùng nhớ. Như vậy, hằng số cần tìm của loại thanh ghi này là giá trị thực sự mà thanh ghi đó đang mang.
+\end{itemize}
+Đối với kiến trúc máy 8051, thanh ghi ACC được dùng làm thanh ghi trung gian để xử lý vùng nhớ, còn thanh ghi DPTR thì không. Vì vậy, trong đoạn mã \ref{list:accdptr}, hằng số cần tìm của thanh ghi DPTR là 38, ứng với giá trị thực sự của nó, còn đối với thanh ghi ACC, hằng số cần tìm là giá trị của địa chỉ vùng nhớ, cụ thể là giá trị của biểu thức DPTR+1.
+\begin{lstlisting}[caption={Đoạn mã thể hiện hai loại thanh ghi},label={list:accdptr}]
+MOV DPTR, #38
+MOVX A, @DPTR+1
+\end{lstlisting}
+Như đã trình bày ở chương trước, trong phép gán vùng nhớ cho thanh ghi, biểu thức thể hiện địa chỉ vùng nhớ có thể có nhiều dạng khác nhau như: 
+\begin{itemize}
+	\item Một hằng số.
+	\item Một biến được khai báo trước.
+	\item Một thanh ghi, giá trị của thanh ghi có thể được khai báo ở các câu lệnh trước đó.
+	\item Một biểu thức có hai vế, các vế của biểu thức có thể là một biến, một thanh ghi hoặc một hằng số.
+\end{itemize}
+
+Như vậy, cần có một phương pháp phân tích đủ mạnh để tính toán được giá trị thực sự của các dạng biểu thức trên và xác định tại một thời điểm
+
 Tương tự như ở chương trước, bước đầu tiên của giải pháp Suy luận kiểu là xác định giá trị của thanh ghi \textit{ACC} tại mỗi thời điểm của chương trình. Các giải pháp Reaching definitions mở rộng và Type propagation đã trình bày đều không thể xử lý hết tất cả các trường hợp xảy ra của phép gán thanh ghi ACC. Cụ thể, trường hợp không thể xử lý được là khi biểu thức quy định địa chỉ vùng nhớ của thanh ghi \textit{ACC} là một biểu thức có hai toán hạng (xem ví dụ ở đoạn mã \ref{list:hardone}). 
 \begin{lstlisting}[caption={Trường hợp không thể xử lý được bằng các phương pháp phân tích dữ liệu trước},label={list:hardone}]
 MOV ACC, OPTIONS+1
