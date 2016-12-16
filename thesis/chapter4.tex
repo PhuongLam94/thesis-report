@@ -1,6 +1,6 @@
 \chapter{Suy luận kiểu - Type inference}
 
-Đối với bài toán Suy luận kiểu, trình dịch ngược không đòi hỏi người dùng phải cung cấp thông tin về kiểu union mà sẽ dựa vào việc sử dụng dữ liệu để suy diễn ra các union tồn tại trong chương trình. Để làm được điều đó, cần thực hiện hai bước sau:
+Đối với bài toán Suy luận kiểu, trình dịch ngược không được cung cấp các thông tin về kiểu union như ở bài toán Kiểm tra kiểu mà phải dựa vào việc phân tích quá trình sử dụng dữ liệu của chương trình để xác định các union tồn tại trong chương trình. Việc giải quyết bài toán này gồm các bước sau:
 
 \begin{enumerate}
 	\item Vì chưa có thông tin về các vùng nhớ có kiểu union trong chương trình, nên bước đầu tiên chỉ dừng lại ở việc xác định vùng nhớ mà thanh ghi trung gian đang mang tại mỗi thời điểm của chương trình.
@@ -11,52 +11,39 @@ Hai phần tiếp theo sẽ lần lượt trình bày các bước trên.
 
 \section{Xác định vùng nhớ thanh ghi trung gian đang mang tại mỗi thời điểm của chương trình}
 
-Ở ngôn ngữ assembly, các vùng nhớ được đại diện bởi địa chỉ của chúng, vì vậy việc xác định vùng nhớ thanh ghi trung gian đang mang thực chất là xác định giá trị của địa chỉ vùng nhớ đó. Để xác định được giá trị này, phương pháp phân tích Lan truyền hằng số - Constant propagation sẽ được áp dụng. Như đã giới thiệu ở phần \ref{sec:constantprop}, mục tiêu của Lan truyền hằng số là xác định giá trị của một biến tại một thời điểm của chương trình có phải là hằng số hay không và giá trị của hằng số đó là bao nhiêu. Điều này phù hợp với yêu cầu tìm ra giá trị địa chỉ vùng nhớ mà thanh ghi trung gian đang mang.
+Ở ngôn ngữ assembly, các vùng nhớ được đại diện bởi địa chỉ của chúng, vì vậy việc xác định vùng nhớ thanh ghi trung gian đang mang thực chất là xác định giá trị của địa chỉ vùng nhớ đó. Để xác định được giá trị này, phương pháp phân tích Lan truyền hằng số - Constant propagation sẽ được áp dụng. Như đã giới thiệu ở phần \ref{sec:constantprop}, mục tiêu của Lan truyền hằng số là xác định giá trị của một biến tại một thời điểm của chương trình có phải là hằng số hay không và giá trị của hằng số đó là bao nhiêu. Điều này phù hợp với yêu cầu của bài toán.
 
-Tuy nhiên, vì đối với mỗi loại thanh ghi khác nhau, loại giá trị được quan tâm sẽ khác nhau nên cần phải chỉnh sửa giải thuật của Lan truyền biểu thức như sau:
+Tuy nhiên, trong một kiến trúc máy, có những thanh ghi được dùng làm thanh ghi trung gian cho việc xử lý vùng nhớ và có những thanh ghi thì không được, tuỳ thuộc vào tính chất của thanh ghi mà hằng số cần lan truyền sẽ khác nhau. Trong đoạn mã \ref{list:accdptr}, ở câu lệnh số 2 biến a (đại diện cho một thanh ghi trung gian ở ngôn ngữ assembly) đang được truyền vào giá trị vùng nhớ được một con trỏ trỏ tới. Trình dịch ngược không quan tâm đến việc giá trị vùng nhớ được trỏ tới là bao nhiêu, mà chỉ quan tâm đến việc địa chỉ của vùng nhớ này, tức giá trị của con trỏ, là gì để phân biệt được với những vùng nhớ khác. Như vậy, chỉ có biểu thức nằm trong dấu * mới cần tính toán giá trị xem có phải là hằng số không. Tiếp tục với ví dụ đó, biểu thức nằm trong dấu * lại là một biến khác, biến dptr (đại diện cho một thanh ghi không được sử dụng làm thanh ghi trung gian ở ngôn ngữ assembly). Như vậy, để tìm ra được địa chỉ vùng nhớ được truyền vào biến a, thì chương trình cần phải tính toán giá trị thật sự của biến dptr. Hay nói cách khác, hằng số cần tìm đối với biến dptr là giá trị của toàn bộ biểu thức nằm bên phải phép gán ở câu lệnh số 1.
+\begin{lstlisting}[caption={Đoạn mã thể hiện hai loại thanh ghi},label={list:accdptr}]
+dptr = OPTIONS; //1
+a = *(dptr); //2
+\end{lstlisting}
+
+Như vậy, có thể kết luận:
 \begin{itemize}
 	\item Đối với những thanh ghi trung gian, trình dịch ngược chỉ quan tâm đến việc nó đang được load vào vùng nhớ nào, còn việc giá trị thực sự của thanh ghi này là gì thì không quan trọng. Vì vậy, với loại thanh ghi này, hằng số cần tìm ra là giá trị của địa chỉ vùng nhớ mà nó đang mang.
-	\item Đối với những thanh ghi khác, chúng chỉ được xét đến khi xuất hiện trong biểu thức quy định giá trị địa chỉ vùng nhớ ở các câu lệnh gán vùng nhớ cho thanh ghi trung gian. Vì vậy, trình dịch ngược chỉ quan tâm đến giá trị thật sự của những thanh ghi này để tính toán giá trị của địa chỉ vùng nhớ. Như vậy, hằng số cần tìm của loại thanh ghi này là giá trị thực sự mà thanh ghi đó đang mang.
+	\item Đối với những thanh ghi khác, chúng chỉ được xét đến khi xuất hiện trong biểu thức quy định giá trị địa chỉ vùng nhớ ở các câu lệnh gán vùng nhớ cho thanh ghi trung gian. Vì vậy, trình dịch ngược chỉ quan tâm đến giá trị thật sự của những thanh ghi này để tính toán giá trị của địa chỉ vùng nhớ đó. Như vậy, hằng số cần tìm của loại thanh ghi này là giá trị thực sự mà thanh ghi đó đang mang.
 \end{itemize}
-Đối với kiến trúc máy 8051, thanh ghi ACC được dùng làm thanh ghi trung gian để xử lý vùng nhớ, còn thanh ghi DPTR thì không. Vì vậy, trong đoạn mã \ref{list:accdptr}, hằng số cần tìm của thanh ghi DPTR là 38, ứng với giá trị thực sự của nó, còn đối với thanh ghi ACC, hằng số cần tìm là giá trị của địa chỉ vùng nhớ, cụ thể là giá trị của biểu thức DPTR+1.
-\begin{lstlisting}[caption={Đoạn mã thể hiện hai loại thanh ghi},label={list:accdptr}]
-MOV DPTR, #38
-MOVX A, @DPTR+1
-\end{lstlisting}
-Như đã trình bày ở chương trước, trong phép gán vùng nhớ cho thanh ghi, biểu thức thể hiện địa chỉ vùng nhớ có thể có nhiều dạng khác nhau như: 
+
+Vì tính chất trên, cần phải chỉnh sửa phân tích Lan truyền biểu thức cho phù hợp với yêu cầu của bài toán. Tuỳ thuộc vào loại thanh ghi, mà biểu thức được lấy ra để tính hằng số sẽ khác nhau. Giải thuật Lan truyền biểu thức đã có sửa đổi được trình bày ở hình \ref{fig:constantpropagationalgo2}.
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.75]{image/constantPropagationAlgo2}
+	\caption{Giải thuật Constant propagation đã được chỉnh sửa để áp dụng vào trình dịch ngược}
+	\label{fig:constantpropagationalgo2}
+\end{figure}
+
+
+Ngoài ra, để tính toán được giá trị thực sự của một biến, cần phải có một hàm chức năng nhận vào một biểu thức và trả về được giá trị của biểu thức đó. Có rất nhiều cách để hiện thực chức năng này, sau một quá trình xem xét, visitor sẽ được sử dụng cho việc tính toán giá trị của biểu thức. Visitor \cite{dessignpattern} là một pattern design trong các chương trình lập trình hướng đối tượng, nó được dùng để tách một thuật toán ra khỏi cấu trúc dữ liệu mà thuật toán đó sử dụng. Lợi ích đạt được là người lập trình có thể thêm những chức năng mới cho cấu trúc dữ liệu đó mà không cần thay đổi kiến trúc của nó. Điều này phù hợp với nhu cầu hạn chế tối đa việc thay đổi các mã có sẵn khi hiện thực các giải pháp của luận văn trên một trình dịch ngược nào đó.\\
+
+Để hiện thực pattern design này, cần tạo ra một class visitor và viết hàm visit cho các loại biểu thức. Các hàm visit này chính là nơi tính toán giá trị của biểu thức và trả về chúng. Các biểu thức ở mức độ assembly thường được viết rất đơn giản, bao gồm các dạng chính sau:
 \begin{itemize}
 	\item Một hằng số.
 	\item Một biến được khai báo trước.
 	\item Một thanh ghi, giá trị của thanh ghi có thể được khai báo ở các câu lệnh trước đó.
 	\item Một biểu thức có hai vế, các vế của biểu thức có thể là một biến, một thanh ghi hoặc một hằng số.
 \end{itemize}
-
-Như vậy, cần có một phương pháp phân tích đủ mạnh để tính toán được giá trị thực sự của các dạng biểu thức trên và xác định tại một thời điểm
-
-Tương tự như ở chương trước, bước đầu tiên của giải pháp Suy luận kiểu là xác định giá trị của thanh ghi \textit{ACC} tại mỗi thời điểm của chương trình. Các giải pháp Reaching definitions mở rộng và Type propagation đã trình bày đều không thể xử lý hết tất cả các trường hợp xảy ra của phép gán thanh ghi ACC. Cụ thể, trường hợp không thể xử lý được là khi biểu thức quy định địa chỉ vùng nhớ của thanh ghi \textit{ACC} là một biểu thức có hai toán hạng (xem ví dụ ở đoạn mã \ref{list:hardone}). 
-\begin{lstlisting}[caption={Trường hợp không thể xử lý được bằng các phương pháp phân tích dữ liệu trước},label={list:hardone}]
-MOV ACC, OPTIONS+1
-\end{lstlisting}
-Để mở rộng khả năng xử lý của trình dịch ngược, cần phải tìm ra một phương pháp khác tốt hơn. Phương pháp đạt yêu cầu phải tính toán được chính xác giá trị hiện có của thanh ghi \textit{ACC} cho dù biểu thức bên phải của phép gán là gì. Cụ thể, chỉ các trường hợp giá trị ở thanh ghi \textit{ACC} là một giá trị cố định, có thể tính toán được trước khi thực thi chương trình mới được xét đến vì nếu thanh ghi \textit{ACC} có thể mang nhiều giá trị vùng nhớ khác nhau thì nguyên tắc sử dụng bộ biến sẽ bị vi phạm. Từ các yêu cầu trên, phương pháp phân tích phù hợp nhất trong trường hợp này là Lan truyền hằng số - Constant propagation. Phương pháp này cho phép 
-Như vậy, khi áp dụng vào trình dịch ngược Boomerang, mục tiêu của giải thuật này là để tìm ra được ở mỗi điểm của chương trình, thanh ghi \textit{ACC} có mang giá trị của một vùng nhớ duy nhất hay không, và nếu có thì giá trị thật sự của địa chỉ vùng nhớ đó là gì.
-
-
-Để thể hiện giá trị của một biến có thể thuộc ba loại là \textit{top}, \textit{hằng số} hoặc \textit{bottom}, cần tạo ra một class mới để lưu trữ loại giá trị, đồng thời lưu trữ giá trị thực sự nếu biến đó là một hằng số. Class này được đặt tên là \textbf{ConstantVariable} và có khai báo được trình bày ở đoạn mã \ref{list:listconstexam5}
-\begin{lstlisting}[caption={Đoạn mã thể hiện class ConstantVariable},label={list:listconstexam5}, language=c++]
-class ConstantVariable{
-	public:
-	int type; //1: top, 2: constant, 3: bottom
-	Exp* variable;
-	ConstantVariable(){
-		type = 3;
-	}
-};
-\end{lstlisting}
-Như vậy, mục tiêu của giải thuật này là tạo ra được một sơ đồ liên kết giữa một biến \textit{SSA} và một thực thể \textbf{ConstantVariable} thể hiện giá trị của biến đó. \\
-
-Ngoài ra, để tính toán được giá trị thực sự của một biến, cần phải có một hàm chức năng nhận vào một biểu thức và trả về được giá trị của biểu thức đó. Có rất nhiều cách để hiện thực chức năng này, sau một quá trình xem xét, visitor sẽ được sử dụng cho việc tính toán giá trị của biểu thức. Visitor là một pattern design trong các chương trình lập trình hướng đối tượng, nó được dùng để tách một thuật toán ra khỏi cấu trúc dữ liệu mà thuật toán đó sử dụng. Lợi ích đạt được là người lập trình có thể thêm những chức năng mới cho cấu trúc dữ liệu đó mà không cần thay đổi kiến trúc của nó. Điều này phù hợp với nhu cầu hạn chế tối đa việc thay đổi các mã có sẵn khi hiện thực các giải pháp của luận văn trên một trình dịch ngược nào đó.\\
-
-Để hiện thực pattern design này, cần tạo ra một class visitor và viết hàm visit cho các loại biểu thức. Các hàm visit này chính là nơi tính toán giá trị của biểu thức và trả về chúng. Vì biểu thức ở mức assembly thường được viết rất đơn giản, nên trong class visitor này chỉ cần có một số hàm visit cho các loại biểu thức sao đây:
+Vì vậy, trong class visitor này chỉ cần có một số hàm visit cho các loại biểu thức sao đây:
 
 \begin{itemize}
 	\item \textit{Const}: Là biểu thức hằng số. Hàm visit này chỉ đơn giản trả về giá trị hằng số nếu đây là một hằng số nguyên.
@@ -65,8 +52,7 @@ Ngoài ra, để tính toán được giá trị thực sự của một biến,
 	\item \textit{TypedExp}: Loại biểu thức để ép kiểu một biểu thức nào đó thành kiểu mong muốn. Với trường hợp này, giá trị trả về của biểu thức ép kiểu chính là giá trị của biểu thức con bên trong.
 \end{itemize}
 
-
-Như vậy, với phương pháp phân tích này, vấn đề vế phải của phép gán thanh ghi là những biểu thức phức tạp có hai toán hạng đã được giải quyết. Ngoài ra, phân tích này còn nhận biết được các biểu thức có giá trị giống nhau mặc dù hình thức bên ngoài khác nhau. Xem ví dụ các câu lệnh ở đoạn mã \ref{list:listdiffassignacc}. Câu lệnh gán số 1 và số 2 thực chất đều gán cho \textit{ACC} giá trị vùng nhớ có địa chỉ quy định bởi biến \textit{OPTIONS}. Nếu thực hiện phân tích Reaching definitions ở giải pháp trước, trình dịch ngược sẽ không thể biết được điều này. Tuy nhiên, ở giai đoạn này, vì trình dịch ngược sẽ tính toán được ở cả hai câu lệnh, \textit{ACC} đều mang giá trị của vùng nhớ có địa chỉ là \textbf{38}. Và ở những bước tiếp theo, trình dịch ngược sẽ đối chiếu giá trị \textbf{38} với bảng lưu trữ dữ liệu và biết được biến \textit{OPTIONS} đại diện cho giá trị đó.
+Với phương pháp phân tích này, vấn đề vế phải của phép gán thanh ghi là những biểu thức phức tạp có hai toán hạng đã được giải quyết. Ngoài ra, phân tích này còn nhận biết được các biểu thức có giá trị giống nhau mặc dù hình thức bên ngoài khác nhau. Xem ví dụ các câu lệnh ở đoạn mã \ref{list:listdiffassignacc}. Câu lệnh gán số 1 và số 2 thực chất đều gán cho \textit{ACC} giá trị vùng nhớ có địa chỉ quy định bởi biến \textit{OPTIONS}. Nếu thực hiện phân tích Reaching definitions ở giải pháp trước, trình dịch ngược sẽ không thể biết được điều này. Tuy nhiên, ở giai đoạn này, vì trình dịch ngược sẽ tính toán được ở cả hai câu lệnh, \textit{ACC} đều mang giá trị của vùng nhớ có địa chỉ là \textbf{38}. Và ở những bước tiếp theo, trình dịch ngược sẽ đối chiếu giá trị \textbf{38} với bảng lưu trữ dữ liệu và biết được biến \textit{OPTIONS} đại diện cho giá trị đó.
 
 \begin{lstlisting}[caption={Một số câu lệnh gán cho ACC có giá trị vế phải bằng nhau},label={list:listdiffassignacc}]
 #DEFINE OPTIONS #38
@@ -76,31 +62,26 @@ MOV ACC, OPTIONS
 MOV ACC, CLAMP+1
 \end{lstlisting}
 
-Phân tích Constant propagation sẽ trả về được giá trị thực sự của một biến, tuy nhiên, thanh ghi \textit{ACC} là một trường hợp đặc biệt. Khi gặp vế trái của câu lệnh khai báo là thanh ghi \textit{ACC}, giá trị thực sự không được quan tâm, mà chỉ giá trị của địa chỉ vùng nhớ đang được \textit{ACC} lưu giữ mới được xét đến. Như vậy, chỉ có các câu lệnh dạng \textbf{MOV ACC, [biểu thức]} sẽ được tính toán, còn khi gặp câu lệnh gán có dạng \textbf{MOV ACC, \#[biểu thức]} thì đoạn mã phân tích sẽ xem như giá trị của \textit{ACC} là \textit{bottom}. Như vậy, với các biến khác, giá trị lưu trong thực thể ConstantExpression tương ứng với biến đó là giá trị thực sự của biến, còn riêng với thanh ghi \textit{ACC}, giá trị đó được hiểu là giá trị địa chỉ vùng nhớ mà thanh ghi \textit{ACC} được load vào.
-\section{Tìm kiếm mối quan hệ giữa các biến}
-\subsection{Chuyển đổi giữa hằng số nguyên - biến byte tương ứng}
-\label{sec:transfer}
-Trước khi bước vào giai đoạn kiểm tra và ghi nhận mối quan hệ giữa các biến, trình dịch ngược cần phải giải quyết kết quả trả về của phương pháp phân tích Constant propagation ở trên. Như đã trình bày, phương pháp này cho biết chính xác giá trị địa chỉ vùng nhớ được lưu trữ bởi thanh ghi \textit{ACC}. Tuy nhiên, cần phải chuyển đổi con số này thành một biến byte có giá trị bằng nó vì mục đích cuối cùng của giải pháp vẫn là tìm mối quan hệ giữa các biến byte - biến bit. Có hai cách giải quyết vấn đề này:
-\begin{itemize}
-	\item Ở bất kỳ vị trí nào cần biết được biến byte đang quy định vùng nhớ lưu bởi ACC, lấy giá trị thực sự của địa chỉ vùng nhớ đó và dò tìm trong bảng lưu trữ dữ liệu các câu lệnh \#DEFINE để tìm ra biến byte tương ứng với giá trị đó.
-	\item Tạm thời chấp nhận thay vì tìm kiếm mối quan hệ giữa biến byte - biến bit thì trình dịch ngược sẽ tìm kiếm mối quan hệ giữa giá trị trực tiếp - biến bit. Giá trị này chính là địa chỉ vùng nhớ mà thanh ghi ACC đang lưu trữ tại thời điểm sử dụng biết bit. Sau khi tìm ra các bộ giá trị - biến bit, thêm vào trình dịch ngược một bước chuyển đổi từ giá trị sang biến byte tương ứng dựa vào các câu lệnh khai báo giá trị biến byte ở chương trình đầu vào.
-\end{itemize}
+Một ưu điểm nữa của phân tích Lan truyền biểu thức là đối với các câu lệnh phi, câu lệnh thể hiện một biến có thể có nhiều giá trị khác nhau, thì giải thuật sẽ tính toán những giá trị đó xem chúng có phải là hằng số và những hằng số đó có bằng nhau hay không. Nếu bằng nhau, có thể kết luận rằng biến này vẫn là hằng số cho dù luồng đi của chương trình như thế nào. Điều này sẽ giúp tăng độ chính xác hơn so với các giải thuật phân tích trước đó, vốn xử lý trường hợp này bằng cách bỏ qua và mặc định xem như biến này không phải hằng số.
 
-Hai giải pháp trên được mô tả lần lượt ở hình \ref{fig:waytotransfer1} và hình \ref{fig:waytotransfer2}. Qua hai sơ đồ trên, dễ dàng nhận ra giải pháp thứ hai sẽ giúp tiết kiệm thời gian xử lý chương trình hơn, nhờ vào việc chỉ cần truy xuất bảng dữ liệu ở cuối giai đoạn tìm kiếm. Còn giải pháp đầu tiên không hiệu quả do mỗi lần cần kiểm tra giá trị của thanh ghi \textit{ACC} lại phải tìm kiếm dữ liệu. Như vậy, giải pháp thứ hai sẽ được áp dụng.
-\begin{figure} [h!]
-	\centering
-	\includegraphics[width=0.7\linewidth]{image/wayToTransfer1}
-	\caption{Giải pháp chuyển đổi giá trị - biến byte số 1}
-	\label{fig:waytotransfer1}
-\end{figure}
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.7\linewidth]{image/wayToTransfer2}
-	\caption{Giải pháp chuyển đổi giá trị - biến byte số 2}
-	\label{fig:waytotransfer2}
-\end{figure}
-\subsection{Kiểm tra và ghi nhận mối quan hệ giữa các giá trị - biến bit}
- Nếu như ở giải pháp Kiểm tra kiểu, mối quan hệ biến byte - biến bit đã được cho trước và trình dịch ngược chỉ cần kiểm tra lại thì ở giải pháp này, vì không có thông tin từ phần chú thích của người lập trình, trình dịch ngược phải tự tìm kiếm các mối quan hệ đó, kiểm tra tính hợp lệ của chúng và ghi nhận vào danh sách dữ liệu. Các bước này được thể hiện ở hình \ref{fig:stepunionmaking}. Giai đoạn kiểm tra tính hợp lệ nhằm đảm bảo là các bộ biến được sử dụng theo đúng nguyên tắc đã giới thiệu ở chương đầu và cũng như ở giải pháp Kiểm tra kiểu trước đó, nếu có một câu lệnh nào đó vi phạm nguyên tắc sử dụng, trình dịch ngược sẽ báo lỗi và tiếp tục kiểm tra các câu lệnh tiếp theo để thuận tiện cho người dùng trong việc chỉnh sửa lỗi của chương trình assembly.
+Như vậy, phân tích Lan truyền biểu thức đã giải quyết được những trường hợp mà 2 phân tích được giới thiệu trước đó là Reaching definitions kết hợp phần mở rộng và Lan truyền kiểu không giải quyết được. Sau khi xác định được các vùng nhớ mà thanh ghi trung gian đang mang thông qua địa chỉ của nó, bước tiếp theo để giải quyết bài toán này là tìm kiếm những thành phần của union đại diện cho vùng nhớ đó.
+\section{Xác định thành phần của các union đại diện cho vùng nhớ}
+
+Với bài toán Suy luận kiểu, do chưa có những thông tin về kiểu union và các thành phần của union, nên ở bước này trình dịch ngược phải phân tích và tìm ra những thông tin đó dựa vào đoạn mã chương trình. Ý tưởng để hiện thực việc tìm kiếm này như sau:
+\begin{itemize}
+	\item Chạy vòng lặp qua các câu lệnh của chương trình, khi gặp một câu lệnh sử dụng một biến được khai báo là đại diện cho một phần của thanh ghi trung gian thì kiểm tra thanh ghi trung gian đang mang giá trị của vùng nhớ có địa chỉ là bao nhiêu. 
+	\item Thực hiện các bước kiểm tra xem việc sử dụng union này có hợp lý hay không. Nếu hợp lý, trình dịch ngược sẽ ghi nhận tên biến này là một tên thành phần thuộc union đại diện cho vùng nhớ mà thanh ghi trung gian đang mang. 
+\end{itemize}
+Như đã phân tích ở phần trước, một vùng nhớ được đại diện bởi con số thể hiện địa chỉ của nó, nếu dùng cấu trúc UnionDefine đã được giới thiệu ở chương trước thì không có thành phần nào thể hiện con số này. Như vậy, cần phải mở rộng cấu trúc UnionDefine để lưu trữ được địa chỉ của vùng nhớ mang kiểu union. Cấu trúc UnionDefine dành cho mã 8051 đã mở rộng được thể hiện ở đoạn mã \ref{list:listnewuniondefine} với thành phần byteVarValue được thêm mới.
+\begin{lstlisting}[caption={Đoạn mã mới của class UnionDefine},label={list:listnewuniondefine},language=c++]
+class UnionDefine{
+public:
+char* byteVar;
+map<int, char*>* bitVar;
+int byteVarValue;
+};
+\end{lstlisting}
+Như vậy, mục tiêu của bước này là xây dựng nên các thực thể UnionDefine hoàn chỉnh, bao gồm trường thể hiện địa chỉ vùng nhớ mang kiểu union và tên các thành phần thuộc union đó. Quá trình này được thể hiện ở hình \ref{fig:stepunionmaking}.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.7\linewidth]{image/stepUnionMaking}
@@ -108,16 +89,4 @@ Hai giải pháp trên được mô tả lần lượt ở hình \ref{fig:waytot
 	\label{fig:stepunionmaking}
 \end{figure}
 
-Như đã trình bày ở phần \ref{sec:transfer}, thay vì tìm kiếm các bộ biến byte - biến bit thì ở giai đoạn này sẽ tìm kiếm các bộ giá trị địa chỉ vùng nhớ - biến bit, vì vậy, cấu trúc lưu trữ dữ liệu tìm thấy được cũng phải được chỉnh sửa để ghi nhận mối quan hệ mới này. Cấu trúc UnionDefine được giới thiệu ở chương trước vẫn tiếp tục được sử dụng, tuy nhiên, được mở rộng thêm một trường dữ liệu mới là \textit{byteVarValue} để ghi nhận giá trị địa chỉ vùng nhớ của bộ biến. Đoạn mã mới được trình bày bên dưới.
-
-\begin{lstlisting}[caption={Đoạn mã mới của class UnionDefine},label={list:listnewuniondefine},language=c++]
-	class UnionDefine{
-	public:
-	char* byteVar;
-	map<int, char*>* bitVar;
-	int byteVarValue;
- };
-\end{lstlisting}
-Sau khi đã quét hết các câu lệnh trong chương trình và tìm được danh sách UnionDefine phù hợp, cần phải thêm vào một bước chuyển đổi từ giá trị thành biến byte đại diện cho giá trị đó. Điều này có thể được thực hiện bằng cách chạy vòng lặp qua bảng lưu trữ các câu lệnh \#DEFINE đã được thiết lập từ quá trình parse mã đầu vào. Nếu như có một giá trị nào đó chưa được khai báo ở câu lệnh \#DEFINE, một biến byte mới sẽ được sinh ra để đại diện cho giá trị ấy. Mẫu tên biến byte sẽ là LOCATION\_[giá trị của biến byte], ví dụ như LOCATION\_38.
-
-Như vậy, giải pháp này đã giải quyết được các vấn đề đặt ra của luận văn. 
+Như vậy, với danh sách các thực thể UnionDefine tìm thấy được thông qua các bước trình bày ở trên, bài toán Suy luận kiểu union đã được giải quyết.

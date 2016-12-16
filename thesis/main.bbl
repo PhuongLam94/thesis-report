@@ -152,6 +152,47 @@
     \field{year}{2007}
   \endentry
 
+  \entry{dessignpattern}{book}{}
+    \name{author}{4}{}{%
+      {{hash=GE}{%
+         family={Gamma},
+         family_i={G\bibinitperiod},
+         given={Erich},
+         given_i={E\bibinitperiod},
+      }}%
+      {{hash=HR}{%
+         family={Helm},
+         family_i={H\bibinitperiod},
+         given={Richard},
+         given_i={R\bibinitperiod},
+      }}%
+      {{hash=JR}{%
+         family={Johnson},
+         family_i={J\bibinitperiod},
+         given={Ralph},
+         given_i={R\bibinitperiod},
+      }}%
+      {{hash=VJM}{%
+         family={Vlissides},
+         family_i={V\bibinitperiod},
+         given={John\bibnamedelima M.},
+         given_i={J\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Pearson Publishing}%
+    }
+    \strng{namehash}{GE+1}
+    \strng{fullhash}{GEHRJRVJM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{title}{Design Patterns: Elements of Reusable Object-Oriented
+  Software}
+    \field{year}{1997}
+  \endentry
+
   \entry{ilspy}{online}{}
     \keyw{ilspy}
     \field{labeltitlesource}{title}

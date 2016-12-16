@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  16 DEC 2016 01:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  16 DEC 2016 09:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -860,50 +860,97 @@ Package biblatex Info: ... file 'biblatex.cfg' found.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/biblatex/biblatex.cfg
 File: biblatex.cfg 
 ))
+(/usr/local/texlive/2016/texmf-dist/tex/latex/floatrow/floatrow.sty
+Package: floatrow 2008/08/02 v0.3b floatrow: float package extension
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2016/02/04 v1.7-139 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 67.
+\captionmargin=\dimen117
+\captionmargin@=\dimen118
+\captionwidth=\dimen119
+\caption@tempdima=\dimen120
+\caption@indent=\dimen121
+\caption@parindent=\dimen122
+\caption@hangindent=\dimen123
+)
+\c@float@type=\count286
+\float@exts=\toks21
+\float@box=\box28
+\@floatcapt=\box29
+Package floatrow Info: Modified float package code loaded on input line 455.
+Package floatrow Info: Modified rotfloat package code loaded on input line 473.
+
+\FR@everyfloat=\toks22
+\flrow@foot=\insert252
+\FB@wd=\dimen124
+\FBo@wd=\dimen125
+\FBc@wd=\dimen126
+\FBo@ht=\skip57
+\FBc@ht=\skip58
+\FBf@ht=\skip59
+\FBo@max=\skip60
+\FBc@max=\skip61
+\FBf@max=\skip62
+\c@FBl@b=\count287
+\floatbox@depth=\count288
+\c@FRobj=\count289
+\c@FRsobj=\count290
+\Xhsize=\skip63
+\sXhsize=\skip64
+\Zhsize=\skip65
+\sZhsize=\skip66
+\flrow@rowbox=\box30
+\FR@Zunitlength=\dimen127
+\c@FBcnt=\count291
+\FPOScnt=\count292
+\LTleft=\skip67
+\LTright=\skip68
+\LTleft=\skip69
+\LTright=\skip70
+\flrow@types=\toks23
+)
 Package biblatex Info: Trying to load language 'english'...
 Package biblatex Info: ... file 'english.lbx' found.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/biblatex/lbx/english.lbx
 File: english.lbx 2016/05/14 v3.4 biblatex localization (PK/JW/AB)
 )
-\@quotelevel=\count286
-\@quotereset=\count287
+\@quotelevel=\count293
+\@quotereset=\count294
 
-(./main.aux (./chapter1.aux) (./chapter2.aux) (./chapter3.aux) (./chapter4.aux
-
-LaTeX Warning: Label `list:listconstexam5' multiply defined.
-
-) (./chapter5.aux) (./chapter6.aux))
+(./main.aux (./chapter1.aux) (./chapter2.aux) (./chapter3.aux) (./chapter4.aux)
+(./chapter5.aux) (./chapter6.aux))
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for T5/cmr/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for T5/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
 
 (/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count288
-\scratchdimen=\dimen117
-\scratchbox=\box28
-\nofMPsegments=\count289
-\nofMParguments=\count290
-\everyMPshowfont=\toks21
-\MPscratchCnt=\count291
-\MPscratchDim=\dimen118
-\MPnumerator=\count292
-\makeMPintoPDFobject=\count293
-\everyMPtoPDFconversion=\toks22
+\scratchcounter=\count295
+\scratchdimen=\dimen128
+\scratchbox=\box31
+\nofMPsegments=\count296
+\nofMParguments=\count297
+\everyMPshowfont=\toks24
+\MPscratchCnt=\count298
+\MPscratchDim=\dimen129
+\MPnumerator=\count299
+\makeMPintoPDFobject=\count300
+\everyMPtoPDFconversion=\toks25
 ) (/usr/local/texlive/2016/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
@@ -956,7 +1003,7 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\c@lstlisting=\count294
+\c@lstlisting=\count301
 Package biblatex Info: Input encoding 'utf8' detected.
 Package biblatex Info: Automatic encoding selection.
 (biblatex)             Assuming data encoding 'utf8'.
@@ -968,21 +1015,31 @@ Package biblatex Info: Data encoding 'utf8' specified.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
 (./main.bbl)
-Package biblatex Info: Reference section=0 on input line 33.
-Package biblatex Info: Reference segment=0 on input line 33.
- <image/logoBK_jpg.jpg, id=1, 207.77625pt x 208.78pt>
+Package biblatex Info: Reference section=0 on input line 34.
+Package biblatex Info: Reference segment=0 on input line 34.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+ (/usr/local/texlive/2016/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2016/05/09 v1.1c Standard LaTeX Color (DPC)
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 144.
+)
+<image/logoBK_jpg.jpg, id=1, 207.77625pt x 208.78pt>
 File: image/logoBK_jpg.jpg Graphic file (type jpg)
 
 <use image/logoBK_jpg.jpg>
-Package pdftex.def Info: image/logoBK_jpg.jpg used on input line 40.
+Package pdftex.def Info: image/logoBK_jpg.jpg used on input line 41.
 (pdftex.def)             Requested size: 103.88786pt x 104.38972pt.
 
-Overfull \hbox (6.39209pt too wide) in paragraph at lines 52--53
+Overfull \hbox (6.39209pt too wide) in paragraph at lines 53--54
 | \T5/cmr/bx/n/14.4 SVTH: L¥m Minh Ph÷ìng - 51202846 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 52--53
+Underfull \hbox (badness 10000) in paragraph at lines 53--54
 
  []
 
@@ -1391,47 +1448,36 @@ Ch\uhorn \ohorn ng 4.
 
 
 
-] [40]
-Underfull \hbox (badness 10000) in paragraph at lines 55--56
+] <image/constantPropagationAlgo2.png, id=220, 582.175pt x 1028.84375pt>
+File: image/constantPropagationAlgo2.png Graphic file (type png)
+
+<use image/constantPropagationAlgo2.png>
+Package pdftex.def Info: image/constantPropagationAlgo2.png used on input line 
+31.
+(pdftex.def)             Requested size: 436.63019pt x 771.63094pt.
+
+
+LaTeX Warning: Float too large for page by 77.81694pt on input line 34.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 37--38
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 57--58
-
- []
-
-[41] [42] <image/wayToTransfer1.png, id=229, 729.72626pt x 262.9825pt>
-File: image/wayToTransfer1.png Graphic file (type png)
-
-<use image/wayToTransfer1.png>
-Package pdftex.def Info: image/wayToTransfer1.png used on input line 92.
-(pdftex.def)             Requested size: 318.66948pt x 114.84187pt.
-
-<image/wayToTransfer2.png, id=230, 569.12625pt x 262.9825pt>
-File: image/wayToTransfer2.png Graphic file (type png)
-
-<use image/wayToTransfer2.png>
-Package pdftex.def Info: image/wayToTransfer2.png used on input line 98.
-(pdftex.def)             Requested size: 318.66948pt x 147.25714pt.
- [43]
+[40] [41 <./image/constantPropagationAlgo2.png>] [42] [43]
 <image/stepUnionMaking.png, id=234, 1166.3575pt x 383.4325pt>
 File: image/stepUnionMaking.png Graphic file (type png)
 
 <use image/stepUnionMaking.png>
-Package pdftex.def Info: image/stepUnionMaking.png used on input line 106.
+Package pdftex.def Info: image/stepUnionMaking.png used on input line 87.
 (pdftex.def)             Requested size: 318.66948pt x 104.7568pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[44 <./image/wayToTransfer1.png> <./image/wayToTransfer2.png>]) [45 <./image/st
-epUnionMaking.png>]
+) [44 <./image/stepUnionMaking.png>]
 \openout2 = `chapter5.aux'.
 
- (./chapter5.tex
+
+(./chapter5.tex
 Ch\uhorn \ohorn ng 5.
-[46
+[45
 
 
 
@@ -1445,7 +1491,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 44--45
 
  []
 
-[47]
+[46]
 Underfull \hbox (badness 10000) in paragraph at lines 49--50
 
  []
@@ -1460,7 +1506,7 @@ Overfull \hbox (52.23636pt too wide) in paragraph at lines 68--69
 [][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[48]
+[47]
 Overfull \hbox (26.86234pt too wide) in paragraph at lines 91--92
 [][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
@@ -1470,24 +1516,24 @@ Overfull \hbox (18.40433pt too wide) in paragraph at lines 99--100
 [][][][][][][][][][][][][][][][][][][] 
  []
 
-[49] <image/unionDefineMapping.png, id=257, 664.4825pt x 562.1pt>
+[48] <image/unionDefineMapping.png, id=252, 664.4825pt x 562.1pt>
 File: image/unionDefineMapping.png Graphic file (type png)
 
 <use image/unionDefineMapping.png>
 Package pdftex.def Info: image/unionDefineMapping.png used on input line 115.
 (pdftex.def)             Requested size: 318.66948pt x 269.57336pt.
- [50 <./image/unionDefineMapping.png>]
-[51] [52]
+ [49 <./image/unionDefineMapping.png>]
+[50] [51]
 
-LaTeX Warning: Reference `ist:invalid1' on page 53 undefined on input line 191.
+LaTeX Warning: Reference `ist:invalid1' on page 52 undefined on input line 191.
 
 
-[53]
+[52]
 Overfull \hbox (3.57742pt too wide) in paragraph at lines 227--227
 []\T5/cmr/m/n/12 STT| 
  []
 
-[54]
+[53]
 Overfull \hbox (3.57742pt too wide) in paragraph at lines 280--280
 []\T5/cmr/m/n/12 STT| 
  []
@@ -1502,33 +1548,33 @@ Underfull \hbox (badness 10000) in paragraph at lines 284--284
 \T5/cmr/m/n/12 TC015, TC016, TC018,
  []
 
-[55]
+[54]
 Underfull \hbox (badness 10000) in paragraph at lines 295--296
 
  []
 
-) [56]
+) [55]
 \openout2 = `chapter6.aux'.
 
  (./chapter6.tex
 Ch\uhorn \ohorn ng 6.
-) [57
+) [56
 
 
 
 ]
-LaTeX Font Info:    Try loading font information for T5+cmtt on input line 102.
+LaTeX Font Info:    Try loading font information for T5+cmtt on input line 103.
 
  (/usr/local/texlive/2016/texmf-dist/tex/latex/vntex/t5cmtt.fd
 File: t5cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-Overfull \hbox (1.44412pt too wide) in paragraph at lines 103--103
+Overfull \hbox (1.44412pt too wide) in paragraph at lines 104--104
 []\T5/cmr/m/it/12 Procyon De-com-piler Home-page\T5/cmr/m/n/12 . \T5/cmr/m/sc/1
 2 url\T5/cmr/m/n/12 : $\T5/cmtt/m/n/12 https : / / bitbucket . org / mstrobel /
  procyon$\T5/cmr/m/n/12 . 
  []
 
-[58
+[57
 
 
 ] (./main.aux (./chapter1.aux) (./chapter2.aux) (./chapter3.aux)
@@ -1536,21 +1582,18 @@ Overfull \hbox (1.44412pt too wide) in paragraph at lines 103--103
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: There were multiply-defined labels.
-
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 11364 strings out of 493014
- 179755 string characters out of 6133351
- 431255 words of memory out of 5000000
- 14686 multiletter control sequences out of 15000+600000
+ 12507 strings out of 493014
+ 198923 string characters out of 6133351
+ 450637 words of memory out of 5000000
+ 15817 multiletter control sequences out of 15000+600000
  19824 words of font info for 40 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 37i,10n,62p,1852b,1664s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,11n,62p,1852b,1672s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
 ></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb>
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></
@@ -1561,10 +1604,10 @@ live/2016/texmf-dist/fonts/type1/vntex/vnr/vncsc10.pfb></usr/local/texlive/2016
 /texmf-dist/fonts/type1/vntex/vnr/vnr12.pfb></usr/local/texlive/2016/texmf-dist
 /fonts/type1/vntex/vnr/vnti12.pfb></usr/local/texlive/2016/texmf-dist/fonts/typ
 e1/vntex/vnr/vntt12.pfb>
-Output written on main.pdf (69 pages, 1441636 bytes).
+Output written on main.pdf (68 pages, 1449454 bytes).
 PDF statistics:
- 325 PDF objects out of 1000 (max. 8388607)
- 185 compressed objects within 2 object streams
+ 320 PDF objects out of 1000 (max. 8388607)
+ 183 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 156 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 151 words of extra memory for PDF output out of 10000 (max. 10000000)
 
