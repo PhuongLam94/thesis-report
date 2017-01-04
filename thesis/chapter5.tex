@@ -1,14 +1,14 @@
 \chapter{Kiểm tra kết quả}
 
-Bất kỳ một sản phẩm nào đều cần phải được kiểm tra trước khi công bố, luận văn này cũng không phải là một ngoại lệ. Để đảm bảo chất lượng được đánh giá một các khách quan nhất, một hệ thống testcase với các loại tình huống được phân bổ một cách khoa học sẽ được đưa ra, sau đó cho chạy thử qua cả 2 hướng tiếp của luận văn để so sánh. Tuy nhiên, để chạy được các giải pháp của luận văn, cần chọn một trình dịch ngược sẵn có và chỉnh sửa, hiện thực giải pháp trên đó. Trình dịch ngược được chọn là Boomerang như đã trình bày ở phần \ref{sec:whyboom}. Phần đầu của chương này sẽ trình bày các thiết lập cần thiết trên Boomerang để hiện thực giải pháp. Phần tiếp theo đề ra phương pháp kiểm thử bao gồm cách lập testcase và kết quả chạy thử testcase trên các giải pháp.
+Bất kỳ một sản phẩm nào đều cần phải được kiểm tra trước khi công bố, luận văn này cũng không phải là một ngoại lệ. Để đảm bảo chất lượng được đánh giá một các khách quan nhất, một hệ thống testcase với các loại tình huống được phân bổ một cách khoa học sẽ được đưa ra, chỉnh sửa cho phù hợp với 2 bài toán của luận văn là Kiểm tra kiểu và Suy luận kiểu và chạy thử để đưa ra kết quả. Tuy nhiên, để chạy được các giải pháp của luận văn, cần chọn một trình dịch ngược sẵn có và chỉnh sửa, hiện thực giải pháp trên đó. Trình dịch ngược được chọn là Boomerang như đã trình bày ở phần \ref{sec:whyboom}. Phần đầu của chương này sẽ trình bày các thiết lập cần thiết trên Boomerang để hiện thực giải pháp cho kiến trúc máy 8051 như phần giới hạn của chương trình. Phần tiếp theo đề ra phương pháp kiểm thử bao gồm cách lập testcase và kết quả chạy thử testcase trên các giải pháp.
 
 \section{Thiết lập Boomerang}
 
 \label{sec:boomchange}
-Ở phần \ref{sec:whyboom}, một bảng đánh giá các trình dịch ngược hiện tại đã được đưa ra để có sự lựa chọn chính xác nhất trình dịch ngược sẽ được dùng để hiện thực giải pháp và Boomerang đã được chọn vì có số điểm ở các tiêu chí cao nhất. Tuy nhiên, để hiện thực các thuật toán của luận văn, cần có các chỉnh sửa sau:
+Ở phần \ref{sec:whyboom}, một bảng đánh giá các trình dịch ngược hiện tại đã được đưa ra để lựa chọn trình dịch ngược phù hợp nhất để hiện thực giải pháp và Boomerang đã được chọn vì có số điểm ở các tiêu chí cao nhất. Tuy nhiên, để hiện thực các thuật toán của luận văn, cần có các chỉnh sửa sau:
 \begin{itemize}
 	\item Xử lý để Boomerang giữ được tên biến được người dùng tự khai báo. Vì bản thân Boomerang là một trình dịch ngược từ mã máy, nên nó chỉ xử lý dữ liệu dưới dạng thanh ghi, các thanh ghi này phải được định nghĩa trước trong file đặc tả của từng kiến trúc máy.
-	\item Chỉnh sửa giai đoạn sinh mã của Boomerang. Các hướng tiếp cận đưa ra trong luận văn đề có kết quả cuối cùng là một danh sách các UnionDefine, trong đó lưu trữ các biến byte - biến bit cùng một bộ. Để đưa các UnionDefine này thành các cấu trúc union ở mã đầu ra, cần phải có một số thay đổi ở phần sinh mã của Boomerang
+	\item Chỉnh sửa giai đoạn sinh mã của Boomerang. Các giải pháp đưa ra trong luận văn đều có kết quả cuối cùng là một danh sách các UnionDefine tương ứng với những union tìm thấy được. Để đưa các UnionDefine này thành các cấu trúc union ở mã đầu ra, cần phải có một số thay đổi ở phần sinh mã của Boomerang
 \end{itemize}
 Các thay đổi này sẽ	 lần lượt được trình bày ở các phần dưới.
 
@@ -19,7 +19,7 @@ Vì ở mức độ mã máy, dữ liệu chỉ được lưu ở các thanh ghi
 \subsubsection{Phương thức lưu trữ tên thanh ghi của Boomerang}
 Khi chuyển đổi từ mã assembly sang mã trung gian, Boomerang sẽ dùng một class con của \textit{Expr} để biểu diễn thanh ghi. Cụ thể là class \textit{Location}, và gọi phương thức static của class \textit{Location} là \textit{Location::regOf(int num)}, phương thức này cần được truyền vào một con số đại diện cho thanh ghi. Cặp số - tên thanh ghi này được lưu vào một từ điển, để sau này khi thực hiện phân tích xong thì sẽ chuyển lại từ thanh ghi thành biến cục bộ.
 
-Trong phần giải mã từ mã assembly sang mã trung gian, có một hàm để map giữa tên thanh ghi và con số đại diện cho nó, đó là hàm \textit{map\_sfr(string name)}.
+Trong phần giải mã từ mã assembly sang mã trung gian, có một hàm để map giữa tên thanh ghi và con số đại diện cho nó, đó là hàm \textit{map\_sfr(string name)} được thể hiện ở đoạn mã \ref{list:listmapsfr}.
 \begin{lstlisting}[caption={Một số phần mã trong hàm map\_sfr},label={list:listmapsfr},language=c++]
 if (name == "R0") return 0;
 else if (name == "R1") return 1;
@@ -29,7 +29,7 @@ else return -1;
 
 \end{lstlisting}
 
-Sau khi trải qua các quá trình phân tích và đến giai đoạn in ra mã đầu ra, trình dịch ngược sẽ gọi hàm \textit{getRegName} trong class \textit{FrontEnd} để trả lại tên ban đầu của thanh ghi. Trong hàm \textit{getRegName} sẽ lấy từ điển tên thanh ghi - số đại diện được quy định sẵn của mỗi phần giải mã cho các kiến trúc máy khác nhau, tìm tên thanh ghi tương ứng với con số đó và trả về.
+Sau khi trải qua các quá trình phân tích và đến giai đoạn in ra mã đầu ra, trình dịch ngược sẽ gọi hàm \textit{getRegName} trong class \textit{FrontEnd} để trả lại tên ban đầu của thanh ghi. Hàm này được trình bày ở đoạn mã \ref{list:listgetregname}. Trong hàm \textit{getRegName}, Boomerang sẽ lấy từ điển tên thanh ghi - số đại diện được quy định sẵn trong đặc tả của các kiến trúc máy, tìm tên thanh ghi tương ứng với con số đó và trả về.
 \begin{lstlisting}[caption={Phần mã trong hàm getRegName},label={list:listgetregname},language=c++]
 std::map<std::string, int, std::less<std::string>>::
 																				iterator it;
@@ -41,12 +41,12 @@ return NULL;
 \end{lstlisting}
 
 
-Như vậy, có thể thấy với các tên biến không được quy định trước, hàm \textit{map\_sfr} sẽ trả về giá trị \textbf{-1}, và vì giá trị \textbf{-1} sẽ không có trong từ điển của phần giải mã, nên hàm \textit{getRegName} sẽ trả về \textbf{NULL}, dẫn đến trình dịch ngược sẽ bị lỗi runtime và dừng ngay lập tức.\\
+Như vậy, có thể thấy với các tên biến không được quy định trước, hàm \textit{map\_sfr} sẽ trả về giá trị \textbf{-1}, và vì giá trị \textbf{-1} sẽ không có trong từ điển của kiến trúc máy, nên hàm \textit{getRegName} sẽ trả về \textbf{NULL}, dẫn đến trình dịch ngược sẽ bị lỗi runtime và dừng ngay lập tức.\\
 
 %lấy mã Boomerang ban đầu về, hiện kết quả khi sử dụng biến đầu vào
 
 \subsubsection{Chỉnh sửa phương thức trên để chấp nhận tên biến tự khai báo}
-Vì số lượng tên biến là rất nhiều, nên ta không thể sử dụng phương pháp thêm mới các tên biến vào từ điển được quy định sẵn được, mà phải có cách để trình dịch ngược linh động hơn, chấp nhận bất kỳ các tên nào được sử dụng trong mã assembly. Giải pháp đưa ra là ngoài việc sử dụng từ điển thanh ghi được quy định sẵn, ta sẽ lập thêm một bảng tên biến, thành phần bao gồm các cặp tên biến - số đại diện. Trong giai đoạn giải mã, khi hàm \textit{map\_sfr} được gọi, nếu tên truyền vào nằm trong các thanh ghi đã quy định sẵn, thay vì trả về giá trị \textbf{-1} thì ta sẽ tạo ra một giá trị random và đưa chúng vào bảng tên biến ở trên. Ngoài ra, còn có một đoạn mã kiểm tra biến được sử dụng đã được khai báo bằng câu lệnh \#DEFINE chưa (ngoại trừ một số biến đặc biệt được tự sinh). \\
+Vì số lượng tên biến là rất nhiều, nên giải pháp thêm mới các tên biến vào từ điển được quy định sẵn là không khả thi, mà phải có cách để trình dịch ngược linh động hơn, chấp nhận bất kỳ các tên nào được sử dụng trong mã assembly. Giải pháp đưa ra là ngoài việc sử dụng từ điển thanh ghi được quy định sẵn, một bảng tên biến sẽ được lập thêm, thành phần bao gồm các cặp tên biến - số đại diện. Trong giai đoạn giải mã, khi hàm \textit{map\_sfr} được gọi, nếu tên truyền vào nằm trong các thanh ghi đã quy định sẵn, thay vì trả về giá trị \textbf{-1} thì ta sẽ tạo ra một giá trị random và đưa chúng vào bảng tên biến ở trên. Ngoài ra, còn có một đoạn mã kiểm tra biến được sử dụng đã được khai báo chưa (ngoại trừ một số biến đặc biệt được tự sinh). Hàm \textit{map\_sfr} nâng cấp được trình bày trong đoạn mã \ref{list:listmapsfrnew}.\\
 \begin{lstlisting}[caption={Phần mã mới được bổ sung trong hàm map\_sfr},label={list:listmapsfrnew},language=c++]
 bool isDefined = false;
 map<char*, AssemblyArgument*>::iterator it;
@@ -93,7 +93,7 @@ else {
 	exit(1);
 }
 \end{lstlisting}
-Tương ứng với sự thay đổi ở hàm \textit{map\_sfr},  ở hàm \textit{getRegName}, ngoài việc dò trong từ điển quy định trước, ta sẽ thêm một đoạn mã để dò trong bảng tên biến. 
+Tương ứng với sự thay đổi ở hàm \textit{map\_sfr},  ở hàm \textit{getRegName}, ngoài việc dò trong từ điển quy định trước, cần phải bổ sung thêm một đoạn mã để dò trong bảng tên biến. Phần bổ sung này được thể hiện ở đoạn mã \ref{list:listgetregnamenew}.
 \begin{lstlisting}[caption={Phần mã mới được bổ sung trong hàm getRegName},label={list:listgetregnamenew},language=c++]
 std::map<string,int>::iterator symIt;
 for (symIt = decoder->getSymbolTable().begin(); symIt != 
@@ -108,12 +108,12 @@ Như vậy, vấn đề giữ nguyên tên biến được giải quyết mà kh
 
 \subsection{Thêm trường hợp cấu trúc union vào đoạn sinh mã của Boomerang}
 
-Từ dữ liệu là danh sách các thực thể UnionDefine được rút trích thông qua các giải thuật của luận văn, trình dịch ngược cần phải đưa ra các union tương ứng. Hình \ref{fig:uniondefinemapping} thể hiện việc chuyển đổi của class UnionDefine sang cấu trúc union. Các union này được thêm vào danh sách biến toàn cục (global) của chương trình vì chúng có tác dụng trên toàn chương trình chứ không riêng một hàm nào.
+Từ dữ liệu là danh sách các thực thể UnionDefine được rút trích thông qua các giải thuật của luận văn, trình dịch ngược cần phải đưa ra các union tương ứng. Hình \ref{fig:uniondefinemapping} thể hiện việc chuyển đổi của class UnionDefine cho kiến trúc máy 8051 sang cấu trúc union. Các union này được thêm vào danh sách biến toàn cục (global) của chương trình vì chúng có tác dụng trên toàn chương trình chứ không riêng một hàm nào.
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.7\linewidth]{image/unionDefineMapping}
-\caption{Hình minh hoạ việc chuyển đổi từ class UnionDefine sang cấu trúc union ở mã đầu ra}
+\includegraphics[width=\linewidth]{image/unionDefineMapping}
+\caption{Hình minh hoạ việc chuyển đổi từ class UnionDefine cho mã 8051 sang cấu trúc union ở mã đầu ra}
 \label{fig:uniondefinemapping}
 \end{figure}
 
@@ -124,7 +124,7 @@ Sau khi sinh ra các union như trên, một số thay thế cần được th�
 a = *OPTIONS;
 TESTSUPS = 1;
 if (specbits1 == 1){
-...
+	...
 }
 return a;
 \end{lstlisting}
@@ -133,7 +133,7 @@ return a;
 a = *OPTIONS;
 OPTIONS.bits.TESTSUPS = 1;
 if (specbits1 == 1){
-...
+	...
 }
 return a;
 \end{lstlisting}
@@ -143,7 +143,7 @@ return a;
 a = *OPTIONS;
 OPTIONS.bits.TESTSUPS = 1;
 if (OPTIONS.bits.bit1 == 1){
-...
+	...
 }
 return a;
 \end{lstlisting}
@@ -152,7 +152,7 @@ return a;
 \begin{lstlisting}[caption={Mã đầu ra sau khi thực hiện bước thay thế thanh ghi trung gian},label={list:listafterreplaceacc}, language = c]
 OPTIONS.bits.TESTSUPS = 1;
 if (OPTIONS.bits.bit1 == 1){
-...
+	...
 }
 return OPTIONS.byte;
 \end{lstlisting}
@@ -188,7 +188,7 @@ Tiêu chí II:
 Tiêu chí III:
 \begin{enumerate}
 	\item Không vi phạm nguyên tắc sử dụng kiểu union. (III.1)
-	\item Một thành phần của union này được sử dụng khi thanh ghi trung gian đang có kiểu là một union khác. Như ví dụ ở đoạn mã \ref{ist:invalid1}, thành phần \textit{TESTUPS} được xác định thuộc union \textit{OPTIONS} thông qua 2 câu lệnh 1 và 2, nhưng sau đó lại được truy xuất ở câu lệnh số 4 khi mà thanh ghi trung gian \textit{ACC} đang mang kiểu union \textit{OPTIONS2}. (III.2)
+	\item Một thành phần của union này được sử dụng khi thanh ghi trung gian đang có kiểu là một union khác. Như ví dụ ở đoạn mã \ref{list:invalid1}, thành phần \textit{TESTUPS} được xác định thuộc union \textit{OPTIONS} thông qua 2 câu lệnh 1 và 2, nhưng sau đó lại được truy xuất ở câu lệnh số 4 khi mà thanh ghi trung gian \textit{ACC} đang mang kiểu union \textit{OPTIONS2}. (III.2)
 	\begin{lstlisting}[caption={Đoạn mã có một biến bit thuộc nhiều bộ biến khác nhau},label={list:invalid1}]
 	MOV A, OPTIONS ;1
 	SETB TESTSUPS ;2
@@ -205,7 +205,7 @@ Tiêu chí III:
 	TESTSDOWNS = 0;
 	\end{lstlisting}
 	\item Ghi nhận được có hai thành phần cùng thuộc một union và cùng truy xuất đến một vị trí của union đó. Như ở đoạn mã \ref{list:invalid3}, biến \textit{TESTSUPS} và \textit{TESTSDOWNS} đều được sử dụng để truy xuất tới bit đầu tiên của union \textit{OPTIONS}. (III.4)
-	\begin{lstlisting}[caption={Đoạn mã có 2 biến bit cùng một vị trí và đều được ghi nhận cùng bộ với một biến byte},label={list:invalid3}]
+	\begin{lstlisting}[caption={Đoạn mã có 2 thành phần union cùng truy xuất đến một vị trí vùng nhớ của union đó},label={list:invalid3}]
 	...
 	#DEFINE TESTSUPS, ACC.1
 	#DEFINE TESTSDOWNS, ACC.1
@@ -291,6 +291,5 @@ Tuỳ thuộc vào bài toán cần kiểm tra kết quả là gì, các testcas
 	\label{table:table3}
 	\caption{Bảng kết quả chạy thử testcase cho hai bài toán}
 \end{table}
-\newpage
 Như vậy, có thể thấy với bài toán Kiểm tra kiểu, có nhiều testcase cho ra kết quả sai, còn bài toán Suy luận kiểu thì tất cả các trường hợp đều chính xác. Điều này đã được dự báo trước vì kỹ thuật phân tích sử dụng trong bài toán Kiểm tra kiểu còn nhiều hạn chế.\\
 

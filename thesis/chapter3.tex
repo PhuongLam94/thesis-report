@@ -145,7 +145,7 @@ Tuy nhiên, cũng giống như assembler, các trình dịch ngược hầu như
 	\end{lstlisting}
 \end{changemargin} 
 \begin{itemize}
-	\item Chỉnh sửa các hành động sau khi parser nhận biết được những cấu trúc khai báo union. Sau khi parser đã bắt được các mẫu khai báo union, cần lập trình để lưu trữ thông tin về các union đó vào dữ liệu của chương trình. Cấu trúc được dùng để lưu trữ thông tin về union này là \textit{UnionDefine}, được trình bày ở đoạn mã \ref{list:listuniondefine}, trong đó, \textit{byteVar} để lưu trữ tên của union đó, còn \textit{bitVar} chứa các thành phần bit thuộc union và số thứ tự của bit mà thành phần đó truy xuất. Đoạn mã \ref{list:8051parser2} thể hiện phần code đưa các khai báo union từ mã đầu vào thành các thực thể \textit{UnionDefine} tương ứng.
+	\item Chỉnh sửa các hành động sau khi parser nhận biết được những cấu trúc khai báo union. Sau khi parser đã bắt được các mẫu khai báo union, cần lập trình để lưu trữ thông tin về các union đó vào dữ liệu của chương trình. Cấu trúc được dùng để lưu trữ thông tin về union này là \textit{UnionDefine}, được trình bày ở đoạn mã \ref{list:listuniondefine}, trong đó, \textit{byteVar} để lưu trữ tên của union đó, còn \textit{bitVar} chứa các thành phần thuộc union và vị trí vùng nhớ mà thành phần đó truy xuất. Đoạn mã \ref{list:8051parser2} thể hiện phần code đưa các khai báo union từ mã đầu vào thành các thực thể \textit{UnionDefine} tương ứng.
 \end{itemize}
 \begin{changemargin}{0cm}{0cm} 
 	\begin{lstlisting}[caption={Cấu trúc dữ liệu để lưu trữ một union},label={list:listuniondefine},language=c++]
@@ -223,11 +223,11 @@ MOV A, OPTIONS+1 ;3
 Ngoài ra, trong đoạn mã \ref{list:ifcond}, tại thời điểm câu lệnh sử dụng biến bit \textit{TESTSUPS}, có hai câu lệnh khai báo biến \textit{a}. Đối với phương pháp Reaching definitions, nó sẽ xem như có hai giá trị mà biến \textit{a} có thể mang. Tuy nhiên, nếu xét kỹ hơn, thì sẽ thấy là cả hai giá trị đó đều là biến \textit{OPTIONS}, và thực chất tại thời điểm này \textit{a} chỉ mang một giá trị, cho dù luồng đi của chương trình có như thế nào. Như vậy, phương pháp Reaching definitions sẽ bỏ qua những trường hợp như thế này và dẫn đến việc độ chính xác sẽ không được cao.
 \begin{lstlisting}[caption={Đoạn mã có nhiều câu lệnh khai báo cho ACC đến được một điểm của chương trình nhưng tất cả đều cùng giá trị},label={list:ifcond}]
 if (...){
-a = *(OPTIONS);
-...
+	a = *(OPTIONS);
+	...
 } else {
-a = *(OPTIONS);
-...
+	a = *(OPTIONS);
+	...
 }
 TESTSUPS = 1;
 \end{lstlisting}
@@ -248,7 +248,7 @@ Cụ thể các bước giải thuật của phần mở rộng được trình 
 Theo giải thuật nêu trên, cần truyền vào cho hàm \textit{findRegValue} các giá trị sau đây:
 \begin{itemize}
 	\item \textit{regName}: Tên thanh ghi cần tìm kiểu dữ liệu
-	\item \textit{isMain}: Biến bool cho biết đây có phải là thanh ghi cần xác định kiểu không hay chỉ là thanh ghi trung gian của quá trình xác định kiểu đó. Nếu là thanh ghi cần xác định kiểu, thì biểu thức được xét đến là địa chỉ của vùng nhớ được gán cho thanh ghi, còn nếu chỉ là thanh ghi trung gian, thì biểu thức được xét đến là giá trị trực tiếp của thanh ghi.
+	\item \textit{isMain}: Biến bool cho biết đây có phải là thanh ghi cần xác định kiểu không hay chỉ là thanh ghi trung gian của quá trình xác định kiểu đó. Nếu là thanh ghi cần xác định kiểu, thì biểu thức được xét đến là địa chỉ của vùng nhớ được gán cho thanh ghi, còn nếu không phải, thì biểu thức được xét đến là giá trị trực tiếp của thanh ghi.
 	\item \textit{REACHin}: Tập các câu lệnh gán có giá trị đến thời điểm đó của chương trình. Tập này được xây dựng nhờ vào giải thuật Reaching definitions.
 	\item \textit{listDefine}: Đây là danh sách lưu trữ các biến được khai báo ở đầu chương trình. Danh sách này gồm các cặp tên biến - giá trị biến.
 \end{itemize}
@@ -261,12 +261,12 @@ Tuy đã xử lý được hầu hết các trường hợp của phép gán vù
 Phương pháp phân tích Lan truyền kiểu - Type propagation có thể xem là một đóng góp mới của luận văn tốt nghiệp này. Phương pháp này được đặt ra nhằm giải quyết hạn chế về mặt thời gian xử lý của Reaching definitions kết hợp phần mở rộng. Có hai nguyên nhân chính làm thời gian xử lý của phương pháp trên bị chậm là:
 \begin{itemize}
 	\item Sau khi đã chạy vòng lặp quét các câu lệnh của chương trình, vẫn chưa thể kết luận được kiểu dữ liệu mà thanh ghi đang mang. Phải trải qua một giai đoạn xử lý dữ liệu nữa thì mới rút trích ra được thông tin đó.
-	\item Với cách chạy vòng lặp cổ điển của các phương pháp phân tích dữ liệu, nếu ở một câu lệnh nào đó có sử thay đổi về tập \textit{REACHin} và \textit{REACHout}, thì toàn bộ các câu lệnh khác trong chương trình đều phải tính toán lại 2 tập trên dù chúng có bị ảnh hưởng hay không.
+	\item Với cách chạy vòng lặp cổ điển thường thấy của các phương pháp phân tích dữ liệu, nếu ở một câu lệnh nào đó có sự thay đổi về tập \textit{REACHin} và \textit{REACHout}, thì toàn bộ các câu lệnh khác trong chương trình đều phải tính toán lại 2 tập trên dù chúng có bị ảnh hưởng hay không.
 \end{itemize}
 Như vậy, để tăng nhanh thời gian xử lý, phương pháp Lan truyền kiểu có ý tưởng như sau:
 \begin{itemize}
-	\item Xem thông tin về kiểu union của thanh ghi là một kiểu dữ liệu để lan truyền qua các câu lệnh của chương trình. Như vậy, kết thúc quá trình chạy vòng lặp, đã có thể xác định được thanh ghi trung gian đang mang kiểu union gì mà không cần phải xử lý thêm.
-	\item Thay vì sử dụng phương pháp chạy vòng lặp, bất cứ câu lệnh nào có thay đổi gì thì sẽ tính toán lại toàn bộ chương trình, thì phương pháp sử dụng worklist sẽ được thay thế. Với phương pháp này, chỉ các câu lệnh có trong worklist mới được tính toán, và khi có thay đổi ở một câu lệnh nào đó, thì chỉ những câu lệnh bị ảnh hưởng bởi sự thay đổi này mới được đưa vào worklist và tính toán tính.
+	\item Xem thông tin về kiểu union của thanh ghi là một dữ liệu để lan truyền qua các câu lệnh của chương trình. Như vậy, kết thúc quá trình chạy vòng lặp, đã có thể xác định được thanh ghi trung gian đang mang kiểu union gì mà không cần phải xử lý thêm.
+	\item Thay vì sử dụng phương pháp chạy vòng lặp, bất cứ câu lệnh nào có thay đổi gì thì sẽ tính toán lại toàn bộ chương trình, thì phương pháp sử dụng worklist sẽ được thay thế. Với phương pháp này, chỉ các câu lệnh có trong worklist mới được tính toán, và khi có thay đổi ở một câu lệnh nào đó, thì chỉ những câu lệnh bị ảnh hưởng bởi sự thay đổi này mới được đưa vào worklist và tính toán.
 	\item Sử dụng mã SSA nhằm giúp cho việc tính toán thuận tiện hơn. Chi tiết về công dụng của mã SSA sẽ được phân tích rõ hơn sau khi thuật toán chi tiết được trình bày. Trong các trình dịch ngược, luôn có một giai đoạn mã đầu vào được thể hiện ở dạng SSA để phục vụ cho các quá trình phân tích dữ liệu, nên sẽ không mất thời gian chuyển đổi từ mã thường sang mã SSA.
 \end{itemize}
 Các ý tưởng trên được thể hiện cụ thể qua giải thuật ở hình \ref{fig:typepropagationalgo}.\\
@@ -279,7 +279,7 @@ Các ý tưởng trên được thể hiện cụ thể qua giải thuật ở h
 Từ giải thuật trên, có thể thấy mã SSA mang đến những lợi ích sau:
 \begin{itemize}
 	\item Tiết kiệm không gian lưu trữ. Vì mỗi biến SSA chỉ được định nghĩa một lần duy nhất, nên chỉ cần một bảng lưu trữ tên biến - kiểu union cho toàn bộ chương trình, không cần thiết ở mỗi câu lệnh phải lưu một tập vào và một tập ra như phương pháp Reaching definitions.
-	\item Giúp cho việc tìm các câu lệnh bị ảnh hưởng bởi sự thay đổi của của một câu lệnh nào đó dễ dàng hơn. Ở bước cuối của vòng lặp, phải tìm các câu lệnh có sử dụng biến ở vế trái của câu lệnh thay đổi. Nếu đoạn mã đang ở dạng thông thường, thì việc xác định tập câu lệnh này rất khó khăn, do một biến có thể được định nghĩa lại nhiều lần nên phải kiểm tra câu lệnh nào đang sử dụng biến được định nghĩa tại câu lệnh được ghi nhận thay đổi. Nhưng với mã SSA, mỗi biến chỉ được gán một lần duy nhất trong toàn bộ chương trình, nên việc tìm kiếm sẽ dễ dàng hơn rất nhiều.
+	\item Giúp cho việc tìm các câu lệnh bị ảnh hưởng bởi sự thay đổi của một câu lệnh nào đó dễ dàng hơn. Ở bước cuối của vòng lặp, phải tìm các câu lệnh có sử dụng biến ở vế trái của câu lệnh thay đổi. Nếu đoạn mã đang ở dạng thông thường, thì việc xác định tập câu lệnh này rất khó khăn, do một biến có thể được định nghĩa lại nhiều lần nên phải kiểm tra câu lệnh nào đang sử dụng biến được định nghĩa tại câu lệnh được ghi nhận thay đổi. Nhưng với mã SSA, mỗi biến chỉ được gán một lần duy nhất trong toàn bộ chương trình, nên việc tìm kiếm sẽ dễ dàng hơn rất nhiều.
 \end{itemize}
 
 Như vậy, phương pháp Lan truyền kiểu này sẽ làm giảm đáng kể thời gian xử lý của chương trình so với phương pháp Reaching definitions. Tuy nhiên, khuyết điểm của Lan truyền kiểu là vẫn chưa xử lý được trường hợp biểu thức vế phải có hai toán hạng. Để giải quyết được vấn đề này, cần có một phân tích khác mạnh hơn và phân tích đó sẽ được giới thiệu ở chương tiếp theo.

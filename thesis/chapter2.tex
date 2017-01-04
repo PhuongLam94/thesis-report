@@ -141,7 +141,7 @@ Việc loại bỏ mã chết cũng có thể thực hiện dễ dàng nhờ và
 \section{Các kỹ thuật phân tích luồng dữ liệu được sử dụng trong luận văn}
 \subsection{Reaching defintions}
 \label{sec:reachdef}
-Reaching definitions \cite{reachingdef} là một kỹ thuật phân tích dữ liệu nhằm cho biết tại một thời điểm của chương trình, các câu lệnh gán nào còn có giá trị, hay nói cách khác là giá trị của các biến đang được gán ở những câu lệnh nào. Như ví dụ trong hình \ref{fig:reachingdefexam}, nếu áp dụng phân tích Reaching definitions, sẽ biết được tại câu lệnh số 2, có hai câu lệnh gán cho a còn có giá trị là câu lệnh số 1 và câu lệnh số 5, việc a nhận giá trị từ câu lệnh nào là tuỳ vào quá trình thực thi của chương trình.
+Reaching definitions \cite{reachingdef} là một kỹ thuật phân tích dữ liệu nhằm cho biết tại một thời điểm của chương trình, các câu lệnh gán nào còn có giá trị, hay nói cách khác là giá trị của các biến đang được gán ở những câu lệnh nào. Như ví dụ trong hình \ref{fig:reachingdefexam}, nếu áp dụng phân tích Reaching definitions, sẽ biết được tại câu lệnh số 2, có hai câu lệnh gán cho \textit{a} còn có giá trị là câu lệnh số 1 và câu lệnh số 5, việc \textit{a} nhận giá trị từ câu lệnh nào là tuỳ vào quá trình thực thi của chương trình.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=0.75]{image/reachingDefExam}
@@ -224,7 +224,7 @@ a = 5;
 return a;
 \end{lstlisting}
 
-Giải thuật Constant Propagation thường dựa vào luồng đi của chương trình (Control Flow Graph) để tính toán được giá trị của các biến. Tuy nhiên, do trong các trình dịch ngược thường có một giai đoạn mã được thể hiện dưới dạng SSA, nên có thể tận dụng các mã SSA này để việc tính toán được nhanh hơn. Giải thuật này được gọi là Sparse Constant Propagation và được trình bày bên ở hình \ref{fig:constantpropagationalgo}
+Giải thuật Constant Propagation thường dựa vào luồng đi của chương trình (Control Flow Graph) để tính toán được giá trị của các biến. Tuy nhiên, do trong các trình dịch ngược thường có một giai đoạn mã được thể hiện dưới dạng SSA, nên có thể tận dụng các mã SSA này để việc tính toán được nhanh hơn. Giải thuật này được gọi là Sparse Constant Propagation và được trình bày ở hình \ref{fig:constantpropagationalgo}
 
 \begin{figure}
 	\centering
@@ -268,7 +268,7 @@ Trong số các trình dịch ngược nêu trên, cần tìm ra trình dịch n
 	\item Có tài liệu đầy đủ: Tương tự, việc có tài liệu đầy đủ cũng sẽ giúp quá trình hiện thực giải thuật trên nền tảng này diễn ra nhanh chóng hơn. (Tiêu chí 5)
 	\item Viết bằng ngôn ngữ quen thuộc: Nếu trình dịch ngược được viết trên một ngôn ngữ quen thuộc với tác giả của luận văn, thì việc lập trình chỉnh sửa trình dịch ngược sẽ thuận tiện hơn là phải làm quen với một ngôn ngữ mới. (Tiêu chí 6)
 \end{itemize}
-Phần đánh giá này được thể hiện ở bảng 2.1
+Phần đánh giá này được thể hiện ở bảng 2.1. Qua đó, có thể thấy trình dịch ngược Boomerang nhận được điểm số cao nhất. Như vậy, Boomerang sẽ được sử dụng làm nền tảng để phát triển các giải pháp đề ra trong luận văn.
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{ |p{0.7cm}| p{2cm}| p{1.5cm}| p{1.5cm}| p{2cm}| p{1.5cm}| p{1.5cm}
